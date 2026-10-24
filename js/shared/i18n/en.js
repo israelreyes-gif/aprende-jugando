@@ -31,5 +31,6 @@ export const en = {
   saved: 'Result saved',
   savedLater: 'Offline: it will be saved when you are back online',
   saveFailed: 'The result could not be saved',
+  noTopics: 'There are no topics in this subject yet.',
   noExercises: 'This topic has no exercises yet.',
 };
