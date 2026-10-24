@@ -1,0 +1,21 @@
+/* Cabecera */
+.app-header {
+  flex: none;
+  display: flex; align-items: center; gap: 14px;
+  padding: 20px var(--gutter) 22px;
+  background: var(--primary); color: var(--primary-ink);
+  border-radius: 0 0 28px 28px;
+}
+.app-header__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.app-header__title { font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 1.15; overflow-wrap: anywhere; }
+.app-header__sub { font-size: 14px; font-weight: 700; }
+.app-header__badge {
+  flex: none; width: 52px; height: 52px; border-radius: 16px;
+  display: grid; place-items: center; background: rgba(255, 255, 255, 0.2);
+}
+.icon-btn {
+  appearance: none; border: none; flex: none;
+  width: var(--touch); height: var(--touch); border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(255, 255, 255, 0.2); color: #FFFFFF;
+}
