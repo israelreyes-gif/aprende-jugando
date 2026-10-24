@@ -1,0 +1,12 @@
+{
+  "name": "aprende-jugando",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "aprende-jugando",
+      "database_id": "b8df5046-70ab-415d-a2f0-3eec2b3b70c7"
+    }
+  ]
+}
