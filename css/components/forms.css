@@ -1,0 +1,18 @@
+/* Formularios */
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field__label { font-weight: 800; font-size: 15px; }
+.field__error { color: var(--bad); font-weight: 700; font-size: 14px; }
+.input {
+  width: 100%; min-height: 52px; padding: 0 16px;
+  border-radius: 16px; border: 2px solid var(--line);
+  background: var(--surface); color: var(--ink);
+  font-size: 18px; font-weight: 700;
+}
+
+/* Selector de color */
+.swatches { display: flex; flex-wrap: wrap; gap: 16px; }
+.swatch {
+  appearance: none; width: 48px; height: 48px; border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.12); background: var(--swatch);
+}
+.swatch[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--ink); }
