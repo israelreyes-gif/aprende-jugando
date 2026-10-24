@@ -1,0 +1,29 @@
+/* Tarjetas de catálogo: perfil, curso y tema */
+.profile-card {
+  appearance: none; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  padding: 20px 12px; border-radius: var(--radius-lg);
+}
+.profile-card__name { font-family: var(--font-display); font-weight: 500; font-size: 20px; overflow-wrap: anywhere; text-align: center; }
+.profile-card--add { border: 2px dashed var(--primary); background: var(--soft); color: var(--primary); }
+.profile-card--add .avatar { background: #FFFFFF; color: var(--primary); }
+
+.course-card {
+  appearance: none; min-height: 136px; padding: 16px; border-radius: var(--radius-lg);
+  flex-direction: column; justify-content: space-between; align-items: flex-start; text-align: left;
+  background: var(--primary); color: var(--primary-ink); border-color: var(--primary);
+}
+.course-card__label { font-family: var(--font-display); font-weight: 600; font-size: 46px; line-height: 1; }
+.course-card__status { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 14px; }
+.course-card--locked { background: var(--soft); color: var(--muted); border-color: var(--line); }
+
+.topic-card {
+  appearance: none; min-height: 148px; padding: 16px; flex-direction: column; justify-content: space-between;
+  align-items: flex-start; gap: 12px; text-align: left;
+}
+.topic-card__num {
+  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--tint); color: var(--deep); font-family: var(--font-display); font-weight: 600; font-size: 20px;
+}
+.topic-card__title { font-family: var(--font-display); font-weight: 500; font-size: 18px; line-height: 1.2; }
+.topic-card__meta { font-weight: 700; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.topic-card--locked { background: transparent; border-style: dashed; color: var(--muted); }
