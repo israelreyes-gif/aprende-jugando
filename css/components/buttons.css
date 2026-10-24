@@ -1,0 +1,14 @@
+/* Botones */
+.btn {
+  appearance: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 0 20px;
+  border-radius: 16px; border: 2px solid transparent;
+  font-weight: 800; font-size: 16px; text-align: center;
+}
+.btn--block { display: flex; width: 100%; }
+.btn--primary { background: var(--primary); color: var(--primary-ink); }
+.btn--outline { background: transparent; color: var(--primary); border-color: var(--primary); }
+.btn--dark { background: var(--warn-ink); color: #FFFFFF; min-height: var(--touch); border-radius: var(--radius-sm); font-size: 15px; }
+.btn--danger { background: transparent; color: var(--bad); border-color: var(--bad); }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
