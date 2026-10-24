@@ -1,0 +1,8 @@
+/* Estudio */
+.lesson { display: flex; flex-direction: column; gap: 14px; }
+.lesson__h { font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 1.2; color: var(--deep); margin-top: 6px; }
+.lesson__p { font-size: 17px; line-height: 1.5; }
+.lesson__list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; font-size: 17px; line-height: 1.45; }
+.lesson__tip { padding: 14px 16px; border-radius: var(--radius); background: var(--tint); color: var(--ink); font-size: 16px; line-height: 1.45; border-left: 6px solid var(--deep); }
+.lesson__tip strong { color: var(--deep); }
+.lesson__actions { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
