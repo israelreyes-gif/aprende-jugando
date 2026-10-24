@@ -1,0 +1,6 @@
+/* Chips */
+.chip {
+  display: inline-block; padding: 3px 10px; border-radius: 999px;
+  background: var(--tint, var(--soft)); color: var(--deep, var(--primary));
+  font-weight: 800; font-size: 12px;
+}
