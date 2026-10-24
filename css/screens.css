@@ -1,0 +1,6 @@
+/* Índice de pantallas. */
+@import url('screens/home.css');
+@import url('screens/stats.css');
+@import url('screens/study.css');
+@import url('screens/practice.css');
+@import url('screens/result.css');
