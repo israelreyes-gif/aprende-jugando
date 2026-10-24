@@ -1,0 +1,19 @@
+/* Zona de padres: estadísticas */
+.stat-chip {
+  padding: 14px 8px; border-radius: var(--radius); border: 2px solid var(--line);
+  background: var(--surface); text-align: center; display: flex; flex-direction: column; gap: 2px;
+}
+.stat-chip__value { font-family: var(--font-display); font-weight: 600; font-size: 28px; line-height: 1.1; }
+.stat-chip__label { font-weight: 700; font-size: 12px; color: var(--muted); }
+
+.stat-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--radius); border: 2px solid var(--line); background: var(--surface); }
+.stat-row__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.stat-row__head { display: flex; justify-content: space-between; gap: 8px; font-weight: 800; font-size: 15px; }
+.stat-row__value { color: var(--deep); }
+
+.reinforce-card {
+  display: flex; flex-direction: column; gap: 10px; padding: 16px;
+  border-radius: 20px; border: 2px solid var(--warn-line); background: var(--warn-bg); color: var(--warn-ink);
+}
+.reinforce-card__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-weight: 700; font-size: 13px; }
+.reinforce-card__title { font-family: var(--font-display); font-weight: 500; font-size: 19px; line-height: 1.2; }
