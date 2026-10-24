@@ -1,0 +1,35 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+h1, h2, h3, p { margin: 0; }
+
+img, svg { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+
+button, input { font: inherit; color: inherit; }
+
+button { cursor: pointer; }
+
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+
+/* Contenedor de la app: columna centrada, pensada para móvil */
+.app {
+  max-width: var(--app-max);
+  min-height: 100dvh;
+  margin: 0 auto;
+  background: var(--bg);
+}
+
+.screen { min-height: 100dvh; display: flex; flex-direction: column; }
+.screen__body { padding: var(--gutter) var(--gutter) 40px; display: flex; flex-direction: column; gap: 18px; flex: 1; }
