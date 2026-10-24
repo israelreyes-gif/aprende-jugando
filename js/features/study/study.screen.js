@@ -1,0 +1,48 @@
+import { h } from '../../core/dom.js';
+import { paths } from '../../core/paths.js';
+import { getCourse, getSubject, loadTopic } from '../../content/registry.js';
+import { getProfile } from '../../data/profiles.repo.js';
+import { listStudied, markStudied } from '../../data/study.repo.js';
+import { appHeader } from '../../shared/app-header.js';
+import { texts } from '../../shared/i18n.js';
+import { notFoundView } from '../../shared/not-found-view.js';
+import { renderBlocks } from './lesson-blocks.js';
+import { studiedButton } from './studied-button.js';
+
+/** Lección de un tema. */
+export async function studyScreen({ pid, cid, sid, tid }) {
+  const course = getCourse(cid);
+  const subject = getSubject(sid);
+  if (!course || !subject) return notFoundView();
+
+  const [profile, loaded, studiedRows] = await Promise.all([
+    getProfile(pid),
+    loadTopic(cid, sid, tid),
+    listStudied(pid, { subjectId: sid }).catch(() => []),
+  ]);
+  if (!profile || !loaded) return notFoundView();
+
+  const t = texts(subject.lang);
+  const { topic, study, exercises } = loaded;
+
+  return h(
+    'main',
+    { class: 'screen', style: { '--tint': subject.tint, '--deep': subject.deep } },
+    appHeader({ title: topic.title, sub: subject.name, back: paths.subject(pid, cid, sid, 'study'), profile }),
+    h(
+      'article',
+      { class: 'screen__body lesson', lang: subject.lang },
+      ...renderBlocks(study),
+      h(
+        'div',
+        { class: 'lesson__actions' },
+        studiedButton({
+          t,
+          studied: studiedRows.some((row) => row.topic_id === tid),
+          onMark: () => markStudied({ profileId: pid, courseId: cid, subjectId: sid, topicId: tid }),
+        }),
+        exercises.length ? h('a', { class: 'btn btn--primary btn--block', href: paths.practice(pid, cid, sid, tid) }, t.goPractice) : null,
+      ),
+    ),
+  );
+}
