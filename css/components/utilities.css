@@ -1,0 +1,11 @@
+/* Utilidades */
+.stack { display: flex; flex-direction: column; gap: var(--gap, 14px); }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.muted { color: var(--muted); }
+.eyebrow { font-weight: 800; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); }
+.title-xl { font-family: var(--font-display); font-weight: 600; font-size: 34px; line-height: 1.1; }
+.title-lg { font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 1.15; }
+.lead { font-weight: 700; font-size: 16px; color: var(--muted); }
+.spacer { flex: 1; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
