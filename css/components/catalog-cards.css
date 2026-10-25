@@ -16,9 +16,11 @@
 .course-card__status { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 14px; }
 .course-card--locked { background: var(--soft); color: var(--muted); border-color: var(--line); }
 
+/* Tema: tres estados. Disponible (por defecto), estudiado y no disponible. */
 .topic-card {
   appearance: none; min-height: 148px; padding: 16px; flex-direction: column; justify-content: space-between;
   align-items: flex-start; gap: 12px; text-align: left;
+  background: var(--surface); border-color: var(--deep);
 }
 .topic-card__num {
   width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
@@ -26,4 +28,14 @@
 }
 .topic-card__title { font-family: var(--font-display); font-weight: 500; font-size: 18px; line-height: 1.2; }
 .topic-card__meta { font-weight: 700; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
-.topic-card--locked { background: transparent; border-style: dashed; color: var(--muted); }
+
+.topic-card--open .topic-card__meta { color: var(--deep); }
+
+.topic-card--done { background: var(--ok-bg); border-color: var(--ok); }
+.topic-card--done .topic-card__num { background: var(--ok); color: #FFFFFF; }
+.topic-card--done .topic-card__meta { color: var(--ok); }
+
+.topic-card--locked { background: #EEEDF3; border: 2px dashed #B9B5CF; color: #77738F; }
+.topic-card--locked .topic-card__num { background: #DEDCE9; color: #8A86A3; }
+.topic-card--locked .topic-card__title { color: #6B6785; }
+.topic-card--locked .topic-card__meta { color: #6B6785; }
