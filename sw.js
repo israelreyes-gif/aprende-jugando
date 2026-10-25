@@ -1,6 +1,6 @@
 // Service worker de Aprende y juega.
-//  - Archivos de la propia app: red primero (los cambios de GitHub llegan enseguida)
-//    y, sin conexión, la copia guardada.
+//  - Archivos de la propia app: copia guardada primero (abre al instante) y, por detrás,
+//    se comprueba si GitHub tiene algo nuevo; los cambios se ven en la siguiente apertura.
 //  - Fuentes de Google: copia guardada primero.
 //  - El Worker de datos (otro dominio) NO se toca: la app gestiona su propia cola offline.
 importScripts('./sw/config.js', './sw/strategies.js');
@@ -26,7 +26,7 @@ self.addEventListener('fetch', (event) => {
   const isFont = url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com';
 
   if (url.origin === self.location.origin) {
-    event.respondWith(networkFirst(request));
+    event.respondWith(staleWhileRevalidate(event));
   } else if (isFont) {
     event.respondWith(cacheFirst(request));
   }
