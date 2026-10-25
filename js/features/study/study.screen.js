@@ -3,8 +3,10 @@ import { paths } from '../../core/paths.js';
 import { getCourse, getSubject, loadTopic } from '../../content/registry.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { listStudied, markStudied } from '../../data/study.repo.js';
+import { isTopicReleased } from '../subjects/topic-access.js';
 import { appHeader } from '../../shared/app-header.js';
 import { texts } from '../../shared/i18n.js';
+import { lockedView } from '../../shared/locked-view.js';
 import { notFoundView } from '../../shared/not-found-view.js';
 import { renderBlocks } from './lesson-blocks.js';
 import { studiedButton } from './studied-button.js';
@@ -15,15 +17,17 @@ export async function studyScreen({ pid, cid, sid, tid }) {
   const subject = getSubject(sid);
   if (!course || !subject) return notFoundView();
 
-  const [profile, loaded, studiedRows] = await Promise.all([
+  const [profile, loaded, released, studiedRows] = await Promise.all([
     getProfile(pid),
     loadTopic(cid, sid, tid),
+    isTopicReleased(pid, sid, tid),
     listStudied(pid, { subjectId: sid }).catch(() => []),
   ]);
   if (!profile || !loaded) return notFoundView();
 
   const t = texts(subject.lang);
   const { topic, study, exercises } = loaded;
+  if (!released) return lockedView({ t, subject, profile, topic, back: paths.subject(pid, cid, sid, 'study') });
 
   return h(
     'main',
