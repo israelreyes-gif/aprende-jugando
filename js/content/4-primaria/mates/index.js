@@ -9,4 +9,5 @@ export const topics = [
   { id: 'cajitas', title: 'Cajitas multiplicativas', minutes: 5, load: () => import('./cajitas/index.js') },
   { id: 'relacionar', title: 'Relacionar multiplicaciones', minutes: 5, load: () => import('./relacionar/index.js') },
   { id: 'vocabulario', title: 'Vocabulario geométrico', minutes: 8, load: () => import('./vocabulario/index.js') },
+  { id: 'simetria', title: 'Triángulos y simetría', minutes: 7, load: () => import('./simetria/index.js') },
 ];
