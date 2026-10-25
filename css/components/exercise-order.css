@@ -1,0 +1,16 @@
+/* Ordenar tocando (tipo order) */
+.order { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.order__item {
+  position: relative; appearance: none; min-height: 60px; padding: 10px 8px;
+  border-radius: var(--radius); border: 2px solid var(--line); background: var(--surface); color: var(--ink);
+  font-family: var(--font-display); font-weight: 500; font-size: 20px;
+}
+.order__item[aria-pressed="true"] { border-color: var(--primary); background: var(--soft); }
+.order__item--correct { border-color: var(--ok); background: var(--ok-bg); color: #123D29; }
+.order__item--wrong { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+.order__badge {
+  position: absolute; top: -9px; left: -9px; width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--primary); color: var(--primary-ink);
+  font-family: var(--font-body); font-weight: 800; font-size: 14px;
+}
+.order__badge[hidden] { display: none; }
