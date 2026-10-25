@@ -6,4 +6,5 @@ export const topics = [
   { id: 'redondear', title: 'Redondear y estimar', minutes: 5, load: () => import('./redondear/index.js') },
   { id: 'tablas', title: 'Tablas de multiplicar', minutes: 5, load: () => import('./tablas/index.js') },
   { id: 'descomponer', title: 'Multiplicar descomponiendo', minutes: 6, load: () => import('./descomponer/index.js') },
+  { id: 'cajitas', title: 'Cajitas multiplicativas', minutes: 5, load: () => import('./cajitas/index.js') },
 ];
