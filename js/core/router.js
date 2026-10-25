@@ -1,4 +1,5 @@
-import { loadingView, errorView } from '../shared/states.js';
+import { loadingView } from '../shared/loading-view.js';
+import { errorView } from '../shared/error-view.js';
 import { compile, findRoute } from './route-match.js';
 
 const routes = [];
