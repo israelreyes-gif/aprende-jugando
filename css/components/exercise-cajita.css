@@ -1,0 +1,6 @@
+/* Cajita multiplicativa (Matemáticas) */
+.cajita { width: 150px; border: 3px solid var(--primary); border-radius: 14px; overflow: hidden; text-align: center; font-family: var(--font-display); }
+.cajita__top { background: var(--soft); padding: 4px; font-size: 24px; }
+.cajita__bottom { display: grid; grid-template-columns: 1fr 1fr; border-top: 3px solid var(--primary); }
+.cajita__bottom span { padding: 4px; font-size: 22px; }
+.cajita__bottom span + span { border-left: 3px solid var(--primary); }
