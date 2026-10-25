@@ -8,4 +8,5 @@ export const topics = [
   { id: 'descomponer', title: 'Multiplicar descomponiendo', minutes: 6, load: () => import('./descomponer/index.js') },
   { id: 'cajitas', title: 'Cajitas multiplicativas', minutes: 5, load: () => import('./cajitas/index.js') },
   { id: 'relacionar', title: 'Relacionar multiplicaciones', minutes: 5, load: () => import('./relacionar/index.js') },
+  { id: 'vocabulario', title: 'Vocabulario geométrico', minutes: 8, load: () => import('./vocabulario/index.js') },
 ];
