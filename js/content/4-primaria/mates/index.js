@@ -4,6 +4,7 @@
 export const topics = [
   { id: 'numeros', title: 'Números hasta 6 cifras', minutes: 6, load: () => import('./numeros/index.js') },
   { id: 'romanos', title: 'Números romanos', minutes: 5, load: () => import('./romanos/index.js') },
+  { id: 'pares', title: 'Pares e impares', minutes: 4, load: () => import('./pares/index.js') },
   { id: 'redondear', title: 'Redondear y estimar', minutes: 5, load: () => import('./redondear/index.js') },
   { id: 'tablas', title: 'Tablas de multiplicar', minutes: 5, load: () => import('./tablas/index.js') },
   { id: 'descomponer', title: 'Multiplicar descomponiendo', minutes: 6, load: () => import('./descomponer/index.js') },
