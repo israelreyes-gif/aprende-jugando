@@ -1,0 +1,16 @@
+/* Fichas de palabras (tipo words) */
+.words { display: flex; flex-direction: column; gap: 16px; }
+.word-line {
+  min-height: 60px; padding: 8px; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  border-radius: var(--radius); border: 2px dashed var(--line); background: var(--surface);
+}
+.word-line--correct { border-style: solid; border-color: var(--ok); background: var(--ok-bg); }
+.word-line--wrong { border-style: solid; border-color: var(--bad); background: var(--bad-bg); }
+.word-pool { display: flex; flex-wrap: wrap; gap: 8px; }
+.word {
+  appearance: none; min-height: var(--touch); padding: 6px 14px; border-radius: 99px;
+  border: 2px solid var(--line); background: var(--surface); color: var(--ink);
+  font-weight: 800; font-size: 17px;
+}
+.word--in { border-color: var(--primary); background: var(--soft); color: var(--primary); }
+.word--used { opacity: 0.3; }
