@@ -1,4 +1,5 @@
 import { h } from '../../core/dom.js';
+import { visualNode } from '../../exercises/visual.js';
 import { feedbackBox } from './feedback-box.js';
 import { progressMeter } from './progress-meter.js';
 import { questionTypes } from './question-types.js';
@@ -42,7 +43,7 @@ export function questionView({ q, index, total, t, onChecked, onContinue }) {
 
   const nodes = [
     progressMeter({ index, total, t }),
-    h('div', { class: 'stack', style: { '--gap': '16px' } }, h('p', { class: 'question__prompt' }, q.prompt), widget.el),
+    h('div', { class: 'stack', style: { '--gap': '16px' } }, h('p', { class: 'question__prompt' }, q.prompt), q.visual ? visualNode(q.visual) : null, widget.el),
     feedback,
     action,
   ];
