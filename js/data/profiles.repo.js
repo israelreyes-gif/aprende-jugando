@@ -15,6 +15,11 @@ export async function createProfile({ name, color }) {
   return profile;
 }
 
+/** Cambia el nombre y el color de un perfil. */
+export async function updateProfile(id, { name, color }) {
+  await api.update('profiles', { id }, { name: name.trim(), avatar_color: color });
+}
+
 /** Borra el perfil y, en cascada, todo su progreso. */
 export function deleteProfile(id) {
   return api.remove('profiles', { id });
