@@ -1,10 +1,10 @@
 import { h } from '../../core/dom.js';
 import { reload } from '../../core/router.js';
 import { paths } from '../../core/paths.js';
-import { shuffle } from '../../core/random.js';
 import { getCourse, getSubject, loadTopic } from '../../content/registry.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { savePractice } from '../../data/practice.repo.js';
+import { buildSession } from '../../exercises/session.js';
 import { appHeader } from '../../shared/app-header.js';
 import { texts } from '../../shared/i18n.js';
 import { notFoundView } from '../../shared/not-found-view.js';
@@ -37,7 +37,7 @@ export async function practiceScreen({ pid, cid, sid, tid }) {
     return view;
   }
 
-  const questions = shuffle(exercises);
+  const questions = buildSession(exercises);
   const results = [];
   const startedAt = Date.now();
   let index = 0;
