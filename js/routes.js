@@ -7,6 +7,7 @@ import { profilesScreen } from './features/profiles/profiles.screen.js';
 import { newProfileScreen } from './features/profiles/new-profile.screen.js';
 import { parentsScreen, changePinScreen } from './features/parents/parents.screen.js';
 import { childStatsScreen } from './features/parents/child-stats.screen.js';
+import { editProfileScreen } from './features/parents/edit-profile.screen.js';
 import { releaseSubjectsScreen } from './features/parents/release/release-subjects.screen.js';
 import { releaseTopicsScreen } from './features/parents/release/release-topics.screen.js';
 import { coursesScreen } from './features/courses/courses.screen.js';
@@ -23,6 +24,7 @@ export function registerRoutes() {
   route('/parents', parentsScreen);
   route('/parents/pin', changePinScreen);
   route('/parents/:pid', childStatsScreen);
+  route('/parents/:pid/edit', editProfileScreen);
   route('/parents/:pid/release/:cid', releaseSubjectsScreen);
   route('/parents/:pid/release/:cid/:sid', releaseTopicsScreen);
 
