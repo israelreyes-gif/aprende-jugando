@@ -1,9 +1,10 @@
 import { h } from '../../core/dom.js';
 import { paths } from '../../core/paths.js';
-import { SUBJECTS } from '../../content/registry.js';
+import { COURSES, SUBJECTS } from '../../content/registry.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { listSessions } from '../../data/practice.repo.js';
 import { appHeader } from '../../shared/app-header.js';
+import { icon } from '../../shared/icons.js';
 import { notFoundView } from '../../shared/not-found-view.js';
 import { deleteProfileButton } from './child-stats/delete-profile-button.js';
 import { reinforceCards } from './child-stats/reinforce-cards.js';
@@ -20,6 +21,11 @@ async function renderChildStats({ pid }) {
   const stats = computeStats(sessions, SUBJECTS.map((s) => s.id));
   const topicTitles = await loadTopicTitles(stats.reinforce);
 
+  const course = COURSES.find((c) => c.available);
+  const releaseLink = course
+    ? h('a', { class: 'btn btn--outline btn--block', href: paths.release(pid, course.id) }, icon('lock', 22), 'Liberar temas')
+    : null;
+
   const body = stats.hasData
     ? [
         summaryChips(stats.summary),
@@ -32,7 +38,7 @@ async function renderChildStats({ pid }) {
     'main',
     { class: 'screen' },
     appHeader({ title: profile.name, sub: 'Estadísticas', back: paths.parents(), profile }),
-    h('div', { class: 'screen__body' }, ...body, h('div', { class: 'spacer' }), deleteProfileButton(profile)),
+    h('div', { class: 'screen__body' }, releaseLink, ...body, h('div', { class: 'spacer' }), deleteProfileButton(profile)),
   );
 }
 
