@@ -1,0 +1,5 @@
+/* Cuadrado de 4 casillas rojas y verdes (Matemáticas) */
+.mini-board { width: 150px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-family: var(--font-display); text-align: center; }
+.mini-board span { padding: 8px 0; border-radius: 8px; font-size: 20px; }
+.mini-board__r { background: var(--bad-bg); color: var(--bad); }
+.mini-board__g { background: var(--ok-bg); color: var(--ok); }
