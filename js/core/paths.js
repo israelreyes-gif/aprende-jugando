@@ -8,10 +8,10 @@ export const paths = {
   parents: () => '#/parents',
   parentsPin: () => '#/parents/pin',
   childStats: (pid) => `#/parents/${pid}`,
-  editProfile: (pid) => `#/parents/${pid}/edit`,
   release: (pid, cid) => `#/parents/${pid}/release/${cid}`,
   releaseSubject: (pid, cid, sid) => `#/parents/${pid}/release/${cid}/${sid}`,
 
+  editProfile: (pid) => `#/p/${pid}/edit`,
   courses: (pid) => `#/p/${pid}`,
   course: (pid, cid) => `#/p/${pid}/c/${cid}`,
   subject: (pid, cid, sid, tab = 'study') => `#/p/${pid}/c/${cid}/s/${sid}/${tab}`,
