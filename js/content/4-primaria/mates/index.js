@@ -12,6 +12,7 @@ export const topics = [
   { id: 'relacionar', title: 'Relacionar multiplicaciones', minutes: 5, load: () => import('./relacionar/index.js') },
   { id: 'repartir', title: 'Repartir y hacer grupos', minutes: 5, load: () => import('./repartir/index.js') },
   { id: 'division', title: 'División con resto', minutes: 6, load: () => import('./division/index.js') },
+  { id: 'problemas', title: 'Problemas con operaciones', minutes: 6, load: () => import('./problemas/index.js') },
   { id: 'vocabulario', title: 'Vocabulario geométrico', minutes: 8, load: () => import('./vocabulario/index.js') },
   { id: 'simetria', title: 'Triángulos y simetría', minutes: 7, load: () => import('./simetria/index.js') },
 ];
