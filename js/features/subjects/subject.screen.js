@@ -3,6 +3,7 @@ import { paths } from '../../core/paths.js';
 import { getCourse, getSubject, loadTopics } from '../../content/registry.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { listSessions } from '../../data/practice.repo.js';
+import { listReleased } from '../../data/release.repo.js';
 import { listStudied } from '../../data/study.repo.js';
 import { appHeader } from '../../shared/app-header.js';
 import { texts } from '../../shared/i18n.js';
@@ -17,16 +18,17 @@ export async function subjectScreen({ pid, cid, sid, tab }) {
   const subject = getSubject(sid);
   if (!course || !subject) return notFoundView();
 
-  const [profile, topics, studiedRows, sessions] = await Promise.all([
+  const [profile, topics, releasedRows, studiedRows, sessions] = await Promise.all([
     getProfile(pid),
     loadTopics(cid, sid),
+    listReleased(pid, { subjectId: sid }),
     listStudied(pid, { subjectId: sid }).catch(() => []),
     listSessions(pid, { subjectId: sid }).catch(() => []),
   ]);
   if (!profile) return notFoundView();
 
   const t = texts(subject.lang);
-  const progress = buildProgress(topics, studiedRows, sessions);
+  const progress = buildProgress(topics, studiedRows, sessions, releasedRows);
 
   const tabLink = (id, label) =>
     h('a', { class: 'tabs__tab', href: paths.subject(pid, cid, sid, id), 'aria-current': activeTab === id ? 'page' : null }, label);
