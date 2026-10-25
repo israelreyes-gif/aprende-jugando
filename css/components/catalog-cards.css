@@ -4,6 +4,15 @@
   padding: 20px 12px; border-radius: var(--radius-lg);
 }
 .profile-card__name { font-family: var(--font-display); font-weight: 500; font-size: 20px; overflow-wrap: anywhere; text-align: center; }
+
+/* Tarjeta de perfil con el lápiz de editar en la esquina */
+.profile-item { position: relative; display: flex; }
+.profile-item .profile-card { flex: 1; min-width: 0; }
+.profile-edit {
+  position: absolute; top: 8px; right: 8px; width: 40px; height: 40px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--soft); color: var(--primary);
+}
+
 .profile-card--add { border: 2px dashed var(--primary); background: var(--soft); color: var(--primary); }
 .profile-card--add .avatar { background: #FFFFFF; color: var(--primary); }
 
