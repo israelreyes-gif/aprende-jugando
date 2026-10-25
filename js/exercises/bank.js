@@ -9,6 +9,7 @@ const isOptions = (x) => x && typeof x === 'object' && !Array.isArray(x);
  *   ['¿Cuántos lados tiene un pentágono?', 5]                     -> escribir un número
  *   ['Un triángulo con 3 lados iguales es…', 'equilátero', 'isósceles', 'escaleno']  -> elegir (la correcta va primero)
  * Al final de la fila se puede añadir { explain, visual } con la explicación o un dibujo.
+ * Si no hay explicación, se muestra «La respuesta es …».
  */
 export function bankQuestions(rows, prefix = 'b') {
   return rows.map((row, i) => {
@@ -18,7 +19,7 @@ export function bankQuestions(rows, prefix = 'b') {
     const [prompt, right, ...wrongs] = items;
     const id = `${prefix}${i + 1}`;
     return typeof right === 'number'
-      ? { id, ...numberQ(prompt, right, explain, extra) }
-      : { id, ...choiceQ(prompt, right, wrongs, explain, extra) };
+      ? { id, ...numberQ(prompt, right, explain ?? `La respuesta es ${right}.`, extra) }
+      : { id, ...choiceQ(prompt, right, wrongs, explain ?? `La respuesta correcta es «${right}».`, extra) };
   });
 }
