@@ -2,6 +2,9 @@
 
 html { -webkit-text-size-adjust: 100%; }
 
+/* Sin zoom con dos dedos ni doble toque, y sin rebote al llegar al final del scroll */
+html, body { touch-action: pan-x pan-y; overscroll-behavior: none; }
+
 body {
   margin: 0;
   background: var(--bg);
