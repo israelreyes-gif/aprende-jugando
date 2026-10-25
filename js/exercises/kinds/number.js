@@ -1,5 +1,5 @@
-import { fmt } from '../../shared/number-format.js';
 import { toNum } from '../../shared/answer-parse.js';
+import { numberLabel } from './number-label.js';
 import { textInputRender } from './text-input.js';
 
 // Pregunta numérica: { id, type: 'number', prompt, answer: 56, explain, thousands?: true }
@@ -14,6 +14,6 @@ export const number = {
     },
   }),
   check: (q, value) => typeof value === 'number' && Math.abs(value - q.answer) < 1e-9,
-  answerText: (q) => (q.thousands ? fmt(q.answer) : String(q.answer).replace('.', ',')),
+  answerText: (q) => numberLabel(q.answer, q.thousands),
   givenText: (q, value) => (value == null ? '' : String(value)),
 };
