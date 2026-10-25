@@ -11,12 +11,12 @@ function topicMeta(tab, topic, t, progress) {
     return h('span', { class: 'topic-card__meta' }, studied ? [icon('check', 16), t.studied] : t.minutes(topic.minutes ?? 5));
   }
   const best = progress.best.get(topic.id);
-  return h('span', { class: 'topic-card__meta' }, best ? [icon('check', 16), t.best(best.correct, best.total)] : t.untried);
+  return h('span', { class: 'topic-card__meta' }, best ? t.best(best.correct, best.total) : t.untried);
 }
 
-/** El tema ya está hecho: estudiado (pestaña Estudio) o con alguna sesión (pestaña Ejercicios). */
+/** Solo la pestaña Estudio marca el tema como hecho (verde). Ejercicios no cambia de color. */
 function isDone(tab, topic, progress) {
-  return tab === 'study' ? progress.studied.has(topic.id) : progress.best.has(topic.id);
+  return tab === 'study' && progress.studied.has(topic.id);
 }
 
 function topicBadge(state, index) {
