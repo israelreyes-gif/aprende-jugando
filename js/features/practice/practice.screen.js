@@ -5,8 +5,10 @@ import { getCourse, getSubject, loadTopic } from '../../content/registry.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { savePractice } from '../../data/practice.repo.js';
 import { buildSession } from '../../exercises/session.js';
+import { isTopicReleased } from '../subjects/topic-access.js';
 import { appHeader } from '../../shared/app-header.js';
 import { texts } from '../../shared/i18n.js';
+import { lockedView } from '../../shared/locked-view.js';
 import { notFoundView } from '../../shared/not-found-view.js';
 import { questionView } from './question-view.js';
 import { resultView } from './result-view.js';
@@ -17,12 +19,13 @@ export async function practiceScreen({ pid, cid, sid, tid }) {
   const subject = getSubject(sid);
   if (!course || !subject) return notFoundView();
 
-  const [profile, loaded] = await Promise.all([getProfile(pid), loadTopic(cid, sid, tid)]);
+  const [profile, loaded, released] = await Promise.all([getProfile(pid), loadTopic(cid, sid, tid), isTopicReleased(pid, sid, tid)]);
   if (!profile || !loaded) return notFoundView();
 
   const t = texts(subject.lang);
   const { topic, exercises } = loaded;
   const topicsHref = paths.subject(pid, cid, sid, 'practice');
+  if (!released) return lockedView({ t, subject, profile, topic, back: topicsHref });
 
   const body = h('div', { class: 'screen__body practice', lang: subject.lang });
   const view = h(
