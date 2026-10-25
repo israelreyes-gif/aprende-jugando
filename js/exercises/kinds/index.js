@@ -6,7 +6,12 @@
 //   answerText(question) -> texto de la respuesta correcta
 //   givenText(question, value) -> texto de lo que respondió el niño
 import { choice } from './choice.js';
+import { multi } from './multi.js';
 import { number } from './number.js';
+import { order } from './order.js';
+import { rule } from './rule.js';
+import { tap } from './tap.js';
 import { text } from './text.js';
+import { words } from './words.js';
 
-export const questionTypes = { choice, number, text };
+export const questionTypes = { choice, number, text, multi, rule, words, order, tap };
