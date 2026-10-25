@@ -26,6 +26,8 @@ async function renderChildStats({ pid }) {
     ? h('a', { class: 'btn btn--outline btn--block', href: paths.release(pid, course.id) }, icon('lock', 22), 'Liberar temas')
     : null;
 
+  const editLink = h('a', { class: 'btn btn--outline btn--block', href: paths.editProfile(pid) }, icon('edit', 22), 'Editar perfil');
+
   const body = stats.hasData
     ? [
         summaryChips(stats.summary),
@@ -38,7 +40,7 @@ async function renderChildStats({ pid }) {
     'main',
     { class: 'screen' },
     appHeader({ title: profile.name, sub: 'Estadísticas', back: paths.parents(), profile }),
-    h('div', { class: 'screen__body' }, releaseLink, ...body, h('div', { class: 'spacer' }), deleteProfileButton(profile)),
+    h('div', { class: 'screen__body' }, releaseLink, editLink, ...body, h('div', { class: 'spacer' }), deleteProfileButton(profile)),
   );
 }
 
