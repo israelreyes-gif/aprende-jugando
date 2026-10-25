@@ -1,0 +1,2 @@
+/* Varios campos de respuesta (tipos multi y rule) */
+.fields { display: flex; flex-direction: column; gap: 14px; }
