@@ -1,10 +1,12 @@
 // Estrategias de caché.
 
-// Red primero y, si no hay conexión, la copia guardada (para los archivos de la app).
+// Pregunta siempre al servidor si el archivo ha cambiado (cache: 'no-cache'):
+// si no ha cambiado el servidor responde "sin cambios" y se usa la copia, y si ha cambiado
+// se descarga la nueva. Sin conexión, se usa la copia guardada.
 async function networkFirst(request) {
   const cache = await caches.open(CACHE);
   try {
-    const response = await fetch(request);
+    const response = await fetch(request, { cache: 'no-cache' });
     if (response.ok) cache.put(request, response.clone());
     return response;
   } catch {
