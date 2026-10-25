@@ -1,0 +1,12 @@
+/* Tocar figuras (tipo tap) */
+.tap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tap-item {
+  appearance: none; padding: 8px; border-radius: var(--radius);
+  border: 2px solid var(--line); background: var(--surface);
+}
+.tap-item[aria-pressed="true"] { border-color: var(--primary); background: var(--soft); }
+.tap-item--correct { border-color: var(--ok); background: var(--ok-bg); }
+.tap-item--wrong { border-color: var(--bad); background: var(--bad-bg); }
+.tap-item--missed { border-style: dashed; border-color: var(--ok); }
+.tap-item .visual { display: block; }
+.tap-item svg { display: block; width: 100%; height: auto; }
