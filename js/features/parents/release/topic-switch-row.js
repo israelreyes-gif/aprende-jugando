@@ -1,0 +1,32 @@
+import { h } from '../../../core/dom.js';
+import { setReleased } from '../../../data/release.repo.js';
+import { toast } from '../../../shared/toast.js';
+import { switchButton } from './switch.js';
+
+/** Fila de un tema con su interruptor "Disponible". onCount(delta) avisa del cambio al contador. */
+export function topicSwitchRow({ profile, course, subject, topic, released, onCount }) {
+  const hasContent = topic.available;
+  const key = { profileId: profile.id, courseId: course.id, subjectId: subject.id, topicId: topic.id };
+
+  const toggle = switchButton({
+    checked: released && hasContent,
+    disabled: !hasContent,
+    label: `${topic.title}: disponible`,
+    onChange: async (value) => {
+      try {
+        await setReleased(key, value);
+        onCount(value ? 1 : -1);
+      } catch (err) {
+        toast('No se pudo guardar. Revisa la conexión.');
+        throw err;
+      }
+    },
+  });
+
+  return h(
+    'div',
+    { class: 'switch-row' },
+    h('span', { class: 'switch-row__text' }, h('span', { class: 'switch-row__title' }, topic.title), h('span', { class: 'switch-row__meta' }, hasContent ? 'Disponible para estudiar y practicar' : 'Aún sin contenido')),
+    toggle,
+  );
+}
