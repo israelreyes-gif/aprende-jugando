@@ -8,6 +8,8 @@ export const paths = {
   parents: () => '#/parents',
   parentsPin: () => '#/parents/pin',
   childStats: (pid) => `#/parents/${pid}`,
+  release: (pid, cid) => `#/parents/${pid}/release/${cid}`,
+  releaseSubject: (pid, cid, sid) => `#/parents/${pid}/release/${cid}/${sid}`,
 
   courses: (pid) => `#/p/${pid}`,
   course: (pid, cid) => `#/p/${pid}/c/${cid}`,
