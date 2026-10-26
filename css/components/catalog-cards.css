@@ -25,7 +25,7 @@
 .course-card__status { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 14px; }
 .course-card--locked { background: var(--soft); color: var(--muted); border-color: var(--line); }
 
-/* Tema: tres estados. Disponible (por defecto), estudiado y no disponible. */
+/* Tema: disponible (por defecto), estudiado, refuerzo (rojo / naranja) y no disponible. */
 .topic-card {
   appearance: none; min-height: 148px; padding: 16px; flex-direction: column; justify-content: space-between;
   align-items: flex-start; gap: 12px; text-align: left;
@@ -43,6 +43,14 @@
 .topic-card--done { background: var(--ok-bg); border-color: var(--ok); }
 .topic-card--done .topic-card__num { background: var(--ok); color: #FFFFFF; }
 .topic-card--done .topic-card__meta { color: var(--ok); }
+
+.topic-card--red { background: #FDE3E1; border-color: #A8231B; }
+.topic-card--red .topic-card__num { background: #A8231B; color: #FFFFFF; }
+.topic-card--red .topic-card__meta { color: #A8231B; }
+
+.topic-card--orange { background: #FFE8D1; border-color: #E8730C; }
+.topic-card--orange .topic-card__num { background: #E8730C; color: #FFFFFF; }
+.topic-card--orange .topic-card__meta { color: #8A3E00; }
 
 .topic-card--locked { background: #EEEDF3; border: 2px dashed #B9B5CF; color: #77738F; }
 .topic-card--locked .topic-card__num { background: #DEDCE9; color: #8A86A3; }
