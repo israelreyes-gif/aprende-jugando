@@ -36,5 +36,7 @@ export const es = {
   savedLater: 'Sin conexión: se guardará cuando vuelva internet',
   saveFailed: 'No se ha podido guardar el resultado',
   noTopics: 'Todavía no hay temas en esta asignatura.',
+  gotIt: 'Entendido',
+  tryAgain: 'Inténtalo de nuevo.',
   noExercises: 'Este tema todavía no tiene ejercicios.',
 };
