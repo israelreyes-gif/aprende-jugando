@@ -4,10 +4,11 @@ import { uuid } from '../core/ids.js';
 /**
  * Guarda una sesión de ejercicios con todas sus respuestas.
  * results: [{ questionId, correct, given }]
+ * kind: 'practice' (ejercicios de un tema) o 'reto' (las preguntas de un tema dentro del reto diario).
+ * sessionId: si se da, guardar dos veces la misma sesión no la duplica (lo usa el reto).
  * Devuelve { queued } (true si se guardó solo en el dispositivo por falta de conexión).
  */
-export async function savePractice({ profileId, courseId, subjectId, topicId, results, durationS }) {
-  const sessionId = uuid();
+export async function savePractice({ profileId, courseId, subjectId, topicId, results, durationS, kind = 'practice', sessionId = uuid() }) {
   const correct = results.filter((r) => r.correct).length;
 
   const session = {
@@ -20,10 +21,11 @@ export async function savePractice({ profileId, courseId, subjectId, topicId, re
     correct,
     duration_s: Math.max(0, Math.round(durationS)),
     finished_at: new Date().toISOString(),
+    kind,
   };
 
-  const answers = results.map((r) => ({
-    id: uuid(),
+  const answers = results.map((r, i) => ({
+    id: `${sessionId}:${i}`,
     session_id: sessionId,
     question_id: `${topicId}:${r.questionId}`,
     is_correct: r.correct ? 1 : 0,
