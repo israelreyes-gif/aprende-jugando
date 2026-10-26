@@ -14,9 +14,15 @@ function topicMeta(tab, topic, t, progress) {
   return h('span', { class: 'topic-card__meta' }, best ? t.best(best.correct, best.total) : t.untried);
 }
 
-/** Solo la pestaña Estudio marca el tema como hecho (verde). Ejercicios no cambia de color. */
-function isDone(tab, topic, progress) {
-  return tab === 'study' && progress.studied.has(topic.id);
+/**
+ * Estado visual de la tarjeta:
+ * locked (sin contenido o sin liberar), done (estudiado, solo en Estudio),
+ * red / orange (necesita refuerzo, solo en Ejercicios) u open.
+ */
+function cardState(tab, topic, progress) {
+  if (!topic.available || !progress.released.has(topic.id)) return 'locked';
+  if (tab === 'study') return progress.studied.has(topic.id) ? 'done' : 'open';
+  return progress.level.get(topic.id) || 'open';
 }
 
 function topicBadge(state, index) {
@@ -28,15 +34,14 @@ function topicBadge(state, index) {
 /** Tarjeta de un tema: enlace a Estudio o Ejercicios; con aviso si aún no tiene contenido o no está liberado. */
 export function topicCard({ profile, course, subject, tab, topic, index, t, progress }) {
   const style = { '--tint': subject.tint, '--deep': subject.deep };
-  const isLocked = !topic.available || !progress.released.has(topic.id);
-  const state = isLocked ? 'locked' : isDone(tab, topic, progress) ? 'done' : 'open';
+  const state = cardState(tab, topic, progress);
 
   const content = [
     topicBadge(state, index),
     h('span', { class: 'stack', style: { '--gap': '4px' } }, h('span', { class: 'topic-card__title' }, topic.title), topicMeta(tab, topic, t, progress)),
   ];
 
-  if (isLocked) {
+  if (state === 'locked') {
     const message = topic.available ? t.unavailableToast : t.soonToast;
     return h('button', { class: 'card topic-card topic-card--locked', type: 'button', style, 'aria-disabled': 'true', onClick: () => toast(message) }, ...content);
   }
