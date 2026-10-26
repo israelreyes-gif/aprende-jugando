@@ -1,6 +1,6 @@
 import { h } from '../../../core/dom.js';
 import { setReleased } from '../../../data/release.repo.js';
-import { toast } from '../../../shared/toast.js';
+import { notify } from '../../../shared/modal.js';
 import { switchButton } from './switch.js';
 
 /** Fila de un tema con su interruptor "Disponible". onCount(delta) avisa del cambio al contador. */
@@ -17,7 +17,7 @@ export function topicSwitchRow({ profile, course, subject, topic, released, onCo
         await setReleased(key, value);
         onCount(value ? 1 : -1);
       } catch (err) {
-        toast('No se pudo guardar. Revisa la conexión.');
+        notify({ kind: 'error', title: 'No se pudo guardar', message: 'Revisa la conexión e inténtalo de nuevo.' });
         throw err;
       }
     },
