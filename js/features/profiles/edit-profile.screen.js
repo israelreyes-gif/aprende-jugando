@@ -4,7 +4,7 @@ import { paths } from '../../core/paths.js';
 import { getProfile, updateProfile } from '../../data/profiles.repo.js';
 import { appHeader } from '../../shared/app-header.js';
 import { notFoundView } from '../../shared/not-found-view.js';
-import { toast } from '../../shared/toast.js';
+import { notify } from '../../shared/modal.js';
 import { profileForm } from './profile-form.js';
 
 /** Pantalla para cambiar el nombre y el color de un perfil. */
@@ -18,7 +18,7 @@ export async function editProfileScreen({ pid }) {
     errorText: 'No se han podido guardar los cambios. Inténtalo de nuevo.',
     onSave: async ({ name, color }) => {
       await updateProfile(pid, { name, color });
-      toast('Perfil actualizado');
+      await notify({ kind: 'success', title: 'Perfil actualizado', message: `Los cambios de ${name.trim()} se han guardado.` });
       go(paths.home());
     },
   });
