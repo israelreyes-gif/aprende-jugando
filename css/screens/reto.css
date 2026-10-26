@@ -1,0 +1,22 @@
+/* Reto diario: tarjeta, racha y resultado */
+.reto-card {
+  display: flex; flex-direction: column; gap: 14px; padding: 16px; border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--primary), #6B5CF0); color: #FFFFFF; box-shadow: 0 6px 16px rgba(75, 63, 209, 0.3);
+}
+.reto-card__head { display: flex; align-items: center; gap: 12px; }
+.reto-card__icon { width: 50px; height: 50px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); display: grid; place-items: center; flex: none; }
+.reto-card__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.reto-card__title { font-family: var(--font-display); font-weight: 500; font-size: 21px; line-height: 1.2; }
+.reto-card__sub { font-weight: 700; font-size: 14px; opacity: 0.9; }
+.reto-card__cta { text-align: center; background: #FFFFFF; color: var(--primary); font-weight: 800; font-size: 17px; padding: 13px; border-radius: 14px; }
+
+.reto-card--done { flex-direction: row; align-items: center; background: var(--ok-bg); color: var(--ok); border: 2px solid var(--ok); box-shadow: none; }
+.reto-card--done .reto-card__icon { background: var(--ok); color: #FFFFFF; }
+
+.streak { flex: none; display: flex; flex-direction: column; align-items: center; padding: 6px 12px; border-radius: 14px; background: rgba(255, 255, 255, 0.18); }
+.streak b { font-family: var(--font-display); font-weight: 600; font-size: 26px; line-height: 1; }
+.streak span { font-size: 12px; font-weight: 800; }
+.reto-card--done .streak { background: #FFFFFF; }
+
+.reto-streak { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.reto-streak .streak { background: var(--soft); color: var(--primary); }
