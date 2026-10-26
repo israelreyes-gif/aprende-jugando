@@ -1,7 +1,7 @@
 import { h } from '../../core/dom.js';
 import { paths } from '../../core/paths.js';
 import { icon } from '../../shared/icons.js';
-import { toast } from '../../shared/toast.js';
+import { notify } from '../../shared/modal.js';
 
 function topicMeta(tab, topic, t, progress) {
   if (!topic.available) return h('span', { class: 'topic-card__meta' }, t.soon);
@@ -42,8 +42,11 @@ export function topicCard({ profile, course, subject, tab, topic, index, t, prog
   ];
 
   if (state === 'locked') {
-    const message = topic.available ? t.unavailableToast : t.soonToast;
-    return h('button', { class: 'card topic-card topic-card--locked', type: 'button', style, 'aria-disabled': 'true', onClick: () => toast(message) }, ...content);
+    const notice = topic.available
+      ? { title: t.unavailableTitle, message: t.unavailableText }
+      : { title: t.soon, message: t.soonToast };
+    const onClick = () => notify({ kind: 'info', ...notice, button: t.gotIt });
+    return h('button', { class: 'card topic-card topic-card--locked', type: 'button', style, 'aria-disabled': 'true', onClick }, ...content);
   }
 
   const href = tab === 'study' ? paths.study(profile.id, course.id, subject.id, topic.id) : paths.practice(profile.id, course.id, subject.id, topic.id);
