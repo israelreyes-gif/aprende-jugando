@@ -15,6 +15,7 @@ export const paths = {
   editProfile: (pid) => `#/p/${pid}/edit`,
   courses: (pid) => `#/p/${pid}`,
   course: (pid, cid) => `#/p/${pid}/c/${cid}`,
+  reto: (pid, cid) => `#/p/${pid}/c/${cid}/reto`,
   subject: (pid, cid, sid, tab = 'study') => `#/p/${pid}/c/${cid}/s/${sid}/${tab}`,
   study: (pid, cid, sid, tid) => `#/p/${pid}/c/${cid}/s/${sid}/study/${tid}`,
   practice: (pid, cid, sid, tid) => `#/p/${pid}/c/${cid}/s/${sid}/practice/${tid}`,
