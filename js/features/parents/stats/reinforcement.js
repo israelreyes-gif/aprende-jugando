@@ -1,5 +1,5 @@
-import { pctOf, sum } from './math.js';
-import { REINFORCE_BELOW, REINFORCE_LAST_ATTEMPTS } from './thresholds.js';
+import { recentPct } from './recent-pct.js';
+import { REINFORCE_BELOW } from './thresholds.js';
 
 /** Temas cuyos últimos intentos están por debajo del umbral, de peor a mejor. */
 export function findReinforcement(sessions) {
@@ -12,13 +12,9 @@ export function findReinforcement(sessions) {
 
   const result = [];
   for (const group of groups.values()) {
-    const latest = group
-      .slice()
-      .sort((a, b) => new Date(b.finished_at) - new Date(a.finished_at))
-      .slice(0, REINFORCE_LAST_ATTEMPTS);
-    const pct = pctOf(sum(latest, 'correct'), sum(latest, 'total'));
+    const pct = recentPct(group);
     if (pct !== null && pct < REINFORCE_BELOW) {
-      const { course_id: courseId, subject_id: subjectId, topic_id: topicId } = latest[0];
+      const { course_id: courseId, subject_id: subjectId, topic_id: topicId } = group[0];
       result.push({ courseId, subjectId, topicId, pct });
     }
   }
