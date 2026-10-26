@@ -1,7 +1,7 @@
 import { h } from '../../core/dom.js';
 import { paths } from '../../core/paths.js';
 import { icon } from '../../shared/icons.js';
-import { toast } from '../../shared/toast.js';
+import { notify } from '../../shared/modal.js';
 
 /** Tarjeta de un curso: abierta (enlace) o bloqueada (aviso). */
 export function courseCard(profile, course) {
@@ -17,7 +17,7 @@ export function courseCard(profile, course) {
     'button',
     {
       class: 'card course-card course-card--locked', type: 'button', 'aria-disabled': 'true', 'aria-label': `${course.title}, bloqueado`,
-      onClick: () => toast(`El ${course.label} se abrirá más adelante`),
+      onClick: () => notify({ title: 'Próximamente', message: `El ${course.label} se abrirá más adelante.` }),
     },
     h('span', { class: 'course-card__label' }, course.label),
     h('span', { class: 'course-card__status' }, icon('lock', 18), 'Próximamente'),
