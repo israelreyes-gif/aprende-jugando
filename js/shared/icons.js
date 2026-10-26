@@ -10,6 +10,7 @@ const PATHS = {
   close: 'M6 6l12 12M18 6L6 18',
   info: 'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18M12 11v6M12 7.5h.01',
   alert: 'M12 4l9 16H3zM12 10v4M12 17h.01',
+  flame: 'M12 3c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z',
   edit: 'M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4',
   trash: 'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3',
   // Asignaturas
