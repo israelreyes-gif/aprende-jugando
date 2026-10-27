@@ -37,7 +37,7 @@ async function renderChildStats({ pid }) {
     ? [
         summaryChips(stats.summary),
         h('section', { class: 'stack' }, h('h2', { class: 'title-lg' }, 'Por asignatura'), ...subjectRows(stats.bySubject)),
-        h('section', { class: 'stack' }, h('h2', { class: 'title-lg' }, 'Necesitan refuerzo'), reinforceCards(profile, stats.reinforce, topicTitles)),
+        h('section', { class: 'stack' }, h('h2', { class: 'title-lg' }, 'Necesitan refuerzo'), reinforceCards(stats.reinforce, topicTitles)),
       ]
     : [h('p', { class: 'note note--empty' }, `${profile.name} aún no tiene actividad. Cuando haga ejercicios, las estadísticas aparecerán aquí.`)];
 
