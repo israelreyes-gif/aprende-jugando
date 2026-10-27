@@ -1,4 +1,4 @@
-/* Interruptor (liberar temas) */
+/* Interruptor (liberar temas, avisos) */
 .switch { appearance: none; flex: none; position: relative; width: 56px; height: 32px; border-radius: 999px; border: 2px solid var(--line); background: var(--soft); cursor: pointer; transition: background .15s, border-color .15s; }
 .switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .15s; }
 .switch[aria-checked="true"] { background: var(--ok); border-color: var(--ok); }
@@ -9,3 +9,4 @@
 .switch-row__title { font-weight: 800; font-size: 16px; }
 .switch-row__meta { font-weight: 700; font-size: 13px; color: var(--muted); }
 a.switch-row { color: var(--ink); }
+.switch-row__icon { flex: none; display: flex; color: var(--primary); }
