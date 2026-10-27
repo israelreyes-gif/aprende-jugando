@@ -14,9 +14,9 @@ function levelTag(entry) {
 }
 
 function practiceLine(entry) {
-  if (entry.attempts === 0) return 'Sin ejercicios todavía';
+  if (entry.attempts === 0) return entry.recentPct == null ? 'Sin ejercicios todavía' : `Solo preguntas del reto · últimas 24: ${entry.recentPct}%`;
   const times = entry.attempts === 1 ? '1 intento' : `${entry.attempts} intentos`;
-  return `${times} · mejor ${entry.best.correct}/${entry.best.total} · últimos 3: ${entry.recentPct}%`;
+  return `${times} · mejor ${entry.best.correct}/${entry.best.total} · últimas 24: ${entry.recentPct}%`;
 }
 
 /** Fila de un tema en el detalle de una asignatura; se tiñe de rojo o naranja si necesita refuerzo. */
