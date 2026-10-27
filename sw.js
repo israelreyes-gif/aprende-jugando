@@ -4,7 +4,8 @@
 //    y, si algo ha cambiado, se avisa a la app (sw/update-check.js).
 //  - Fuentes de Google: copia guardada primero.
 //  - El Worker de datos (otro dominio) NO se toca: la app gestiona su propia cola offline.
-importScripts('./sw/config.js', './sw/update-pending.js', './sw/update-check.js', './sw/messages.js', './sw/strategies.js');
+//  - Avisos push: se muestran y, al tocarlos, se abre la app (sw/push.js y sw/notification-click.js).
+importScripts('./sw/config.js', './sw/update-pending.js', './sw/update-check.js', './sw/messages.js', './sw/strategies.js', './sw/push.js', './sw/notification-click.js');
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting()));
