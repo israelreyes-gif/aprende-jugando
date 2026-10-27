@@ -1,7 +1,7 @@
 import { h } from '../../../core/dom.js';
 import { setReleased } from '../../../data/release.repo.js';
 import { notify } from '../../../shared/modal.js';
-import { switchButton } from './switch.js';
+import { switchButton } from '../../../shared/switch-button.js';
 
 /** Fila de un tema con su interruptor "Disponible". onCount(delta) avisa del cambio al contador. */
 export function topicSwitchRow({ profile, course, subject, topic, released, onCount }) {
