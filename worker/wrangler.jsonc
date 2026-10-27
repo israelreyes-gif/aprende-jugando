@@ -3,7 +3,9 @@
   "main": "worker.js",
   "compatibility_date": "2026-10-01",
   "vars": {
-    "ALLOWED_ORIGIN": "https://israelreyes-gif.github.io"
+    "ALLOWED_ORIGIN": "https://israelreyes-gif.github.io",
+    "VAPID_PUBLIC_KEY": "BHaapmRJeImDdJ2WyIeOl3JXh2VB1U9GWm5STuldUVXsdjrypURUE7lZ31OkHgu6hXDSoImwmzxtG0f2Mq8skGQ",
+    "VAPID_SUBJECT": "https://israelreyes-gif.github.io/aprende-jugando/"
   },
   "d1_databases": [
     { "binding": "DB", "database_name": "aprende-jugando", "database_id": "b8df5046-70ab-415d-a2f0-3eec2b3b70c7" }
