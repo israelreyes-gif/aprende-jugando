@@ -2,3 +2,18 @@
 .screen--home .screen__body { padding-top: 28px; }
 .home__hero { display: flex; flex-direction: column; gap: 8px; }
 .home__parents { margin-top: auto; }
+
+/* Cabecera con la mochila */
+.home__banner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 20px 8px 6px 20px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #6A5CF0, #3A2EB5);
+  color: #fff;
+}
+.home__banner .eyebrow { color: #E4E0FF; }
+.home__banner .title-xl { font-size: 28px; }
+.home__mascot { flex: none; width: 112px; height: 112px; margin-bottom: -2px; }
