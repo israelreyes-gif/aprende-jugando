@@ -6,6 +6,7 @@ import { listSessions } from '../../data/practice.repo.js';
 import { appHeader } from '../../shared/app-header.js';
 import { icon } from '../../shared/icons.js';
 import { notFoundView } from '../../shared/not-found-view.js';
+import { loadStreak } from '../reto/load-streak.js';
 import { deleteProfileButton } from './child-stats/delete-profile-button.js';
 import { reinforceCards } from './child-stats/reinforce-cards.js';
 import { subjectRows } from './child-stats/subject-rows.js';
@@ -17,10 +18,10 @@ import { withParentsGate } from './pin-gate.js';
 import { computeStats } from './stats.logic.js';
 
 async function renderChildStats({ pid }) {
-  const [profile, sessions] = await Promise.all([getProfile(pid), listSessions(pid)]);
+  const [profile, sessions, streak] = await Promise.all([getProfile(pid), listSessions(pid), loadStreak(pid)]);
   if (!profile) return notFoundView();
 
-  const stats = computeStats(sessions, SUBJECTS.map((s) => s.id));
+  const stats = computeStats(sessions, SUBJECTS.map((s) => s.id), streak);
   const topicTitles = await loadTopicTitles(stats.reinforce);
 
   const course = COURSES.find((c) => c.available);
