@@ -2,6 +2,7 @@ import { h } from '../../core/dom.js';
 import { paths } from '../../core/paths.js';
 import { listProfiles } from '../../data/profiles.repo.js';
 import { icon } from '../../shared/icons.js';
+import { homeBanner } from './home-banner.js';
 import { addProfileCard, profileCard } from './profile-cards.js';
 
 /** Primera pantalla: selección de perfil. */
@@ -14,7 +15,7 @@ export async function profilesScreen() {
     h(
       'div',
       { class: 'screen__body' },
-      h('div', { class: 'home__hero' }, h('p', { class: 'eyebrow' }, 'Aprende y juega'), h('h1', { class: 'title-xl' }, '¿Quién va a estudiar hoy?')),
+      homeBanner(),
       h('div', { class: 'grid-2' }, profiles.map(profileCard), addProfileCard()),
       h('a', { class: 'btn btn--outline btn--block home__parents', href: paths.parents() }, icon('lock', 22), 'Zona de padres'),
     ),
