@@ -1,4 +1,4 @@
-// Configuración fija de la app.
+// Configuración fija de la app.a
 // La URL del Worker no es secreta: así no hay que teclearla en cada dispositivo.
 // La CLAVE de API nunca va en este archivo: se escribe una vez en cada dispositivo.
 // La app habla con el Worker a través del proxy de Netlify (evita el bloqueo de LaLiga).
