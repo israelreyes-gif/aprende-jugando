@@ -6,10 +6,12 @@
  * Rutas (cabecera X-Api-Key obligatoria):
  *   GET /api  ·  GET /api/:tabla  ·  GET /api/:tabla/:id
  *   POST /api/:tabla  ·  PATCH /api/:tabla/:id  ·  DELETE /api/:tabla/:id
+ *   POST /push/send  (avisos push; necesita VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY y VAPID_SUBJECT)
  */
 import { HttpError, corsHeaders, errorResponse, json, safeEqual } from './http.js';
 import { loadSchema } from './schema.js';
 import { handleDelete, handleGet, handlePatch, handlePost } from './handlers.js';
+import { handlePush } from './push-handle-push.js';
 
 export default {
   async fetch(request, env) {
@@ -25,6 +27,7 @@ export default {
 
       const url = new URL(request.url);
       const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
+      if (parts[0] === 'push') return await handlePush(request, env, parts, cors);
       if (parts[0] !== 'api' || parts.length > 3) throw new HttpError(404, 'Ruta no encontrada');
 
       const schema = await loadSchema(env.DB);
