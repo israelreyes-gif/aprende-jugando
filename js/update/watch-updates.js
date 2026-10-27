@@ -26,10 +26,13 @@ export function watchUpdates(worker = navigator.serviceWorker, reload) {
   }
 
   worker.addEventListener('message', (event) => {
-    if (event.data?.type !== 'app-updated' || offering) return;
+    if (event.data?.type !== 'app-updated') return;
+    worker.controller?.postMessage({ type: 'update-seen' });
+    if (offering) return;
     pending = true;
     tryOffer();
   });
   worker.startMessages?.();
+  worker.controller?.postMessage({ type: 'page-ready' });
   window.addEventListener('hashchange', tryOffer);
 }
