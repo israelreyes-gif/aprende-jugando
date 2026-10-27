@@ -7,8 +7,9 @@ import { colorPicker } from './color-picker.js';
  * Formulario de nombre y color, para crear o editar un perfil.
  * initial: { name, color } con los valores de partida.
  * onSave({ name, color }) guarda los datos (promesa); si falla, se muestra errorText.
+ * extra (opcional): un elemento que se coloca justo antes del botón de guardar.
  */
-export function profileForm({ initial, submitLabel, errorText, onSave }) {
+export function profileForm({ initial, submitLabel, errorText, onSave, extra }) {
   let color = initial.color;
   let name = initial.name;
 
@@ -62,6 +63,7 @@ export function profileForm({ initial, submitLabel, errorText, onSave }) {
     preview,
     h('div', { class: 'field' }, h('label', { class: 'field__label', for: 'profile-name' }, 'Nombre'), nameInput),
     h('div', { class: 'field' }, h('span', { class: 'field__label' }, 'Color del icono'), picker),
+    extra,
     error,
     submit,
   );
