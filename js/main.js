@@ -4,6 +4,7 @@ import { paths } from './core/paths.js';
 import { registerRoutes } from './routes.js';
 import { registerServiceWorker } from './register-sw.js';
 import { disableZoomGestures } from './no-zoom.js';
+import { watchUpdates } from './update/watch-updates.js';
 
 disableZoomGestures();
 registerRoutes();
@@ -17,3 +18,6 @@ flushOutbox();
 window.addEventListener('online', flushOutbox);
 
 registerServiceWorker();
+
+// Cuando GitHub tiene una versión nueva, ofrece actualizar
+watchUpdates();
