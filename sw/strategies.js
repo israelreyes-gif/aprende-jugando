@@ -2,15 +2,20 @@
 
 // Copia guardada primero, y por detrás se pregunta al servidor si hay algo nuevo (cache: 'no-cache')
 // para dejar la copia al día. Así la app abre al instante; los cambios nuevos se ven en la
-// siguiente apertura. Sin copia guardada, se pide al servidor; sin red, se avisa.
+// siguiente apertura. Si un archivo guardado ha cambiado en el servidor, se avisa a la app
+// (ver update-check.js) para que ofrezca actualizar. Sin copia guardada, se pide al servidor;
+// sin red, se avisa.
 async function staleWhileRevalidate(event) {
   const { request } = event;
   const cache = await caches.open(CACHE);
   const cached = await cache.match(request, { ignoreSearch: true });
 
   const update = fetch(request, { cache: 'no-cache' })
-    .then((response) => {
-      if (response.ok) cache.put(request, response.clone());
+    .then(async (response) => {
+      if (response.ok) {
+        if (cached) await checkForUpdate(cached, response);
+        await cache.put(request, response.clone());
+      }
       return response;
     })
     .catch(() => null);
