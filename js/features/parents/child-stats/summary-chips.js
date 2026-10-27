@@ -1,11 +1,11 @@
 import { h } from '../../../core/dom.js';
 
-/** Tres cifras de resumen: ejercicios, acierto medio y días activo. */
+/** Tres cifras de resumen: ejercicios, acierto medio y días de racha del reto diario. */
 export function summaryChips(summary) {
   const items = [
     { value: String(summary.questions), label: 'Ejercicios hechos' },
     { value: summary.pct == null ? '–' : `${summary.pct}%`, label: 'Acierto medio' },
-    { value: String(summary.activeDays), label: 'Días activo' },
+    { value: String(summary.streak), label: 'Días de racha' },
   ];
   return h(
     'div',
