@@ -1,5 +1,6 @@
 import { h } from '../../core/dom.js';
 import { visualNode } from '../../exercises/visual.js';
+import { playFeedback } from '../../sounds/play-feedback.js';
 import { feedbackBox } from './feedback-box.js';
 import { progressMeter } from './progress-meter.js';
 import { questionTypes } from './question-types.js';
@@ -33,6 +34,7 @@ export function questionView({ q, index, total, t, onChecked, onContinue }) {
     if (checked) return onContinue();
     checked = true;
     const ok = type.check(q, value);
+    playFeedback(ok);
     onChecked({ questionId: q.id, correct: ok, given: type.givenText(q, value), prompt: q.prompt, answerText: type.answerText(q) });
     widget.lock();
     widget.reveal(ok, value);
