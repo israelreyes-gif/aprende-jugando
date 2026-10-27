@@ -9,11 +9,13 @@ async function staleWhileRevalidate(event) {
   const { request } = event;
   const cache = await caches.open(CACHE);
   const cached = await cache.match(request, { ignoreSearch: true });
+  // Copia aparte para comparar: la que se devuelve a la página se "gasta" al leerla.
+  const previous = cached ? cached.clone() : null;
 
   const update = fetch(request, { cache: 'no-cache' })
     .then(async (response) => {
       if (response.ok) {
-        if (cached) await checkForUpdate(cached, response);
+        if (previous) await checkForUpdate(previous, response);
         await cache.put(request, response.clone());
       }
       return response;
