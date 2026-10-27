@@ -8,9 +8,10 @@ async function hasChanged(cached, fresh) {
   return before !== after;
 }
 
-/** Avisa a todas las ventanas abiertas de la app de que hay una versión nueva. */
+/** Anota la versión nueva y avisa a las ventanas abiertas (si alguna no llega a oírlo, la marca la avisará al abrir). */
 async function announceUpdate() {
-  const windows = await self.clients.matchAll({ type: 'window' });
+  await markPending();
+  const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
   for (const client of windows) client.postMessage({ type: 'app-updated' });
 }
 
