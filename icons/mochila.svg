@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFB93B"/><stop offset="1" stop-color="#F58A12"/></linearGradient>
+    <linearGradient id="pocket" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD25E"/><stop offset="1" stop-color="#FFAE2B"/></linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#E67A0A"/><stop offset="1" stop-color="#F58A12"/></linearGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="8"/></filter>
+  </defs>
+  <ellipse cx="256" cy="448" rx="120" ry="12" fill="#150F5C" opacity=".6" filter="url(#blur)"/>
+  <path d="M214 132C212 84 300 84 298 132" fill="none" stroke="#D9700A" stroke-width="18" stroke-linecap="round"/>
+  <path d="M146 196C146 146 192 122 256 122C320 122 366 146 366 196L376 394C376 418 360 432 336 432H176C152 432 136 418 136 394Z" fill="url(#body)"/>
+  <path d="M138 306C118 304 104 318 104 348C104 380 114 396 138 396Z" fill="url(#side)"/>
+  <path d="M374 306C394 304 408 318 408 348C408 380 398 396 374 396Z" fill="#E67A0A"/>
+  <path d="M158 202C196 176 316 176 354 202L358 244C318 268 194 268 154 244Z" fill="#F08A14"/>
+  <path d="M156 210C196 186 316 186 356 210" fill="none" stroke="#FFD27A" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+  <g transform="rotate(-12 196 290)"><rect x="182" y="196" width="28" height="120" rx="5" fill="#4F8DF5"/><rect x="182" y="196" width="10" height="120" rx="5" fill="#7FB0FF"/><polygon points="182,196 210,196 196,160" fill="#F6D6A8"/><polygon points="189,178 203,178 196,160" fill="#2B2470"/></g>
+  <path d="M164 298C164 282 180 274 202 274H310C332 274 348 282 348 298L354 396C354 412 344 422 328 422H184C168 422 158 412 158 396Z" fill="url(#pocket)"/>
+  <path d="M184 302H328" stroke="#D98200" stroke-width="6" stroke-linecap="round" stroke-dasharray="4 8" opacity=".7"/>
+  <rect x="238" y="292" width="36" height="22" rx="10" fill="#fff"/>
+  <rect x="246" y="298" width="20" height="10" rx="5" fill="#E6A02B"/>
+  <rect x="240" y="238" width="32" height="36" rx="8" fill="#fff"/>
+  <rect x="249" y="250" width="14" height="12" rx="4" fill="#F08A14"/>
+  <ellipse cx="200" cy="170" rx="44" ry="14" fill="#fff" opacity=".28" transform="rotate(-18 200 170)"/>
+</svg>
