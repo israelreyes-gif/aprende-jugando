@@ -2,6 +2,8 @@ import { h } from '../../core/dom.js';
 import { go } from '../../core/router.js';
 import { paths } from '../../core/paths.js';
 import { listProfiles } from '../../data/profiles.repo.js';
+import { hasChildDevice } from '../../data/push-devices.js';
+import { profileCompletion } from '../profiles/profile-completion.js';
 import { loadPointsOrNull } from '../points/load-points.js';
 import { appHeader } from '../../shared/app-header.js';
 import { icon } from '../../shared/icons.js';
@@ -14,6 +16,8 @@ import { profileRow } from './profile-row.js';
 async function renderParents() {
   const profiles = await listProfiles();
   const points = await Promise.all(profiles.map((profile) => loadPointsOrNull(profile.id)));
+  const bells = await Promise.all(profiles.map((profile) => hasChildDevice(profile.id)));
+  const completions = profiles.map((profile, i) => profileCompletion({ name: profile.name, color: profile.avatar_color, gender: profile.gender, bell: bells[i] }));
 
   return h(
     'main',
@@ -23,7 +27,7 @@ async function renderParents() {
       'div',
       { class: 'screen__body' },
       h('p', { class: 'lead' }, profiles.length ? 'Elige un perfil para ver cómo va.' : 'Todavía no hay perfiles. Crea el primero desde el inicio.'),
-      h('div', { class: 'stack' }, profiles.map((profile, i) => profileRow(profile, points[i]))),
+      h('div', { class: 'stack' }, profiles.map((profile, i) => profileRow(profile, points[i], completions[i]))),
       parentsBell(),
       h('div', { class: 'spacer' }),
       h('a', { class: 'btn btn--outline btn--block', href: paths.parentsPin() }, 'Cambiar PIN'),
