@@ -1,3 +1,6 @@
+/* Los puntos y niveles tienen su propia hoja (se carga desde aquí para no tocar index.html) */
+@import url('points.css');
+
 /* Resultado final de una sesión de ejercicios */
 .result { align-items: center; text-align: center; }
 .result__score { font-family: var(--font-display); font-weight: 600; font-size: 72px; line-height: 1; color: var(--primary); }
