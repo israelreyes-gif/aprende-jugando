@@ -2,16 +2,26 @@ import { h } from '../../core/dom.js';
 import { AVATAR_COLORS, MAX_NAME_LENGTH } from '../../data/profile-options.js';
 import { avatar } from '../../shared/avatar.js';
 import { colorPicker } from './color-picker.js';
+import { completionBar } from './completion-bar.js';
+import { genderPicker } from './gender-picker.js';
+import { profileCompletion } from './profile-completion.js';
 
 /**
  * Formulario de nombre y color, para crear o editar un perfil.
- * initial: { name, color } con los valores de partida.
- * onSave({ name, color }) guarda los datos (promesa); si falla, se muestra errorText.
+ * initial: { name, color, gender } con los valores de partida.
+ * onSave({ name, color, gender }) guarda los datos (promesa); si falla, se muestra errorText.
  * extra (opcional): un elemento que se coloca justo antes del botón de guardar.
+ * showCompletion (opcional): muestra la barra "Perfil al X %". El formulario devuelto tiene setBell(activo)
+ * para avisar de si los avisos de este perfil están activados en este móvil.
  */
-export function profileForm({ initial, submitLabel, errorText, onSave, extra }) {
+export function profileForm({ initial, submitLabel, errorText, onSave, extra, showCompletion = false }) {
   let color = initial.color;
   let name = initial.name;
+  let gender = initial.gender || null;
+  let bell = null;
+
+  const bar = showCompletion ? completionBar(profileCompletion({ name, color, gender, bell })) : null;
+  const refreshBar = () => bar && bar.update(profileCompletion({ name, color, gender, bell }));
 
   const preview = h('div', { class: 'stack', style: { alignItems: 'center' } });
   const error = h('p', { class: 'field__error', role: 'alert' });
@@ -25,6 +35,7 @@ export function profileForm({ initial, submitLabel, errorText, onSave, extra }) 
     onInput: (event) => {
       name = event.target.value;
       drawPreview();
+      refreshBar();
     },
   });
 
@@ -34,6 +45,15 @@ export function profileForm({ initial, submitLabel, errorText, onSave, extra }) 
     onChange: (hex) => {
       color = hex;
       drawPreview();
+      refreshBar();
+    },
+  });
+
+  const genders = genderPicker({
+    value: gender,
+    onChange: (value) => {
+      gender = value;
+      refreshBar();
     },
   });
 
@@ -47,7 +67,7 @@ export function profileForm({ initial, submitLabel, errorText, onSave, extra }) 
     }
     submit.disabled = true;
     try {
-      await onSave({ name, color });
+      await onSave({ name, color, gender });
     } catch (err) {
       console.error(err);
       error.textContent = errorText;
@@ -57,14 +77,22 @@ export function profileForm({ initial, submitLabel, errorText, onSave, extra }) 
 
   drawPreview();
 
-  return h(
+  const form = h(
     'form',
     { class: 'stack', style: { '--gap': '24px' }, onSubmit },
     preview,
+    bar,
     h('div', { class: 'field' }, h('label', { class: 'field__label', for: 'profile-name' }, 'Nombre'), nameInput),
     h('div', { class: 'field' }, h('span', { class: 'field__label' }, 'Color del icono'), picker),
+    h('div', { class: 'field' }, h('span', { class: 'field__label' }, '¿Eres chico o chica?'), genders, h('p', { class: 'field__hint' }, 'Sirve para escribir tu nivel bien: Aventurero o Aventurera.')),
     extra,
     error,
     submit,
   );
+
+  form.setBell = (active) => {
+    bell = active;
+    refreshBar();
+  };
+  return form;
 }
