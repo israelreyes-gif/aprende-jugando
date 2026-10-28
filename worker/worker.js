@@ -7,13 +7,19 @@
  *   GET /api  ·  GET /api/:tabla  ·  GET /api/:tabla/:id
  *   POST /api/:tabla  ·  PATCH /api/:tabla/:id  ·  DELETE /api/:tabla/:id
  *   POST /push/send  (avisos push; necesita VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY y VAPID_SUBJECT)
+ * Cron (wrangler.jsonc): recordatorios del reto a las 08:00 y a las 18:30, hora de Madrid.
  */
 import { HttpError, corsHeaders, errorResponse, json, safeEqual } from './http.js';
 import { loadSchema } from './schema.js';
 import { handleDelete, handleGet, handlePatch, handlePost } from './handlers.js';
 import { handlePush } from './push-handle-push.js';
+import { runReminders } from './reminder-run.js';
 
 export default {
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(runReminders(env, event.scheduledTime).then((summary) => console.log('Recordatorios', JSON.stringify(summary))));
+  },
+
   async fetch(request, env) {
     const cors = corsHeaders(request, env);
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
