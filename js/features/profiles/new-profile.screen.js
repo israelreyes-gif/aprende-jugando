@@ -9,7 +9,7 @@ export async function newProfileScreen() {
   return h(
     'main',
     { class: 'screen' },
-    appHeader({ title: 'Nuevo perfil', sub: 'Elige nombre y color', back: paths.home(), shield: true }),
+    appHeader({ title: 'Nuevo perfil', sub: 'Elige nombre, color y si eres chico o chica', back: paths.home(), shield: true }),
     h('div', { class: 'screen__body' }, newProfileForm({ onCreated: () => go(paths.home()) })),
   );
 }
