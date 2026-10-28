@@ -13,11 +13,12 @@ import { loadRetoStatus } from './reto-status.js';
 import { loadRetoTopics } from './load-reto-topics.js';
 import { materializePlan } from './plan/materialize-plan.js';
 import { planReto } from './plan/plan-reto.js';
+import { retoEmptyText } from './reto-empty-text.js';
 import { retoQuestions } from './reto-questions.js';
 import { retoResultView } from './reto-result-view.js';
 import { spainDay } from './streak/date-keys.js';
 
-/** Reto de hoy: 10 preguntas mezcladas de los temas liberados. Se puede dejar a medias y retomar. */
+/** Reto de hoy: 10 preguntas mezcladas de los temas liberados y estudiados. Se puede dejar a medias y retomar. */
 export async function retoScreen({ pid, cid }) {
   const course = getCourse(cid);
   const profile = await getProfile(pid);
@@ -43,7 +44,7 @@ export async function retoScreen({ pid, cid }) {
     return view;
   }
   if (!existing && topics.length === 0) {
-    emptyView('Todavía no hay temas liberados para el reto. Pídele a tus padres que liberen algunos.');
+    emptyView(await retoEmptyText(pid, cid));
     return view;
   }
 
