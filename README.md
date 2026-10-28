@@ -16,7 +16,7 @@ Empieza en 4.º de Primaria con Matemáticas, Sociales, Inglés, Lengua y Scienc
 ```
 index.html · manifest.webmanifest · sw.js
 sw/             piezas del service worker: config, estrategias de caché, aviso de versión nueva
-css/            tokens.css (paleta) · base.css · components.css · screens.css
+css/            tokens.css (paleta) · base.css · components/ · screens/
   components/     un archivo por componente
   screens/        un archivo por pantalla
 icons/          iconos de la PWA (icon.svg, mochila.svg; tools/make-icons.py los regenera)
