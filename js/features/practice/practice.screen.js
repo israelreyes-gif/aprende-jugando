@@ -4,14 +4,17 @@ import { paths } from '../../core/paths.js';
 import { getCourse, getSubject, loadTopic } from '../../content/registry.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { savePractice } from '../../data/practice.repo.js';
+import { pointsBurst } from '../points/ui/points-burst.js';
+import { reportPoints } from '../points/ui/report-points.js';
+import { sessionPoints } from '../points/session-points.js';
+import { notifyParents } from '../push/parent-alerts/notify-parents.js';
+import { practiceMessage } from '../push/parent-alerts/parent-messages.js';
 import { buildSession } from '../../exercises/session.js';
 import { isTopicReleased } from '../subjects/topic-access.js';
 import { appHeader } from '../../shared/app-header.js';
 import { texts } from '../../shared/i18n.js';
 import { lockedView } from '../../shared/locked-view.js';
 import { notFoundView } from '../../shared/not-found-view.js';
-import { notifyParents } from '../push/parent-alerts/notify-parents.js';
-import { practiceMessage } from '../push/parent-alerts/parent-messages.js';
 import { questionView } from './question-view.js';
 import { resultView } from './result-view.js';
 
@@ -63,17 +66,20 @@ export async function practiceScreen({ pid, cid, sid, tid }) {
 
   function showResult() {
     const saveNote = h('p', { class: 'lead', role: 'status' }, '…');
+    const result = sessionPoints(results.filter((r) => r.correct).length, results.length);
+    const burst = pointsBurst({ result });
     savePractice({ profileId: pid, courseId: cid, subjectId: sid, topicId: tid, results, durationS: (Date.now() - startedAt) / 1000 })
       .then(({ queued }) => {
         saveNote.textContent = queued ? t.savedLater : t.saved;
         if (!queued) notifyParents(practiceMessage({ name: profile.name, topicTitle: topic.title, subjectName: subject.name, results }));
+        reportPoints({ profile, delta: result.total, queued, burst });
       })
       .catch((err) => {
         console.error(err);
         saveNote.textContent = t.saveFailed;
       });
 
-    body.replaceChildren(...resultView({ results, t, saveNote, studyHref: paths.study(pid, cid, sid, tid), topicsHref, onRetry: reload }));
+    body.replaceChildren(...resultView({ results, t, saveNote, pointsNode: burst.node, studyHref: paths.study(pid, cid, sid, tid), topicsHref, onRetry: reload }));
     window.scrollTo(0, 0);
   }
 
