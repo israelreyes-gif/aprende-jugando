@@ -3,7 +3,7 @@ import { texts } from '../../shared/i18n.js';
 import { streakBadge } from './streak-badge.js';
 
 /** Resultado del reto: nota, racha y las preguntas falladas para repasar. Devuelve la lista de nodos. */
-export function retoResultView({ answers, streak, backHref }) {
+export function retoResultView({ answers, streak, backHref, pointsNode }) {
   const t = texts('es');
   const correct = answers.filter((a) => a.correct).length;
   const total = answers.length;
@@ -16,6 +16,7 @@ export function retoResultView({ answers, streak, backHref }) {
       { class: 'stack result', style: { '--gap': '14px' } },
       h('p', { class: 'title-lg' }, t.resultTitle(pct)),
       h('p', { class: 'result__score' }, `${correct}/${total}`),
+      pointsNode,
       streak > 0 ? h('div', { class: 'reto-streak' }, streakBadge(streak), h('p', { class: 'lead' }, '¡Vuelve mañana para seguir la racha!')) : null,
       missed.length
         ? h(
