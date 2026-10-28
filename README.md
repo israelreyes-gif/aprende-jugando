@@ -6,9 +6,9 @@ Empieza en 4.º de Primaria con Matemáticas, Sociales, Inglés, Lengua y Scienc
 - **App**: archivos estáticos en GitHub Pages (sin Node, sin compilar).
 - **Datos**: base de datos D1 con tablas reales, accesible a través de un Worker mínimo y genérico.
 - **Offline**: `sw.js` guarda la app; los resultados hechos sin internet se guardan y se envían solos al volver la conexión.
-- **Reto diario**: 10 preguntas al día por perfil, con racha.
+- **Reto diario**: hasta 10 preguntas al día por perfil, de temas liberados y estudiados, con racha.
 - **Zona de padres**: estadísticas, refuerzo (regla del 75 %) y temas liberados por perfil.
-- **Avisos push**: el Worker sabe enviarlos y cada perfil tiene su campanita; los recordatorios automáticos están en construcción (ver más abajo).
+- **Avisos push**: recordatorios del reto a cada perfil (08:00 y 18:30) y avisos a los padres cuando un perfil termina un reto, un estudio o ejercicios (ver más abajo).
 
 ## Estructura
 
@@ -38,7 +38,7 @@ js/
     study/        lecciones
     practice/     motor de ejercicios y tipos de pregunta
     reto/         reto diario, racha y su resultado
-    push/         avisos push: permiso, suscripción del móvil y la campanita (bell-row.js)
+    push/         avisos push: permiso, suscripción del móvil, la campanita (bell-row.js) y los avisos a padres (parent-alerts/)
 worker/         código del Worker (varios ficheros pequeños) · wrangler.jsonc (configuración y variables) · schema.sql (se ejecuta en D1)
 tools/          make-icons.py
 ```
@@ -130,13 +130,15 @@ El Worker las descubre solo (hasta 1 minuto después) y no hay que tocarlo.
 ## Avisos push
 
 El Worker (`worker/push-*.js`) envía los avisos cifrados con Web Push (VAPID) y el service worker
-(`sw/push.js`, `sw/notification-click.js`) los muestra. Estado actual:
+(`sw/push.js`, `sw/notification-click.js`) los muestra. Hay dos tipos, cada uno con su campanita (por móvil):
 
-- **Hecho**: tabla `push_devices`, claves VAPID, la ruta `POST /push/send` del Worker y la campanita "Avisos del reto"
-  en la edición de cada perfil (activa o desactiva los avisos de ESE perfil en ESE móvil; al activarla llega un aviso de bienvenida).
-- **Pendiente**: recordatorios automáticos del reto a las 08:00 y 18:30 (hora de Madrid, solo si ese día no está hecho),
-  campanita en la zona de padres (aviso al completar un reto, estudio o ejercicio, con la nota y marca si es menor del 75 %)
-  y las tareas programadas del Worker.
+- **Recordatorios del reto** (campanita "Avisos del reto" en la edición de cada perfil): a las 08:00 y a las 18:30 (hora de Madrid),
+  solo si ese día el reto no está hecho y el perfil tiene algún tema liberado y estudiado. El de las 18:30 menciona la racha si la hay.
+  Los manda el Worker con una tarea programada (`triggers.crons` en `worker/wrangler.jsonc`, cada 30 minutos; el plan gratuito
+  de Cloudflare solo permite 5 tareas programadas por cuenta, por eso es una sola).
+- **Avisos para padres** (campanita "Avisos para padres" en la Zona de padres): cuando un perfil termina un reto, una sesión de ejercicios
+  o marca un tema como estudiado. Incluye la nota y marca ⚠️ si está por debajo del 75 % (`features/parents/stats/thresholds.js`).
+  Los envía el móvil del niño justo después de guardar el resultado (`features/push/parent-alerts/`); si no hay conexión, no se manda.
 
 En iPhone solo funciona con la app instalada en la pantalla de inicio, y el permiso se pide al pulsar la campanita.
 
