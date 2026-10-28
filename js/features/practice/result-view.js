@@ -1,7 +1,7 @@
 import { h } from '../../core/dom.js';
 
 /** Resultado final de la sesión. Devuelve la lista de nodos a pintar. */
-export function resultView({ results, t, saveNote, studyHref, topicsHref, onRetry }) {
+export function resultView({ results, t, saveNote, pointsNode, studyHref, topicsHref, onRetry }) {
   const correct = results.filter((r) => r.correct).length;
   const total = results.length;
   const pct = Math.round((correct * 100) / total);
@@ -13,6 +13,7 @@ export function resultView({ results, t, saveNote, studyHref, topicsHref, onRetr
       { class: 'stack result', style: { '--gap': '14px' } },
       h('p', { class: 'title-lg' }, t.resultTitle(pct)),
       h('p', { class: 'result__score' }, `${correct}/${total}`),
+      pointsNode,
       h('p', { class: 'lead' }, t.resultNote(pct)),
       saveNote,
       missed.length
