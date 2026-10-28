@@ -10,6 +10,7 @@ import { texts } from '../../shared/i18n.js';
 import { notFoundView } from '../../shared/not-found-view.js';
 import { buildProgress } from './subject-progress.js';
 import { topicCard } from './topic-card.js';
+import { topicsSummary } from './topics-summary.js';
 
 /** Una asignatura: pestañas Estudio / Ejercicios con las tarjetas de temas. */
 export async function subjectScreen({ pid, cid, sid, tab }) {
@@ -43,7 +44,8 @@ export async function subjectScreen({ pid, cid, sid, tab }) {
       h('nav', { class: 'tabs', 'aria-label': subject.name }, tabLink('study', t.study), tabLink('practice', t.practice)),
       h('p', { class: 'lead' }, activeTab === 'study' ? t.pickStudy : t.pickPractice),
       topics.length === 0 ? h('p', { class: 'note note--empty' }, t.noTopics) : null,
-      h('div', { class: 'grid-2' }, topics.map((topic, index) => topicCard({ profile, course, subject, tab: activeTab, topic, index, t, progress }))),
+      topicsSummary({ tab: activeTab, subject, topics, progress, t }),
+      h('div', { class: 'topic-list' }, topics.map((topic, index) => topicCard({ profile, course, subject, tab: activeTab, topic, index, t, progress }))),
     ),
   );
 }
