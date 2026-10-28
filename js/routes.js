@@ -17,6 +17,7 @@ import { subjectScreen } from './features/subjects/subject.screen.js';
 import { studyScreen } from './features/study/study.screen.js';
 import { practiceScreen } from './features/practice/practice.screen.js';
 import { retoScreen } from './features/reto/reto.screen.js';
+import { levelsScreen } from './features/points/levels.screen.js';
 
 export function registerRoutes() {
   route('/setup', setupScreen);
@@ -32,6 +33,7 @@ export function registerRoutes() {
 
   route('/p/:pid/edit', editProfileScreen);
   route('/p/:pid', coursesScreen);
+  route('/p/:pid/levels', levelsScreen);
   route('/p/:pid/c/:cid', courseScreen);
   route('/p/:pid/c/:cid/reto', retoScreen);
   route('/p/:pid/c/:cid/s/:sid/:tab', subjectScreen);
