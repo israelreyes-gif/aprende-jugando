@@ -8,7 +8,7 @@ Empieza en 4.º de Primaria con Matemáticas, Sociales, Inglés, Lengua y Scienc
 - **Offline**: `sw.js` guarda la app; los resultados hechos sin internet se guardan y se envían solos al volver la conexión.
 - **Reto diario**: 10 preguntas al día por perfil, con racha.
 - **Zona de padres**: estadísticas, refuerzo (regla del 75 %) y temas liberados por perfil.
-- **Avisos push**: el Worker ya sabe enviarlos; las campanitas de la app y los recordatorios están en construcción (ver más abajo).
+- **Avisos push**: el Worker sabe enviarlos y cada perfil tiene su campanita; los recordatorios automáticos están en construcción (ver más abajo).
 
 ## Estructura
 
@@ -23,7 +23,7 @@ js/
   main.js       mapa de pantallas (rutas) y arranque
   config.js     URL del Worker y ajustes fijos
   core/         router, cliente de API con cola offline, dom, rutas, utilidades
-  shared/       piezas reutilizables: cabecera, avatar, avisos, modales, textos es/en
+  shared/       piezas reutilizables: cabecera, avatar, avisos, modales, interruptor, textos es/en
   data/         acceso a datos: profiles, settings, progress, reto, release (único sitio que habla con la API)
   content/      contenido educativo: registry.js + <curso>/<asignatura>/<tema>.js
   exercises/    generadores de preguntas y tipos (kinds/) que usan los temas
@@ -38,7 +38,8 @@ js/
     study/        lecciones
     practice/     motor de ejercicios y tipos de pregunta
     reto/         reto diario, racha y su resultado
-worker/         código del Worker (varios ficheros pequeños) · schema.sql (se ejecuta en D1)
+    push/         avisos push: permiso, suscripción del móvil y la campanita (bell-row.js)
+worker/         código del Worker (varios ficheros pequeños) · wrangler.jsonc (configuración y variables) · schema.sql (se ejecuta en D1)
 tools/          make-icons.py
 ```
 
@@ -57,13 +58,17 @@ comando de despliegue `npx wrangler deploy`). Cada cambio que se sube a `worker/
 un minuto; no hay que pegar nada en Cloudflare. Se puede comprobar en la pestaña **Deployments**
 (el último debe estar en *Ready*).
 
-Lo que sí se configura una vez en el panel del Worker:
-1. **Settings → Bindings**: un binding **D1 database**, variable `DB`, apuntando a tu base.
-2. **Settings → Variables and secrets**:
+La configuración vive en `worker/wrangler.jsonc` (nombre, binding `DB` de D1 y variables no secretas).
+Cada despliegue **borra las variables de tipo Text creadas a mano en el panel**: las variables normales van siempre en `wrangler.jsonc`.
+
+1. En `worker/wrangler.jsonc`, dentro de `vars`:
+   - `ALLOWED_ORIGIN`: `https://TU-USUARIO.github.io`
+   - `VAPID_PUBLIC_KEY`: la clave pública de los avisos push.
+   - `VAPID_SUBJECT`: la URL de la app.
+2. En el panel del Worker → **Settings → Variables and secrets**, solo los secretos (estos sí se conservan):
    - `API_KEY` (*Secret*): una clave larga que inventes. Es la que escribirás en la app.
-   - `ALLOWED_ORIGIN` (*Text*, recomendado): `https://TU-USUARIO.github.io`
-   - Para los avisos push: `VAPID_PUBLIC_KEY` (*Text*), `VAPID_PRIVATE_KEY` (*Secret*) y
-     `VAPID_SUBJECT` (*Text*, la URL de la app).
+   - `VAPID_PRIVATE_KEY` (*Secret*): la clave privada de los avisos push.
+   Un nombre no puede ser a la vez variable y secreto.
 3. Apunta la URL del Worker (`https://NOMBRE.TU-CUENTA.workers.dev`).
 
 Comprobación: abrir `URL-DEL-WORKER/api` en el navegador debe responder `Clave de API incorrecta` (401). Eso significa que está vivo y protegido.
@@ -113,7 +118,7 @@ Todo ejercicio nuevo cuenta en la zona de padres con la regla del 75 %.
 | `study_progress` | temas marcados como estudiados |
 | `topic_release` | temas liberados por los padres para cada perfil (sin fila = bloqueado) |
 | `reto_diario` | el reto de cada perfil y día: preguntas, respuestas y si está terminado |
-| `push_devices` | móviles con avisos activados (`child` = recordatorios de un perfil, `parent` = avisos a los padres) |
+| `push_devices` | móviles con avisos activados: una fila por móvil y uso (`child` = recordatorios de un perfil, `parent` = avisos a los padres) |
 
 Borrar un perfil borra en cascada todo su progreso y sus móviles de avisos. Las estadísticas y el refuerzo se calculan en la app
 (`features/parents/stats.logic.js`): un tema necesita refuerzo según la regla del 75 % (`features/parents/stats/thresholds.js`).
@@ -124,11 +129,16 @@ El Worker las descubre solo (hasta 1 minuto después) y no hay que tocarlo.
 
 ## Avisos push
 
-El Worker (`worker/push-*.js`) envía los avisos cifrados con Web Push (VAPID). Estado actual:
+El Worker (`worker/push-*.js`) envía los avisos cifrados con Web Push (VAPID) y el service worker
+(`sw/push.js`, `sw/notification-click.js`) los muestra. Estado actual:
 
-- **Hecho**: tabla `push_devices`, claves VAPID y la ruta `POST /push/send` del Worker.
-- **Pendiente**: campanita en la edición de cada perfil (recordatorios del reto a las 08:00 y 18:30, hora de Madrid, solo si ese día no está hecho),
-  campanita en la zona de padres (aviso al completar un reto, estudio o ejercicio, con la nota y marca si es menor del 75 %) y las tareas programadas del Worker.
+- **Hecho**: tabla `push_devices`, claves VAPID, la ruta `POST /push/send` del Worker y la campanita "Avisos del reto"
+  en la edición de cada perfil (activa o desactiva los avisos de ESE perfil en ESE móvil; al activarla llega un aviso de bienvenida).
+- **Pendiente**: recordatorios automáticos del reto a las 08:00 y 18:30 (hora de Madrid, solo si ese día no está hecho),
+  campanita en la zona de padres (aviso al completar un reto, estudio o ejercicio, con la nota y marca si es menor del 75 %)
+  y las tareas programadas del Worker.
+
+En iPhone solo funciona con la app instalada en la pantalla de inicio, y el permiso se pide al pulsar la campanita.
 
 ## API del Worker (por si quieres consultarla a mano)
 
@@ -150,4 +160,3 @@ Operadores de filtro: `eq neq gt gte lt lte like in is`.
 - La clave no está en GitHub: se escribe en cada dispositivo y se guarda en su `localStorage`.
 - La clave privada de los avisos (`VAPID_PRIVATE_KEY`) vive solo como secreto del Worker; nunca se sube al repositorio.
 - El PIN de padres sirve para que los niños no entren en las estadísticas; no es una protección fuerte frente a un adulto con acceso al dispositivo.
-```
