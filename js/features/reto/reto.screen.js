@@ -8,6 +8,9 @@ import { finishReto } from '../../data/reto/finish-reto.js';
 import { appHeader } from '../../shared/app-header.js';
 import { notify } from '../../shared/modal.js';
 import { notFoundView } from '../../shared/not-found-view.js';
+import { pointsBurst } from '../points/ui/points-burst.js';
+import { reportPoints } from '../points/ui/report-points.js';
+import { sessionPoints } from '../points/session-points.js';
 import { notifyParents } from '../push/parent-alerts/notify-parents.js';
 import { retoMessage } from '../push/parent-alerts/parent-messages.js';
 import { answersSaver } from './answers-saver.js';
@@ -35,9 +38,9 @@ export async function retoScreen({ pid, cid }) {
   const backLink = h('a', { class: 'btn btn--outline btn--block', href: back }, 'Volver a las asignaturas');
   const emptyView = (text) => body.replaceChildren(h('p', { class: 'note note--empty' }, text), backLink);
 
-  async function showResult(answers) {
+  async function showResult(answers, pointsNode) {
     const status = await loadRetoStatus(pid).catch(() => null);
-    body.replaceChildren(...retoResultView({ answers, streak: status?.streak ?? 0, backHref: back }));
+    body.replaceChildren(...retoResultView({ answers, streak: status?.streak ?? 0, backHref: back, pointsNode }));
     window.scrollTo(0, 0);
   }
 
@@ -78,7 +81,10 @@ export async function retoScreen({ pid, cid }) {
       return;
     }
     if (answers.length) notifyParents(retoMessage({ name: profile.name, answers }));
-    await showResult(answers);
+    const result = sessionPoints(answers.filter((a) => a.correct).length, answers.length);
+    const burst = answers.length ? pointsBurst({ result }) : null;
+    await showResult(answers, burst?.node);
+    if (burst) reportPoints({ profile, delta: result.total, queued: false, burst });
   }
 
   if (questions.length === 0) await finish(reto.answers);
