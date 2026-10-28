@@ -2,6 +2,7 @@ import { h } from '../../core/dom.js';
 import { go } from '../../core/router.js';
 import { paths } from '../../core/paths.js';
 import { listProfiles } from '../../data/profiles.repo.js';
+import { loadPointsOrNull } from '../points/load-points.js';
 import { appHeader } from '../../shared/app-header.js';
 import { icon } from '../../shared/icons.js';
 import { parentsBell } from './parents-bell.js';
@@ -12,6 +13,7 @@ import { profileRow } from './profile-row.js';
 
 async function renderParents() {
   const profiles = await listProfiles();
+  const points = await Promise.all(profiles.map((profile) => loadPointsOrNull(profile.id)));
 
   return h(
     'main',
@@ -21,7 +23,7 @@ async function renderParents() {
       'div',
       { class: 'screen__body' },
       h('p', { class: 'lead' }, profiles.length ? 'Elige un perfil para ver cómo va.' : 'Todavía no hay perfiles. Crea el primero desde el inicio.'),
-      h('div', { class: 'stack' }, profiles.map(profileRow)),
+      h('div', { class: 'stack' }, profiles.map((profile, i) => profileRow(profile, points[i]))),
       parentsBell(),
       h('div', { class: 'spacer' }),
       h('a', { class: 'btn btn--outline btn--block', href: paths.parentsPin() }, 'Cambiar PIN'),
