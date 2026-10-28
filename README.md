@@ -7,7 +7,7 @@ Empieza en 4.º de Primaria con Matemáticas, Sociales, Inglés, Lengua y Scienc
 - **Datos**: base de datos D1 con tablas reales, accesible a través de un Worker mínimo y genérico.
 - **Offline**: `sw.js` guarda la app; los resultados hechos sin internet se guardan y se envían solos al volver la conexión.
 - **Reto diario**: hasta 10 preguntas al día por perfil, de temas liberados y estudiados, con racha.
-- **Puntos y niveles**: +1 por acierto, −1 por fallo, +10 por tema estudiado y ±5 de bonus por sesión; 10 niveles (ver más abajo).
+- **Puntos y niveles**: +1 por acierto, −1 por fallo, +10 por tema estudiado y ±5 de bonus por sesión; 10 niveles, en masculino o femenino según el perfil (ver más abajo).
 - **Zona de padres**: estadísticas, refuerzo (regla del 75 %), puntos y temas liberados por perfil.
 - **Avisos push**: recordatorios del reto a cada perfil (08:00 y 18:30) y avisos a los padres cuando un perfil termina un reto, un estudio o ejercicios (ver más abajo).
 
@@ -32,9 +32,9 @@ js/
   update/       aviso de "Hay una versión nueva"
   features/     una carpeta por funcionalidad, con sus pantallas y su lógica
     setup/        conectar el dispositivo con el Worker
-    profiles/     selección, alta y edición de perfiles, banner de inicio
+    profiles/     selección, alta y edición de perfiles (chico/chica, porcentaje del perfil), banner de inicio
     parents/      PIN, lista de perfiles, estadísticas, refuerzo y liberación de temas
-    courses/      cursos de primaria (solo 4.º abierto)
+    courses/      cursos de primaria: el actual en grande, los superados y los próximos (solo 4.º abierto)
     subjects/     asignaturas de un curso y pestañas Estudio / Ejercicios
     study/        lecciones
     practice/     motor de ejercicios y tipos de pregunta
@@ -94,10 +94,10 @@ En iPhone, los avisos push solo funcionan con la app instalada así (iOS 16.4 o 
 2. En `js/content/4-primaria/mates/index.js`, añade `load: () => import('./divisiones.js')` a su línea.
 
 **Un curso nuevo** (por ejemplo, 5.º):
-1. En `js/content/registry.js`, pon `available: true` en su curso.
+1. En `js/content/registry.js`, pon `available: true` en su curso. El último curso abierto pasa a ser el actual y los anteriores salen como superados.
 2. Crea `js/content/5-primaria/<asignatura>/index.js` para cada asignatura (mismo formato).
 
-**Una asignatura nueva**: añádela a `SUBJECTS` en `registry.js` y un icono con su mismo id en `shared/icons.js`.
+**Una asignatura nueva**: añádela a `SUBJECTS` en `js/content/subjects.js` (con su `emoji` y sus colores) y un icono con su mismo id en `shared/icons.js`.
 
 Bloques de una lección: `{ h }` título, `{ p }` párrafo, `{ list }` lista, `{ tip, label }` truco destacado.
 
@@ -106,14 +106,19 @@ Para inventar un tipo nuevo, regístralo en `js/features/practice/question-types
 
 Todo ejercicio nuevo cuenta en la zona de padres con la regla del 75 %.
 
-> Cuando subas cambios grandes a GitHub, sube también el número de `VERSION` en `sw.js` para que los dispositivos limpien la copia antigua.
-> Al detectar una versión nueva, la app muestra el aviso "Hay una versión nueva" (no lo muestra en pantallas ocupadas, como un ejercicio en curso).
+## Actualizar la app en los móviles
+
+No hace falta tocar nada especial al subir cambios: el service worker enseña la copia guardada y, por detrás, comprueba si GitHub tiene algo nuevo.
+Si algún fichero de texto ha cambiado, la app muestra el aviso "Hay una versión nueva" (no lo muestra en pantallas ocupadas, como un ejercicio en curso).
+
+Solo hay que subir `VERSION` en `sw/config.js` cuando **se borran o se renombran ficheros**, o cuando **cambia la lista `SHELL`** (los ficheros que se guardan al instalar).
+Así el móvil tira la copia antigua entera y no se queda con restos.
 
 ## La base de datos
 
 | Tabla | Para qué |
 |---|---|
-| `profiles` | perfiles (nombre y color del icono) |
+| `profiles` | perfiles (nombre, color del icono y `gender`: `chico` o `chica`) |
 | `settings` | ajustes; guarda el PIN de padres (con sal y hash, nunca en claro) |
 | `practice_sessions` | una fila por sesión de ejercicios o de reto (perfil, tema, total, aciertos, fecha, `kind`) |
 | `answers` | una fila por respuesta dentro de una sesión |
@@ -126,7 +131,7 @@ Borrar un perfil borra en cascada todo su progreso y sus móviles de avisos. Las
 (`features/parents/stats.logic.js`): un tema necesita refuerzo según la regla del 75 % (`features/parents/stats/thresholds.js`).
 
 ### Cambiar la base de datos más adelante
-Añade tablas o columnas con SQL en la consola de D1 (`CREATE TABLE`, `ALTER TABLE ... ADD COLUMN`) y deja la misma sentencia en `worker/schema.sql`.
+Añade tablas o columnas con SQL en la consola de D1 (`CREATE TABLE`, `ALTER TABLE ... ADD COLUMN`).
 El Worker las descubre solo (hasta 1 minuto después) y no hay que tocarlo.
 
 ## Puntos y niveles
@@ -145,23 +150,30 @@ Así cuentan también las sesiones antiguas y, si cambias una regla, se recalcul
 El reto completo cuenta como **una sola** sesión (un solo bonus). El total nunca baja de 0.
 Las reglas están en `features/points/rules.js` y los niveles en `features/points/levels.js`:
 
-| Nivel | Nombre | Puntos |
-|---|---|---|
-| 1 | Explorador | 0 |
-| 2 | Aprendiz | 50 |
-| 3 | Curioso | 120 |
-| 4 | Aventurero | 220 |
-| 5 | Detective | 350 |
-| 6 | Inventor | 520 |
-| 7 | Experto | 750 |
-| 8 | Campeón | 1.050 |
-| 9 | Maestro | 1.450 |
-| 10 | Leyenda | 2.000 |
+| Nivel | Nombre (chico) | Nombre (chica) | Puntos |
+|---|---|---|---|
+| 1 | Explorador | Exploradora | 0 |
+| 2 | Aprendiz | Aprendiz | 50 |
+| 3 | Curioso | Curiosa | 120 |
+| 4 | Aventurero | Aventurera | 220 |
+| 5 | Detective | Detective | 350 |
+| 6 | Inventor | Inventora | 520 |
+| 7 | Experto | Experta | 750 |
+| 8 | Campeón | Campeona | 1.050 |
+| 9 | Maestro | Maestra | 1.450 |
+| 10 | Leyenda | Leyenda | 2.000 |
 
-Alex ve su nivel en las pantallas de inicio y de asignaturas (al tocarlo se abre la lista de niveles), los puntos ganados o perdidos al terminar
+Un perfil sin chico/chica elegido usa los nombres en masculino.
+
+Alex ve su nivel en las pantallas de inicio, de cursos y de asignaturas (al tocarlo se abre la lista de niveles), los puntos ganados o perdidos al terminar
 ejercicios o reto, "+10" al estudiar y una pantalla de "¡Nuevo nivel!". Los padres ven en la zona de padres los puntos de cada perfil,
 de dónde vienen y una gráfica de 7 días, y reciben los puntos en los avisos (y un aviso al subir de nivel).
 Los puntos no cambian la regla del 75 %, que sigue usando solo los aciertos.
+
+## Porcentajes
+
+- **Curso completado** (`features/courses/course-percent.js`): temas estudiados sobre los temas con contenido del curso. Sale en la tarjeta de nivel de Alex y, con el detalle, en la zona de padres.
+- **Perfil completado** (`features/profiles/profile-completion.js`): cada dato vale un 25 %: nombre, color del icono, chico/chica y avisos activados. Sale en la edición del perfil y en cada perfil de la zona de padres.
 
 ## Avisos push
 
@@ -184,7 +196,7 @@ Todas las rutas llevan la cabecera `X-Api-Key`.
 
 ```
 GET    /api/practice_sessions?profile_id=eq.ID&order=finished_at.desc&limit=20
-POST   /api/profiles                      {"id":"...","name":"Lucía","avatar_color":"#FFA8C5"}
+POST   /api/profiles                      {"id":"...","name":"Lucía","avatar_color":"#FFA8C5","gender":"chica"}
 POST   /api/answers?conflict=ignore       [ {...}, {...} ]
 PATCH  /api/profiles/ID                   {"name":"Nuevo nombre"}
 DELETE /api/profiles/ID
