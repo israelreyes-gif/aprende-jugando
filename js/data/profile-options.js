@@ -9,3 +9,9 @@ export const AVATAR_COLORS = [
 ];
 
 export const MAX_NAME_LENGTH = 20;
+
+// Chico o chica: sirve para escribir los niveles en masculino o femenino.
+export const GENDERS = [
+  { value: 'chico', label: 'Chico', emoji: '👦' },
+  { value: 'chica', label: 'Chica', emoji: '👧' },
+];
