@@ -8,6 +8,8 @@ import { finishReto } from '../../data/reto/finish-reto.js';
 import { appHeader } from '../../shared/app-header.js';
 import { notify } from '../../shared/modal.js';
 import { notFoundView } from '../../shared/not-found-view.js';
+import { notifyParents } from '../push/parent-alerts/notify-parents.js';
+import { retoMessage } from '../push/parent-alerts/parent-messages.js';
 import { answersSaver } from './answers-saver.js';
 import { loadRetoStatus } from './reto-status.js';
 import { loadRetoTopics } from './load-reto-topics.js';
@@ -75,6 +77,7 @@ export async function retoScreen({ pid, cid }) {
       );
       return;
     }
+    if (answers.length) notifyParents(retoMessage({ name: profile.name, answers }));
     await showResult(answers);
   }
 
