@@ -76,3 +76,28 @@ a.level-card:active { transform: scale(0.99); }
 .points-days__col span { color: var(--muted); font-weight: 800; font-size: 13px; }
 .row-card__points { flex: none; display: flex; flex-direction: column; align-items: flex-end; font-weight: 700; font-size: 13px; color: var(--muted); }
 .row-card__points b { font-size: 17px; color: var(--primary); }
+
+/* Porcentaje del curso */
+.course-meter { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border-radius: var(--radius); background: var(--surface); border: 2px solid var(--line); }
+.course-meter__head { display: flex; justify-content: space-between; gap: 8px; font-weight: 800; font-size: 14px; }
+.course-meter__bar { display: block; height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.course-meter__bar i { display: block; height: 100%; border-radius: 999px; background: var(--primary); }
+.course-meter__detail { font-weight: 700; font-size: 13px; color: var(--muted); }
+.course-meter--card { padding: 0; margin-top: 8px; background: none; border: 0; color: inherit; }
+.course-meter--card .course-meter__bar { height: 8px; background: rgba(255, 255, 255, 0.25); }
+.course-meter--card .course-meter__bar i { background: #7ce0a8; }
+
+/* Chico / chica y perfil completado */
+.gender-row { display: flex; gap: 12px; }
+.gender { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 14px 8px; border-radius: var(--radius); border: 2px solid var(--line); background: var(--surface); font: 800 16px var(--font-body); color: inherit; cursor: pointer; }
+.gender__emoji { font-size: 38px; line-height: 1; }
+.gender[aria-pressed='true'] { border-color: var(--primary); box-shadow: inset 0 0 0 2px var(--primary); }
+.field__hint { margin: 6px 0 0; font-weight: 700; font-size: 13px; color: var(--muted); }
+.completion { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border-radius: var(--radius); background: var(--surface); border: 2px solid var(--line); }
+.completion__head { display: flex; flex-direction: column; gap: 2px; font-weight: 800; font-size: 14px; }
+.completion__missing { font-weight: 700; font-size: 13px; color: var(--muted); }
+.completion__bar { height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.completion__bar i { display: block; height: 100%; border-radius: 999px; background: var(--primary); transition: width 0.25s; }
+.completion--full .completion__bar i { background: #2eaa6b; }
+.profile-chip { align-self: flex-start; padding: 2px 10px; border-radius: 999px; background: var(--line); font-weight: 800; font-size: 12px; }
+.profile-chip--full { background: #d9f5e5; color: #17724a; }
