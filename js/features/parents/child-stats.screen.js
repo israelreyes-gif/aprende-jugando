@@ -6,19 +6,22 @@ import { listSessions } from '../../data/practice.repo.js';
 import { appHeader } from '../../shared/app-header.js';
 import { icon } from '../../shared/icons.js';
 import { notFoundView } from '../../shared/not-found-view.js';
+import { loadPointsOrNull } from '../points/load-points.js';
 import { loadStreak } from '../reto/load-streak.js';
+import { spainDay } from '../reto/streak/date-keys.js';
 import { deleteProfileButton } from './child-stats/delete-profile-button.js';
 import { reinforceCards } from './child-stats/reinforce-cards.js';
 import { subjectRows } from './child-stats/subject-rows.js';
 import { summaryChips } from './child-stats/summary-chips.js';
 import { loadCourseProgress } from './child-stats/load-course-progress.js';
+import { pointsSection } from './child-stats/points-section.js';
 import { progressRows } from './child-stats/progress-rows.js';
 import { loadTopicTitles } from './child-stats/topic-titles.js';
 import { withParentsGate } from './pin-gate.js';
 import { computeStats } from './stats.logic.js';
 
 async function renderChildStats({ pid }) {
-  const [profile, sessions, streak] = await Promise.all([getProfile(pid), listSessions(pid), loadStreak(pid)]);
+  const [profile, sessions, streak, points] = await Promise.all([getProfile(pid), listSessions(pid), loadStreak(pid), loadPointsOrNull(pid)]);
   if (!profile) return notFoundView();
 
   const stats = computeStats(sessions, SUBJECTS.map((s) => s.id), streak);
@@ -45,7 +48,7 @@ async function renderChildStats({ pid }) {
     'main',
     { class: 'screen' },
     appHeader({ title: profile.name, sub: 'Estadísticas', back: paths.parents(), profile }),
-    h('div', { class: 'screen__body' }, releaseLink, progressSection, ...body, h('div', { class: 'spacer' }), deleteProfileButton(profile)),
+    h('div', { class: 'screen__body' }, points ? pointsSection(points, spainDay()) : null, releaseLink, progressSection, ...body, h('div', { class: 'spacer' }), deleteProfileButton(profile)),
   );
 }
 
