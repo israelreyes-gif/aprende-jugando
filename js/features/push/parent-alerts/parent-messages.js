@@ -11,12 +11,12 @@ function grade(correct, total) {
 
 const countCorrect = (results) => results.filter((r) => r.correct).length;
 
-// Títulos cortos (para que iOS no los recorte); el tema y la nota van en el cuerpo.
+// Títulos cortos (para que iOS no los recorte); la asignatura, el tema y la nota van en el cuerpo.
 
 /** Aviso al terminar una sesión de ejercicios de un tema. */
 export function practiceMessage({ name, topicTitle, subjectName, results }) {
   const { low, score } = grade(countCorrect(results), results.length);
-  const detail = `${short(topicTitle)} · ${subjectName} · ${score}`;
+  const detail = `${subjectName} · ${short(topicTitle)} · ${score}`;
   return low
     ? { title: `${name} necesita refuerzo`, body: `${detail} ⚠️` }
     : { title: `${name} ha practicado`, body: `${detail} ✅` };
@@ -30,5 +30,5 @@ export function retoMessage({ name, answers }) {
 
 /** Aviso al marcar un tema como estudiado (no tiene nota). */
 export function studiedMessage({ name, topicTitle, subjectName }) {
-  return { title: `${name} ha estudiado`, body: `${short(topicTitle)} · ${subjectName}` };
+  return { title: `${name} ha estudiado`, body: `${subjectName} · ${short(topicTitle)}` };
 }
