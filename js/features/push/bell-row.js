@@ -13,9 +13,10 @@ const CHECK_FAILED = 'No se ha podido comprobar. Revisa la conexión.';
 
 /**
  * Fila con una campanita para activar o desactivar los avisos en ESTE móvil.
- * kind: 'child' (con profileId) o 'parent'. welcome: { title, body } del aviso que llega al activarlos.
+ * kind: 'child' (con profileId) o 'parent'. onState(activo): se llama al comprobar y al cambiar. welcome: { title, body } del aviso que llega al activarlos.
  */
-export function bellRow({ kind, profileId, title, meta, welcome }) {
+export function bellRow({ kind, profileId, title, meta, welcome, onState }) {
+  const report = (active) => onState && onState(active);
   const target = kind === 'parent' ? 'parents' : { profile_id: profileId };
   const metaText = h('span', { class: 'switch-row__meta' }, meta);
 
@@ -25,8 +26,12 @@ export function bellRow({ kind, profileId, title, meta, welcome }) {
     label: title,
     onChange: async (value) => {
       try {
-        if (!value) return await turnOff({ kind, profileId });
+        if (!value) {
+          await turnOff({ kind, profileId });
+          return report(false);
+        }
         const { welcomeSent } = await turnOn({ kind, profileId, target, welcome });
+        report(true);
         if (!welcomeSent) notify({ kind: 'info', title: 'Avisos activados', message: 'Se han activado, pero no se ha podido enviar el aviso de prueba.' });
       } catch (err) {
         if (err.code === 'denied') {
@@ -50,6 +55,7 @@ export function bellRow({ kind, profileId, title, meta, welcome }) {
       const active = Boolean(subscription) && Notification.permission === 'granted' && (await isDeviceRegistered({ kind, profileId, endpoint: subscription.endpoint }));
       toggle.setAttribute('aria-checked', String(active));
       toggle.disabled = false;
+      report(active);
     } catch (err) {
       console.warn(err);
       metaText.textContent = CHECK_FAILED;
