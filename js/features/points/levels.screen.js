@@ -4,7 +4,7 @@ import { getProfile } from '../../data/profiles.repo.js';
 import { appHeader } from '../../shared/app-header.js';
 import { notFoundView } from '../../shared/not-found-view.js';
 import { formatNumber } from './format-points.js';
-import { LEVELS, levelFor } from './levels.js';
+import { levelFor, levelsFor } from './levels.js';
 import { loadPointsOrNull } from './load-points.js';
 import { levelCard } from './ui/level-card.js';
 
@@ -13,8 +13,8 @@ export async function levelsScreen({ pid }) {
   const [profile, points] = await Promise.all([getProfile(pid), loadPointsOrNull(pid)]);
   if (!profile) return notFoundView();
 
-  const current = points ? levelFor(points.total).n : 0;
-  const rows = LEVELS.map((level) =>
+  const current = points ? levelFor(points.total, profile.gender).n : 0;
+  const rows = levelsFor(profile.gender).map((level) =>
     h(
       'li',
       { class: `level-row${level.n === current ? ' level-row--current' : ''}${level.n < current ? ' level-row--done' : ''}`, 'aria-current': level.n === current ? 'true' : null },
@@ -31,7 +31,7 @@ export async function levelsScreen({ pid }) {
     h(
       'div',
       { class: 'screen__body' },
-      points ? levelCard({ points }) : h('p', { class: 'note note--empty' }, 'No se han podido cargar tus puntos. Revisa la conexión.'),
+      points ? levelCard({ points, gender: profile.gender }) : h('p', { class: 'note note--empty' }, 'No se han podido cargar tus puntos. Revisa la conexión.'),
       h('p', { class: 'lead' }, 'Cada acierto suma 1 punto, cada fallo resta 1 y cada tema estudiado suma 10. Terminar una sesión en positivo da +5 extra.'),
       h('ul', { class: 'level-list' }, rows),
     ),
