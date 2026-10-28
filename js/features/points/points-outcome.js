@@ -1,4 +1,5 @@
 import { levelFor } from './levels.js';
+import { getProfile } from '../../data/profiles.repo.js';
 import { loadPoints } from './load-points.js';
 
 /**
@@ -8,10 +9,11 @@ import { loadPoints } from './load-points.js';
  */
 export async function pointsOutcome({ profileId, delta, queued }) {
   try {
-    const summary = await loadPoints(profileId);
+    const [summary, profile] = await Promise.all([loadPoints(profileId), getProfile(profileId).catch(() => null)]);
+    const gender = profile ? profile.gender : null;
     const raw = queued ? summary.raw + delta : summary.raw;
-    const after = levelFor(Math.max(0, raw));
-    const before = levelFor(Math.max(0, raw - delta));
+    const after = levelFor(Math.max(0, raw), gender);
+    const before = levelFor(Math.max(0, raw - delta), gender);
     return { total: Math.max(0, raw), up: after.n > before.n ? after : null };
   } catch (err) {
     console.warn('No se pudieron leer los puntos', err);
