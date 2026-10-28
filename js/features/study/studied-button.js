@@ -2,7 +2,7 @@ import { h } from '../../core/dom.js';
 import { icon } from '../../shared/icons.js';
 import { notify } from '../../shared/modal.js';
 
-/** Botón "Marcar como estudiado". onMark() guarda el progreso; si falla, se deshace. */
+/** Botón "Marcar como estudiado". onMark() guarda el progreso; si falla, se deshace. Si devuelve { celebrated: true }, ya se ha celebrado y no se muestra el aviso. */
 export function studiedButton({ t, studied, onMark }) {
   let done = studied;
   const button = h('button', { class: 'btn btn--outline btn--block', type: 'button' });
@@ -17,8 +17,8 @@ export function studiedButton({ t, studied, onMark }) {
     done = true;
     draw();
     try {
-      await onMark();
-      notify({ kind: 'success', title: t.studiedDone, button: t.gotIt });
+      const outcome = await onMark();
+      if (!outcome?.celebrated) notify({ kind: 'success', title: t.studiedDone, button: t.gotIt });
     } catch (err) {
       console.error(err);
       done = false;
