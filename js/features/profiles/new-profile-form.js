@@ -5,11 +5,11 @@ import { profileForm } from './profile-form.js';
 /** Formulario para crear un perfil. Llama a onCreated() cuando el perfil se ha guardado. */
 export function newProfileForm({ onCreated }) {
   return profileForm({
-    initial: { name: '', color: AVATAR_COLORS[3].hex },
+    initial: { name: '', color: AVATAR_COLORS[3].hex, gender: null },
     submitLabel: 'Crear perfil',
     errorText: 'No se ha podido crear el perfil. Inténtalo de nuevo.',
-    onSave: async ({ name, color }) => {
-      await createProfile({ name, color });
+    onSave: async ({ name, color, gender }) => {
+      await createProfile({ name, color, gender });
       onCreated();
     },
   });
