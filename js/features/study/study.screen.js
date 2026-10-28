@@ -8,6 +8,7 @@ import { appHeader } from '../../shared/app-header.js';
 import { texts } from '../../shared/i18n.js';
 import { lockedView } from '../../shared/locked-view.js';
 import { notFoundView } from '../../shared/not-found-view.js';
+import { celebrateStudied } from '../points/ui/celebrate-studied.js';
 import { notifyParents } from '../push/parent-alerts/notify-parents.js';
 import { studiedMessage } from '../push/parent-alerts/parent-messages.js';
 import { renderBlocks } from './lesson-blocks.js';
@@ -48,6 +49,8 @@ export async function studyScreen({ pid, cid, sid, tid }) {
           onMark: async () => {
             const { queued } = await markStudied({ profileId: pid, courseId: cid, subjectId: sid, topicId: tid });
             if (!queued) notifyParents(studiedMessage({ name: profile.name, topicTitle: topic.title, subjectName: subject.name }));
+            await celebrateStudied({ profile, queued, topicTitle: topic.title });
+            return { celebrated: true };
           },
         }),
         exercises.length ? h('a', { class: 'btn btn--primary btn--block', href: paths.practice(pid, cid, sid, tid) }, t.goPractice) : null,
