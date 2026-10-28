@@ -2,12 +2,12 @@ import { h } from '../../core/dom.js';
 import { paths } from '../../core/paths.js';
 import { icon } from '../../shared/icons.js';
 
-/** Tarjeta de una asignatura dentro de un curso. */
+/** Tarjeta de una asignatura dentro de un curso: emoji grande y el color de la asignatura. */
 export function subjectCard(profile, course, subject) {
   return h(
     'a',
-    { class: 'card row-card', href: paths.subject(profile.id, course.id, subject.id), style: { '--tint': subject.tint, '--deep': subject.deep }, 'aria-label': subject.name },
-    h('span', { class: 'tile' }, icon(subject.id, 30)),
+    { class: 'card row-card subject-card', href: paths.subject(profile.id, course.id, subject.id), style: { '--tint': subject.tint, '--deep': subject.deep }, 'aria-label': subject.name },
+    h('span', { class: 'tile', 'aria-hidden': 'true' }, subject.emoji),
     h(
       'span',
       { class: 'row-card__text' },
