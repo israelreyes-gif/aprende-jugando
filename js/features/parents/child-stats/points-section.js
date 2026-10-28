@@ -9,9 +9,9 @@ const chip = (value, label) => h('div', { class: 'stat-chip' }, h('span', { clas
 
 /**
  * Puntos de un perfil para la zona de padres: nivel, hoy / semana, de dónde vienen y gráfica de 7 días.
- * points: lo que devuelve loadPoints(). today: 'AAAA-MM-DD'.
+ * points: lo que devuelve loadPoints(). today: 'AAAA-MM-DD'. gender: 'chico' | 'chica'.
  */
-export function pointsSection(points, today) {
+export function pointsSection(points, today, gender) {
   const period = periodPoints(points.byDay, today);
   const lines = [
     { label: '✅ Aciertos', value: signed(points.right), tone: 'pos' },
@@ -24,7 +24,7 @@ export function pointsSection(points, today) {
     'section',
     { class: 'stack' },
     h('h2', { class: 'title-lg' }, 'Puntos'),
-    levelCard({ points }),
+    levelCard({ points, gender }),
     h('div', { class: 'grid-2' }, chip(signed(period.today), 'Hoy'), chip(signed(period.week), 'Esta semana')),
     h('div', { class: 'points-card' }, h('p', { class: 'points-card__title' }, '¿De dónde vienen?'), pointsLines(lines)),
     pointsDays(period.days),
