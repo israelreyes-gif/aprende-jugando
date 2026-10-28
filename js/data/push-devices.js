@@ -27,3 +27,13 @@ export async function isDeviceRegistered({ kind, profileId, endpoint }) {
 export async function unregisterDevice({ kind, profileId, endpoint }) {
   await api.remove('push_devices', { id: await deviceId({ kind, profileId, endpoint }) });
 }
+
+/** ¿Hay algún móvil recibiendo los avisos de este perfil? Devuelve null si no se pudo comprobar. */
+export async function hasChildDevice(profileId) {
+  try {
+    const rows = await api.list('push_devices', { where: { kind: 'child', profile_id: profileId } });
+    return rows.length > 0;
+  } catch {
+    return null;
+  }
+}
