@@ -1,4 +1,4 @@
-import { finishedRetoDays, listChildDevices, releasedCourses } from './reminder-data.js';
+import { finishedRetoDays, listChildDevices, retoCourses } from './reminder-data.js';
 import { spainDay } from './reminder-dates.js';
 import { reminderMessage } from './reminder-message.js';
 import { reminderSlot } from './reminder-slot.js';
@@ -11,9 +11,9 @@ const groupByProfile = (devices) => {
   return groups;
 };
 
-/** Recordatorio de un perfil. Devuelve 'sent', 'done' (ya hizo el reto) o 'no-topics' (no hay reto posible). */
+/** Recordatorio de un perfil. Devuelve 'sent', 'done' (ya hizo el reto) o 'no-topics' (sin temas liberados y estudiados: no hay reto posible). */
 async function remindProfile(env, { slot, today, profileId, devices }) {
-  const courses = await releasedCourses(env.DB, profileId);
+  const courses = await retoCourses(env.DB, profileId);
   if (courses.length === 0) return 'no-topics';
 
   const doneDays = await finishedRetoDays(env.DB, profileId);
