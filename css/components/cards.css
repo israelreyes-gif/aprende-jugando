@@ -14,3 +14,10 @@
   background: var(--tint, var(--soft)); color: var(--deep, var(--primary));
 }
 .tile--sm { width: 44px; height: 44px; border-radius: 14px; }
+
+/* Tarjeta de asignatura: color propio y emoji grande */
+.subject-card { min-height: 96px; background: var(--tint); border-color: var(--deep); }
+.subject-card .tile { width: 64px; height: 64px; border-radius: 20px; background: #FFFFFF; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); font-size: 38px; line-height: 1; }
+.subject-card .row-card__title { font-size: 23px; color: var(--deep); }
+.subject-card .chip { background: #FFFFFF; }
+.subject-card .row-card__chev { color: var(--deep); }
