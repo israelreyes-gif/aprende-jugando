@@ -4,7 +4,7 @@ import { itemSupplier } from './item-supplier.js';
 
 /**
  * Prepara el reto: qué preguntas saldrán, repartidas por igual entre los temas.
- * topics: [{ subjectId, topicId, exercises }] (solo temas liberados y con ejercicios).
+ * topics: [{ subjectId, topicId, exercises }] (solo temas liberados, estudiados y con ejercicios).
  * Se da una pregunta a cada tema, en orden aleatorio, y se vuelve a empezar hasta llegar a `size`.
  * Con `size` temas o más sale una pregunta de cada tema elegido; con menos, se reparten por igual.
  * Devuelve [{ subjectId, topicId, exerciseId, seed }] mezclado. La semilla permite recrear la misma pregunta.
