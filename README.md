@@ -7,7 +7,8 @@ Empieza en 4.º de Primaria con Matemáticas, Sociales, Inglés, Lengua y Scienc
 - **Datos**: base de datos D1 con tablas reales, accesible a través de un Worker mínimo y genérico.
 - **Offline**: `sw.js` guarda la app; los resultados hechos sin internet se guardan y se envían solos al volver la conexión.
 - **Reto diario**: hasta 10 preguntas al día por perfil, de temas liberados y estudiados, con racha.
-- **Zona de padres**: estadísticas, refuerzo (regla del 75 %) y temas liberados por perfil.
+- **Puntos y niveles**: +1 por acierto, −1 por fallo, +10 por tema estudiado y ±5 de bonus por sesión; 10 niveles (ver más abajo).
+- **Zona de padres**: estadísticas, refuerzo (regla del 75 %), puntos y temas liberados por perfil.
 - **Avisos push**: recordatorios del reto a cada perfil (08:00 y 18:30) y avisos a los padres cuando un perfil termina un reto, un estudio o ejercicios (ver más abajo).
 
 ## Estructura
@@ -38,6 +39,7 @@ js/
     study/        lecciones
     practice/     motor de ejercicios y tipos de pregunta
     reto/         reto diario, racha y su resultado
+    points/       puntos y niveles: reglas, niveles, cálculo y pantallas (ui/)
     push/         avisos push: permiso, suscripción del móvil, la campanita (bell-row.js) y los avisos a padres (parent-alerts/)
 worker/         código del Worker (varios ficheros pequeños) · wrangler.jsonc (configuración y variables) · schema.sql (se ejecuta en D1)
 tools/          make-icons.py
@@ -127,6 +129,40 @@ Borrar un perfil borra en cascada todo su progreso y sus móviles de avisos. Las
 Añade tablas o columnas con SQL en la consola de D1 (`CREATE TABLE`, `ALTER TABLE ... ADD COLUMN`) y deja la misma sentencia en `worker/schema.sql`.
 El Worker las descubre solo (hasta 1 minuto después) y no hay que tocarlo.
 
+## Puntos y niveles
+
+Los puntos **no se guardan**: se calculan siempre a partir de lo que ya hay en la base de datos (sesiones, respuestas y temas estudiados).
+Así cuentan también las sesiones antiguas y, si cambias una regla, se recalcula todo sin tocar la base de datos.
+
+| Qué | Puntos |
+|---|---|
+| Acierto | +1 |
+| Fallo | −1 |
+| Tema estudiado | +10 |
+| Bonus al terminar una sesión (ejercicios o reto completo) en positivo | +5 |
+| Bonus al terminar una sesión en negativo | −5 |
+
+El reto completo cuenta como **una sola** sesión (un solo bonus). El total nunca baja de 0.
+Las reglas están en `features/points/rules.js` y los niveles en `features/points/levels.js`:
+
+| Nivel | Nombre | Puntos |
+|---|---|---|
+| 1 | Explorador | 0 |
+| 2 | Aprendiz | 50 |
+| 3 | Curioso | 120 |
+| 4 | Aventurero | 220 |
+| 5 | Detective | 350 |
+| 6 | Inventor | 520 |
+| 7 | Experto | 750 |
+| 8 | Campeón | 1.050 |
+| 9 | Maestro | 1.450 |
+| 10 | Leyenda | 2.000 |
+
+Alex ve su nivel en las pantallas de inicio y de asignaturas (al tocarlo se abre la lista de niveles), los puntos ganados o perdidos al terminar
+ejercicios o reto, "+10" al estudiar y una pantalla de "¡Nuevo nivel!". Los padres ven en la zona de padres los puntos de cada perfil,
+de dónde vienen y una gráfica de 7 días, y reciben los puntos en los avisos (y un aviso al subir de nivel).
+Los puntos no cambian la regla del 75 %, que sigue usando solo los aciertos.
+
 ## Avisos push
 
 El Worker (`worker/push-*.js`) envía los avisos cifrados con Web Push (VAPID) y el service worker
@@ -137,7 +173,7 @@ El Worker (`worker/push-*.js`) envía los avisos cifrados con Web Push (VAPID) y
   Los manda el Worker con una tarea programada (`triggers.crons` en `worker/wrangler.jsonc`, cada 30 minutos; el plan gratuito
   de Cloudflare solo permite 5 tareas programadas por cuenta, por eso es una sola).
 - **Avisos para padres** (campanita "Avisos para padres" en la Zona de padres): cuando un perfil termina un reto, una sesión de ejercicios
-  o marca un tema como estudiado. Incluye la nota y marca ⚠️ si está por debajo del 75 % (`features/parents/stats/thresholds.js`).
+  o marca un tema como estudiado, y cuando sube de nivel. Incluye la nota (con ⚠️ si está por debajo del 75 %) y los puntos (`features/parents/stats/thresholds.js`).
   Los envía el móvil del niño justo después de guardar el resultado (`features/push/parent-alerts/`); si no hay conexión, no se manda.
 
 En iPhone solo funciona con la app instalada en la pantalla de inicio, y el permiso se pide al pulsar la campanita.
