@@ -16,14 +16,36 @@
 .profile-card--add { border: 2px dashed var(--primary); background: var(--soft); color: var(--primary); }
 .profile-card--add .avatar { background: #FFFFFF; color: var(--primary); }
 
-.course-card {
-  appearance: none; min-height: 136px; padding: 16px; border-radius: var(--radius-lg);
-  flex-direction: column; justify-content: space-between; align-items: flex-start; text-align: left;
-  background: var(--primary); color: var(--primary-ink); border-color: var(--primary);
+.course-card { appearance: none; font: inherit; }
+
+/* Curso actual: tarjeta grande naranja con la mochila */
+.course-card--current {
+  display: flex; align-items: center; gap: 14px; padding: 18px; border-radius: 26px; text-decoration: none; color: #FFFFFF;
+  background: linear-gradient(135deg, #FFB020, #FF8A3D); box-shadow: 0 8px 20px rgba(255, 138, 61, 0.35);
 }
-.course-card__label { font-family: var(--font-display); font-weight: 600; font-size: 46px; line-height: 1; }
-.course-card__status { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 14px; }
-.course-card--locked { background: var(--soft); color: var(--muted); border-color: var(--line); }
+.course-card__n { font-family: var(--font-display); font-weight: 600; font-size: 56px; line-height: 1; white-space: nowrap; }
+.course-card__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.course-card__title { font-family: var(--font-display); font-weight: 500; font-size: 22px; }
+.course-card__status { font-weight: 800; font-size: 14px; }
+.course-card__go { align-self: flex-start; margin-top: 6px; padding: 6px 14px; border-radius: 999px; background: #FFFFFF; color: #C2551B; font-weight: 800; font-size: 14px; }
+.course-card__bag {
+  flex: none; display: grid; place-items: center; width: 104px; height: 104px; border-radius: 28px; background: #FFFFFF;
+  box-shadow: 0 8px 18px rgba(120, 50, 0, 0.28); transform: rotate(4deg);
+}
+
+/* Cursos superados y próximos: cuadrícula de tres */
+.course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.course-card--done, .course-card--locked {
+  display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 6px; border-radius: 20px; text-decoration: none;
+}
+.course-card--done .course-card__n, .course-card--locked .course-card__n { font-size: 26px; }
+.course-card--done { border: 2px solid #2EAA6B; background: #E3F7EC; color: #17724A; }
+.course-card__medal { font-size: 24px; line-height: 1; }
+.course-card--locked { border: 2px dashed #B9B5CF; background: #EEEDF3; color: #77738F; padding: 14px 6px; }
+
+.section-label { margin: 6px 0 0; font-family: var(--font-body); font-weight: 800; font-size: 14px; color: var(--muted); }
+.section-label--done { color: #17724A; }
+.cheer { margin: 0; padding: 12px 14px; border-radius: 18px; border: 2px solid var(--line); background: var(--surface); font-weight: 800; font-size: 15px; text-align: center; }
 
 /* Tema: disponible (por defecto), estudiado, refuerzo (rojo / naranja) y no disponible. */
 .topic-card {
