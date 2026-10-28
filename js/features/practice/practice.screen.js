@@ -10,6 +10,8 @@ import { appHeader } from '../../shared/app-header.js';
 import { texts } from '../../shared/i18n.js';
 import { lockedView } from '../../shared/locked-view.js';
 import { notFoundView } from '../../shared/not-found-view.js';
+import { notifyParents } from '../push/parent-alerts/notify-parents.js';
+import { practiceMessage } from '../push/parent-alerts/parent-messages.js';
 import { questionView } from './question-view.js';
 import { resultView } from './result-view.js';
 
@@ -62,7 +64,10 @@ export async function practiceScreen({ pid, cid, sid, tid }) {
   function showResult() {
     const saveNote = h('p', { class: 'lead', role: 'status' }, '…');
     savePractice({ profileId: pid, courseId: cid, subjectId: sid, topicId: tid, results, durationS: (Date.now() - startedAt) / 1000 })
-      .then(({ queued }) => (saveNote.textContent = queued ? t.savedLater : t.saved))
+      .then(({ queued }) => {
+        saveNote.textContent = queued ? t.savedLater : t.saved;
+        if (!queued) notifyParents(practiceMessage({ name: profile.name, topicTitle: topic.title, subjectName: subject.name, results }));
+      })
       .catch((err) => {
         console.error(err);
         saveNote.textContent = t.saveFailed;
