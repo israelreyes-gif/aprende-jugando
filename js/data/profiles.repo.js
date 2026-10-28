@@ -9,15 +9,15 @@ export function getProfile(id) {
   return api.get('profiles', id);
 }
 
-export async function createProfile({ name, color }) {
-  const profile = { id: uuid(), name: name.trim(), avatar_color: color };
+export async function createProfile({ name, color, gender }) {
+  const profile = { id: uuid(), name: name.trim(), avatar_color: color, gender: gender || null };
   await api.insert('profiles', profile);
   return profile;
 }
 
-/** Cambia el nombre y el color de un perfil. */
-export async function updateProfile(id, { name, color }) {
-  await api.update('profiles', { id }, { name: name.trim(), avatar_color: color });
+/** Cambia el nombre, el color y si es chico o chica. */
+export async function updateProfile(id, { name, color, gender }) {
+  await api.update('profiles', { id }, { name: name.trim(), avatar_color: color, gender: gender || null });
 }
 
 /** Borra el perfil y, en cascada, todo su progreso. */
