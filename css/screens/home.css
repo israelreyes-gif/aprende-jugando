@@ -13,6 +13,7 @@
   border-radius: var(--radius-lg);
   background: linear-gradient(135deg, #6A5CF0, #3A2EB5);
   color: #fff;
+  box-shadow: 0 8px 20px rgba(58, 46, 181, 0.3);
 }
 .home__banner .eyebrow { color: #E4E0FF; }
 .home__banner .title-xl { font-size: 28px; }
