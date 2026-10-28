@@ -13,6 +13,7 @@ export const paths = {
   releaseSubject: (pid, cid, sid) => `#/parents/${pid}/release/${cid}/${sid}`,
 
   editProfile: (pid) => `#/p/${pid}/edit`,
+  levels: (pid) => `#/p/${pid}/levels`,
   courses: (pid) => `#/p/${pid}`,
   course: (pid, cid) => `#/p/${pid}/c/${cid}`,
   reto: (pid, cid) => `#/p/${pid}/c/${cid}/reto`,
