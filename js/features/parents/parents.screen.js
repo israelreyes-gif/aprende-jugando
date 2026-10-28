@@ -4,6 +4,7 @@ import { paths } from '../../core/paths.js';
 import { listProfiles } from '../../data/profiles.repo.js';
 import { appHeader } from '../../shared/app-header.js';
 import { icon } from '../../shared/icons.js';
+import { parentsBell } from './parents-bell.js';
 import { createPinView } from './pin/create-pin-view.js';
 import { lock } from './pin/unlock-state.js';
 import { withParentsGate } from './pin-gate.js';
@@ -21,6 +22,7 @@ async function renderParents() {
       { class: 'screen__body' },
       h('p', { class: 'lead' }, profiles.length ? 'Elige un perfil para ver cómo va.' : 'Todavía no hay perfiles. Crea el primero desde el inicio.'),
       h('div', { class: 'stack' }, profiles.map(profileRow)),
+      parentsBell(),
       h('div', { class: 'spacer' }),
       h('a', { class: 'btn btn--outline btn--block', href: paths.parentsPin() }, 'Cambiar PIN'),
       h('button', { class: 'btn btn--primary btn--block', type: 'button', onClick: () => {
