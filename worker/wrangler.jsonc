@@ -8,7 +8,7 @@
     "VAPID_SUBJECT": "https://israelreyes-gif.github.io/aprende-jugando/"
   },
   "triggers": {
-    "crons": ["0 6,7 * * *", "30 16,17 * * *"]
+    "crons": ["*/30 * * * *"]
   },
   "d1_databases": [
     { "binding": "DB", "database_name": "aprende-jugando", "database_id": "b8df5046-70ab-415d-a2f0-3eec2b3b70c7" }
