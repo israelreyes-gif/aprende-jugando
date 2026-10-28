@@ -1,6 +1,6 @@
 // Ajustes del service worker. Cuando cambies muchos archivos de golpe, sube VERSION
 // para que se limpien las copias guardadas antiguas.
-const VERSION = 'v6';
+const VERSION = 'v7';
 const CACHE = `aprende-jugando-${VERSION}`;
 
 // Archivos que se guardan al instalar la app. El resto se guarda al usarlo.
@@ -11,7 +11,5 @@ const SHELL = [
   './icons/icon.svg',
   './css/tokens.css',
   './css/base.css',
-  './css/components.css',
-  './css/screens.css',
   './js/main.js',
 ];
