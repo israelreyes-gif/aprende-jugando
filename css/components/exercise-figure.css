@@ -2,3 +2,7 @@
 .fig { width: 100%; max-width: 110px; display: block; margin: 0 auto; }
 .fig * { fill: var(--soft); stroke: var(--primary); stroke-width: 3; stroke-linejoin: round; }
 .fig--big { max-width: 120px; margin: 0; }
+
+/* Relojes (Inglés) */
+.clock { display: block; width: 100%; max-width: 220px; margin: 0 auto; }
+.tap-item .clock { max-width: none; }
