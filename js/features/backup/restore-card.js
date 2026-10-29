@@ -10,7 +10,7 @@ const IDLE = 'Elige un archivo de copia. Solo se añade lo que falte; no se borr
 export function restoreCard() {
   const status = h('span', { class: 'backup-card__status' }, IDLE);
   const button = h('button', { class: 'btn btn--outline', type: 'button' }, 'Elegir archivo');
-  const input = h('input', { type: 'file', accept: 'application/json,.json', hidden: true });
+  const input = h('input', { type: 'file', hidden: true });
   const card = h('div', { class: 'backup-card' }, h('div', { class: 'backup-card__text' }, h('b', {}, '♻️ Recuperar copia'), status), button, input);
 
   const idle = () => {
