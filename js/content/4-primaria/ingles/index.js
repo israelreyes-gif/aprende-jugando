@@ -4,7 +4,7 @@
 const UNIT_1 = 'Unit 1 · Practice Time';
 
 export const topics = [
-  { id: 'time', emoji: '⏰', unit: UNIT_1, title: 'Telling the time', minutes: 5 },
+  { id: 'time', emoji: '⏰', unit: UNIT_1, title: 'Telling the time', minutes: 5, load: () => import('./time/index.js') },
   { id: 'question-words', emoji: '❓', unit: UNIT_1, title: 'Question words', minutes: 5 },
   { id: 'activity-verbs', emoji: '🤸', unit: UNIT_1, title: 'Activity verbs', minutes: 5 },
   { id: 'was-were', emoji: '🕰️', unit: UNIT_1, title: 'Was / were', minutes: 5 },
