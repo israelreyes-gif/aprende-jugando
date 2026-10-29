@@ -55,6 +55,11 @@
 
 /* Lista de temas: resumen de arriba y una tarjeta por tema */
 .topic-list { display: flex; flex-direction: column; gap: 12px; }
+.topic-list--tight { gap: 8px; }
+
+/* Temas de una misma unidad: se ven juntos, dentro de un fondo suave con el título de la unidad */
+.topic-group { display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 26px; background: var(--tint); }
+.topic-group__title { margin: 2px 4px 0; font-family: var(--font-body); font-weight: 800; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--deep); }
 .topics-summary { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 20px; background: var(--surface); border: 2px solid var(--line); }
 .topics-summary b { font-weight: 800; font-size: 14px; }
 .topics-summary__bar { height: 12px; border-radius: 999px; background: #E7E5F2; overflow: hidden; }
