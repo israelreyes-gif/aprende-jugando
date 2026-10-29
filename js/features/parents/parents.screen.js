@@ -8,6 +8,7 @@ import { loadPointsOrNull } from '../points/load-points.js';
 import { backupCard } from '../backup/backup-card.js';
 import { isBackupDue } from '../backup/backup-due.js';
 import { loadLastBackup } from '../backup/last-backup.js';
+import { restoreCard } from '../backup/restore-card.js';
 import { appHeader } from '../../shared/app-header.js';
 import { icon } from '../../shared/icons.js';
 import { parentsBell } from './parents-bell.js';
@@ -37,6 +38,7 @@ async function renderParents() {
       h('div', { class: 'stack' }, profiles.map((profile, i) => profileRow(profile, points[i], completions[i]))),
       parentsBell(),
       due ? null : backup,
+      restoreCard(),
       h('div', { class: 'spacer' }),
       h('a', { class: 'btn btn--outline btn--block', href: paths.parentsPin() }, 'Cambiar PIN'),
       h('button', { class: 'btn btn--primary btn--block', type: 'button', onClick: () => {
