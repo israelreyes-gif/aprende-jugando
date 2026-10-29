@@ -5,6 +5,9 @@ import { listProfiles } from '../../data/profiles.repo.js';
 import { hasChildDevice } from '../../data/push-devices.js';
 import { profileCompletion } from '../profiles/profile-completion.js';
 import { loadPointsOrNull } from '../points/load-points.js';
+import { backupCard } from '../backup/backup-card.js';
+import { isBackupDue } from '../backup/backup-due.js';
+import { loadLastBackup } from '../backup/last-backup.js';
 import { appHeader } from '../../shared/app-header.js';
 import { icon } from '../../shared/icons.js';
 import { parentsBell } from './parents-bell.js';
@@ -17,6 +20,9 @@ async function renderParents() {
   const profiles = await listProfiles();
   const points = await Promise.all(profiles.map((profile) => loadPointsOrNull(profile.id)));
   const bells = await Promise.all(profiles.map((profile) => hasChildDevice(profile.id)));
+  const last = await loadLastBackup();
+  const due = isBackupDue(last);
+  const backup = backupCard({ last, due });
   const completions = profiles.map((profile, i) => profileCompletion({ name: profile.name, color: profile.avatar_color, gender: profile.gender, bell: bells[i] }));
 
   return h(
@@ -27,8 +33,10 @@ async function renderParents() {
       'div',
       { class: 'screen__body' },
       h('p', { class: 'lead' }, profiles.length ? 'Elige un perfil para ver cómo va.' : 'Todavía no hay perfiles. Crea el primero desde el inicio.'),
+      due ? backup : null,
       h('div', { class: 'stack' }, profiles.map((profile, i) => profileRow(profile, points[i], completions[i]))),
       parentsBell(),
+      due ? null : backup,
       h('div', { class: 'spacer' }),
       h('a', { class: 'btn btn--outline btn--block', href: paths.parentsPin() }, 'Cambiar PIN'),
       h('button', { class: 'btn btn--primary btn--block', type: 'button', onClick: () => {
