@@ -9,7 +9,9 @@ import { appHeader } from '../../shared/app-header.js';
 import { texts } from '../../shared/i18n.js';
 import { notFoundView } from '../../shared/not-found-view.js';
 import { buildProgress } from './subject-progress.js';
+import { groupTopics } from './group-topics.js';
 import { topicCard } from './topic-card.js';
+import { topicGroup } from './topic-group.js';
 import { topicsSummary } from './topics-summary.js';
 
 /** Una asignatura: pestañas Estudio / Ejercicios con las tarjetas de temas. */
@@ -45,7 +47,8 @@ export async function subjectScreen({ pid, cid, sid, tab }) {
       h('p', { class: 'lead' }, activeTab === 'study' ? t.pickStudy : t.pickPractice),
       topics.length === 0 ? h('p', { class: 'note note--empty' }, t.noTopics) : null,
       topicsSummary({ tab: activeTab, subject, topics, progress, t }),
-      h('div', { class: 'topic-list' }, topics.map((topic, index) => topicCard({ profile, course, subject, tab: activeTab, topic, index, t, progress }))),
+      groupTopics(topics).map(({ unit, items }) =>
+        topicGroup({ unit, subject, cards: items.map(({ topic, index }) => topicCard({ profile, course, subject, tab: activeTab, topic, index, t, progress })) })),
     ),
   );
 }
