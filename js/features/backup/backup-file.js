@@ -16,12 +16,13 @@ function download(file) {
 /**
  * Entrega el archivo: hoja de compartir si el móvil la admite, descarga normal si no.
  * Devuelve false si la persona cancela. Lanza NotAllowedError si el móvil exige un toque nuevo para compartir.
+ * No se pasa título a la hoja de compartir: algunas apps (Drive) lo guardan como un segundo archivo .txt.
  */
 export async function saveBackupFile(backup, now = new Date()) {
   const file = new File([JSON.stringify(backup)], backupFileName(now), { type: 'application/json' });
   if (navigator.canShare?.({ files: [file] })) {
     try {
-      await navigator.share({ files: [file], title: file.name });
+      await navigator.share({ files: [file] });
       return true;
     } catch (err) {
       if (err.name === 'AbortError') return false;
