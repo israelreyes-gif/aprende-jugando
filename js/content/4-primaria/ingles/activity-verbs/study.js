@@ -1,0 +1,26 @@
+export const study = [
+  { h: 'Activity verbs' },
+  { list: [
+    'hop → saltar a la pata coja',
+    'skip → ir dando saltitos',
+    'dance → bailar',
+    'climb → escalar',
+    'jump → saltar',
+    'shout → gritar',
+    'laugh → reír',
+    'dress up → vestirse',
+    'catch → atrapar / coger',
+  ] },
+
+  { h: 'Activities' },
+  { list: [
+    'ride a bike → montar en bici',
+    'swim → nadar',
+    'climb trees → escalar árboles',
+    'play the guitar → tocar la guitarra',
+    'ride a skateboard → montar en monopatín',
+    'skate → patinar',
+    'sing → cantar',
+    'cook → cocinar',
+  ] },
+];
