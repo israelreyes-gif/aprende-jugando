@@ -190,6 +190,11 @@ El Worker (`worker/push-*.js`) envía los avisos cifrados con Web Push (VAPID) y
   o marca un tema como estudiado, y cuando sube de nivel. Incluye la nota (con ⚠️ si está por debajo del 75 %) y los puntos (`features/parents/stats/thresholds.js`).
   Los envía el móvil del niño justo después de guardar el resultado (`features/push/parent-alerts/`); si no hay conexión, no se manda.
 
+- **Avisos de error del servidor** (usan la misma campanita "Avisos para padres"): si el Worker falla por su lado (error 5xx) o un recordatorio
+  no sale, avisa a los móviles de padres con el sitio y el motivo (`worker/error-alert.js`). No avisa de errores de quien llama (401, 404, 400, 409)
+  ni de fallos del propio envío de avisos (para evitar bucles). El mismo fallo repetido sustituye al aviso anterior en vez de apilarse.
+  Si D1 o las claves VAPID fallan, el aviso no puede salir y el error queda solo en el registro del Worker.
+
 En iPhone solo funciona con la app instalada en la pantalla de inicio, y el permiso se pide al pulsar la campanita.
 
 ## API del Worker (por si quieres consultarla a mano)

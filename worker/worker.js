@@ -8,19 +8,28 @@
  *   POST /api/:tabla  ·  PATCH /api/:tabla/:id  ·  DELETE /api/:tabla/:id
  *   POST /push/send  (avisos push; necesita VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY y VAPID_SUBJECT)
  * Cron (wrangler.jsonc): recordatorios del reto a las 08:00 y a las 18:30, hora de Madrid.
+ * Si el Worker falla por su lado (error 5xx) o un recordatorio no sale, avisa a los móviles de padres (error-alert.js).
  */
 import { HttpError, corsHeaders, errorResponse, json, safeEqual } from './http.js';
 import { loadSchema } from './schema.js';
 import { handleDelete, handleGet, handlePatch, handlePost } from './handlers.js';
 import { handlePush } from './push-handle-push.js';
 import { runReminders } from './reminder-run.js';
+import { alertParents } from './error-alert.js';
 
 export default {
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(runReminders(env, event.scheduledTime).then((summary) => console.log('Recordatorios', JSON.stringify(summary))));
+    ctx.waitUntil(
+      runReminders(env, event.scheduledTime).then(async (summary) => {
+        console.log('Recordatorios', JSON.stringify(summary));
+        if (summary.error || summary.failed > 0) {
+          await alertParents(env, { where: 'Recordatorios', detail: summary.error || `${summary.failed} perfil(es) sin avisar` });
+        }
+      }),
+    );
   },
 
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const cors = corsHeaders(request, env);
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
 
@@ -57,7 +66,14 @@ export default {
           throw new HttpError(405, 'Método no permitido');
       }
     } catch (err) {
-      return errorResponse(err, cors);
+      const response = errorResponse(err, cors);
+      const { pathname } = new URL(request.url);
+      // Error del servidor (5xx): se avisa a los padres. No se avisa de los fallos del propio envío de avisos.
+      if (response.status >= 500 && !pathname.startsWith('/push')) {
+        const detail = String(err?.message || err);
+        ctx?.waitUntil(alertParents(env, { where: `${request.method} ${pathname}`, detail }));
+      }
+      return response;
     }
   },
 };
