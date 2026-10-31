@@ -1,0 +1,4 @@
+/* Botón 🔊 para escuchar el inglés */
+.speak { appearance: none; border: 0; background: var(--soft, #ECEBFF); border-radius: 999px; width: 32px; height: 32px; padding: 0; margin-left: 8px; font-size: 16px; line-height: 1; vertical-align: middle; cursor: pointer; }
+.speak:active { transform: scale(0.94); }
+.feedback .speak { background: rgba(255, 255, 255, 0.7); }

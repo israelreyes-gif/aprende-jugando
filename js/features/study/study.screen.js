@@ -39,7 +39,7 @@ export async function studyScreen({ pid, cid, sid, tid }) {
     h(
       'article',
       { class: 'screen__body lesson', lang: subject.lang },
-      ...renderBlocks(study),
+      ...renderBlocks(study, { speak: subject.lang === 'en' }),
       h(
         'div',
         { class: 'lesson__actions' },
