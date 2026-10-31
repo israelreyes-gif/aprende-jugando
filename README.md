@@ -101,7 +101,7 @@ Cada tema de `index.js` lleva: `id`, `emoji` (el que sale en su tarjeta), `title
 
 **Una asignatura nueva**: añádela a `SUBJECTS` en `js/content/subjects.js` (con su `emoji` y sus colores) y un icono con su mismo id en `shared/icons.js`.
 
-Bloques de una lección: `{ h }` título, `{ p }` párrafo, `{ list }` lista, `{ tip, label }` truco destacado.
+Bloques de una lección: `{ h }` título, `{ p }` párrafo, `{ list }` lista, `{ tip, label }` truco destacado, `{ fold, list }` sección plegable (título con el número de líneas; empieza cerrada). En Inglés, el tema Vocabulary construye sus secciones plegables desde `ingles/lib/vocab/` (`vocabulary/sections.js`).
 
 Tipos de pregunta: `choice` (opciones), `number` (número), `text` (texto; admite varias respuestas válidas en `answers`).
 Para inventar un tipo nuevo, regístralo en `js/features/practice/question-types.js`.

@@ -1,0 +1,9 @@
+/* Sección plegable de la lección */
+.fold { background: #fff; border: 2px solid var(--soft, #ECEBFF); border-radius: 18px; overflow: hidden; }
+.fold + .fold { margin-top: 10px; }
+.fold__title { list-style: none; display: flex; align-items: center; gap: 10px; padding: 14px 16px; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 20px; color: var(--deep); }
+.fold__title::-webkit-details-marker { display: none; }
+.fold__title::before { content: '▸'; font-size: 18px; transition: transform 0.15s; }
+.fold[open] .fold__title::before { transform: rotate(90deg); }
+.fold__count { margin-left: auto; background: var(--soft, #ECEBFF); border-radius: 999px; padding: 2px 10px; font-size: 14px; }
+.fold .lesson__list { padding: 0 16px 16px 38px; }
