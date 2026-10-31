@@ -1,7 +1,7 @@
 export const study = [
   { h: "Could / couldn't" },
   { list: [
-    'could → ability or permission in the past',
+    'could → ability in the past',
     "couldn't → the negative form",
   ] },
 
