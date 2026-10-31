@@ -15,7 +15,7 @@ Empieza en 4.º de Primaria con Matemáticas, Sociales, Inglés, Lengua y Scienc
 
 ```
 index.html · manifest.webmanifest · sw.js
-sw/             piezas del service worker: config, estrategias de caché, aviso de versión nueva
+sw/             piezas del service worker: instalación de cada versión entera, activación, servir de la copia, avisos push (manifest.js lo genera tools/build-sw-manifest.mjs)
 css/            tokens.css (paleta) · base.css · components/ · screens/
   components/     un archivo por componente
   screens/        un archivo por pantalla
@@ -42,7 +42,7 @@ js/
     points/       puntos y niveles: reglas, niveles, cálculo y pantallas (ui/)
     push/         avisos push: permiso, suscripción del móvil, la campanita (bell-row.js) y los avisos a padres (parent-alerts/)
 worker/         código del Worker (varios ficheros pequeños) · wrangler.jsonc (configuración y variables) · schema.sql (se ejecuta en D1)
-tools/          make-icons.py
+tools/          build-sw-manifest.mjs (genera sw/manifest.js: la lista de archivos de cada versión; lo usan también las pruebas)
 ```
 
 Regla de oro: **una pantalla nunca habla con la API directamente** (usa `data/`) y **nunca escribe rutas a mano** (usa `core/paths.js`).
@@ -110,11 +110,12 @@ Todo ejercicio nuevo cuenta en la zona de padres con la regla del 75 %.
 
 ## Actualizar la app en los móviles
 
-No hace falta tocar nada especial al subir cambios: el service worker enseña la copia guardada y, por detrás, comprueba si GitHub tiene algo nuevo.
-Si algún fichero de texto ha cambiado, la app muestra el aviso "Hay una versión nueva" (no lo muestra en pantallas ocupadas, como un ejercicio en curso).
+Cada versión de la app es un **paquete cerrado**: el service worker la descarga entera a una copia aparte, copiando de la anterior lo que no ha cambiado, y solo la usa cuando está completa. Si falta un archivo, una descarga se corta o el servidor aún sirve un archivo viejo, la descarta y sigue con la versión que tenía. Nunca se mezclan archivos de dos versiones.
 
-Solo hay que subir `VERSION` en `sw/config.js` cuando **se borran o se renombran ficheros**, o cuando **cambia la lista `SHELL`** (los ficheros que se guardan al instalar).
-Así el móvil tira la copia antigua entera y no se queda con restos.
+- La app vuelve a preguntar si hay versión nueva cada vez que se vuelve a ella (aunque estuviera en segundo plano), al recuperar la conexión y cada media hora mientras está abierta.
+- Cuando la nueva está lista sale "Hay una versión nueva" (no en pantallas ocupadas: ejercicios, reto y formularios). "Actualizar" cambia de versión y recarga; "Ahora no" vuelve a preguntar a los 10 minutos, al cambiar de pantalla o al volver a la app.
+- **Antes de cada subida** hay que ejecutar `node tools/build-sw-manifest.mjs`: escribe `sw/manifest.js` (la lista de archivos con su huella y el identificador de la versión). Una prueba (`test-manifest.mjs`) falla si se olvida. Ya no hay `VERSION` ni lista `SHELL` que mantener a mano.
+- Primera actualización tras pasar del sistema antiguo al nuevo: abrir la app dos veces y pulsar "Actualizar".
 
 ## La base de datos
 

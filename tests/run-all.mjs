@@ -9,6 +9,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { serveApp } from './serve-app.mjs';
+import { manifestText } from '../tools/manifest-text.js';
 
 const repo = new URL('../', import.meta.url).pathname;
 const work = fs.mkdtempSync(path.join(os.tmpdir(), 'aprende-tests-'));
@@ -23,10 +24,12 @@ fs.cpSync(`${fixtures}/mates`, `${content}/mates`, { recursive: true }); // índ
 fs.cpSync(`${fixtures}/ingles/verb-to-be`, `${content}/ingles/verb-to-be`, { recursive: true });
 const inglesIndex = `${content}/ingles/index.js`;
 fs.writeFileSync(inglesIndex, fs.readFileSync(inglesIndex, 'utf8').replace('export const topics = [', "export const topics = [\n  { id: 'verb-to-be', emoji: '🧩', title: 'Verb to be', minutes: 5, load: () => import('./verb-to-be/index.js') },"));
+// La lista de archivos del service worker se rehace para la copia (lleva archivos de prueba distintos a los del repo).
+fs.writeFileSync(`${work}/sw/manifest.js`, manifestText(work));
 
 const dir = `${work}/tests/`;
 // Estas se ejecutan sobre el repo real (necesitan el índice verdadero de Matemáticas).
-const onRepo = new Set(['test-topic.js', 'test-numeros.js', 'test-reto-data.mjs', 'test-reto-load.mjs', 'test-reto-plan.mjs']);
+const onRepo = new Set(['test-manifest.mjs', 'test-topic.js', 'test-numeros.js', 'test-reto-data.mjs', 'test-reto-load.mjs', 'test-reto-plan.mjs']);
 fs.mkdirSync(`${dir}shots`, { recursive: true });
 const only = process.argv[2];
 const files = fs.readdirSync(dir).filter((f) => /^test-.*\.(js|mjs)$/.test(f) && (!only || f.includes(only))).sort();

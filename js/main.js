@@ -17,7 +17,5 @@ start(document.getElementById('app'), { guard });
 flushOutbox();
 window.addEventListener('online', flushOutbox);
 
-registerServiceWorker();
-
-// Cuando GitHub tiene una versión nueva, ofrece actualizar
-watchUpdates();
+// Cuando hay una versión nueva descargada, ofrece actualizar (y la busca al volver a la app)
+registerServiceWorker().then((registration) => watchUpdates(registration));

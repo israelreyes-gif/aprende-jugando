@@ -1,15 +1,6 @@
-// Ajustes del service worker. Cuando cambies muchos archivos de golpe, sube VERSION
-// para que se limpien las copias guardadas antiguas.
-const VERSION = 'v9';
-const CACHE = `aprende-jugando-${VERSION}`;
-
-// Archivos que se guardan al instalar la app. El resto se guarda al usarlo.
-const SHELL = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './icons/icon.svg',
-  './css/tokens.css',
-  './css/base.css',
-  './js/main.js',
-];
+// Nombres de las copias guardadas.
+// Cada versión de la app (BUILD, en sw/manifest.js) tiene su propia copia COMPLETA: nunca se mezclan archivos de dos versiones.
+const CACHE_PREFIX = 'aprende-jugando-';
+const CACHE = `${CACHE_PREFIX}${BUILD}`;
+const FONTS_CACHE = 'aprende-fuentes'; // las fuentes de Google no cambian: se guardan aparte y sobreviven a las versiones
+const HASHES_KEY = './__huellas.json'; // dentro de cada copia: qué huella tenía cada archivo (para no volver a bajar lo que no cambia)

@@ -1,24 +1,10 @@
 // Service worker de Aprende y juega.
-//  - Archivos de la propia app: copia guardada primero (abre al instante) y, por detrás,
-//    se comprueba si GitHub tiene algo nuevo; los cambios se ven en la siguiente apertura
-//    y, si algo ha cambiado, se avisa a la app (sw/update-check.js).
-//  - Fuentes de Google: copia guardada primero.
+//  - Cada versión de la app se descarga ENTERA a una copia aparte (sw/install.js) y solo se usa cuando está completa:
+//    nunca se mezclan archivos de dos versiones. La nueva espera hasta que la página avisa y el usuario pulsa "Actualizar".
+//  - Los archivos de la app se sirven de la copia de su versión (sw/serve-build.js); las fuentes de Google, de la suya.
 //  - El Worker de datos (otro dominio) NO se toca: la app gestiona su propia cola offline.
 //  - Avisos push: se muestran y, al tocarlos, se abre la app (sw/push.js y sw/notification-click.js).
-importScripts('./sw/config.js', './sw/update-pending.js', './sw/update-check.js', './sw/messages.js', './sw/strategies.js', './sw/push.js', './sw/notification-click.js');
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting()));
-});
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches
-      .keys()
-      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))))
-      .then(() => self.clients.claim()),
-  );
-});
+importScripts('./sw/manifest.js', './sw/config.js', './sw/fingerprint.js', './sw/install.js', './sw/activate.js', './sw/serve-build.js', './sw/serve-fonts.js', './sw/messages.js', './sw/push.js', './sw/notification-click.js');
 
 self.addEventListener('fetch', (event) => {
   const { request } = event;
@@ -27,9 +13,6 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   const isFont = url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com';
 
-  if (url.origin === self.location.origin) {
-    event.respondWith(staleWhileRevalidate(event));
-  } else if (isFont) {
-    event.respondWith(cacheFirst(request));
-  }
+  if (url.origin === self.location.origin) event.respondWith(serveFromBuild(request));
+  else if (isFont) event.respondWith(serveFont(request));
 });

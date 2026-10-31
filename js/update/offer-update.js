@@ -4,8 +4,8 @@ const SNOOZE_MS = 10 * 60 * 1000;
 let snoozedUntil = 0;
 let asking = false;
 
-/** Pregunta si se quiere actualizar. Con "Ahora no" no vuelve a preguntar en 10 minutos. */
-export async function offerUpdate(reload = () => location.reload()) {
+/** Pregunta si se quiere actualizar; si dice que sí, llama a `onAccept`. Con "Ahora no" no vuelve a preguntar en 10 minutos. */
+export async function offerUpdate(onAccept) {
   if (asking || Date.now() < snoozedUntil) return;
   asking = true;
   const accepted = await confirmDialog({
@@ -15,6 +15,6 @@ export async function offerUpdate(reload = () => location.reload()) {
     cancel: 'Ahora no',
   });
   asking = false;
-  if (accepted) reload();
+  if (accepted) onAccept();
   else snoozedUntil = Date.now() + SNOOZE_MS;
 }
