@@ -1,7 +1,6 @@
 import { h } from '../../../core/dom.js';
+import { confettiSet } from './confetti-set.js';
 import { pointsLines } from './points-lines.js';
-
-const CONFETTI = ['🎉', '⭐', '✨', '🎊', '⭐', '✨'];
 
 /**
  * Pantalla completa de celebración (tema estudiado, subida de nivel). Devuelve una promesa que se cumple al cerrarla.
@@ -25,7 +24,7 @@ export function showCelebration({ theme = 'gold', art, eyebrow, big, title, bubb
     const overlay = h(
       'div',
       { class: `celebration celebration--${theme}`, role: 'dialog', 'aria-modal': 'true', 'aria-label': title },
-      h('div', { class: 'celebration__confetti', 'aria-hidden': 'true' }, CONFETTI.map((emoji, i) => h('span', { class: `confetti confetti--${i + 1}` }, emoji))),
+      h('div', { class: 'celebration__confetti', 'aria-hidden': 'true' }, confettiSet().map((emoji, i) => h('span', { class: `confetti confetti--${i + 1}` }, emoji))),
       h(
         'div',
         { class: 'celebration__body' },
