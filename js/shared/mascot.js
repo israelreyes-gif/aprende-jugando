@@ -1,6 +1,8 @@
-import { isHalloween } from './seasons.js';
+import { isHalloween, isChristmas } from './seasons.js';
 
-/** Ruta del dibujo de la mochila: la de Halloween en sus fechas y la normal el resto del año. */
+/** Ruta del dibujo de la mochila: la de Halloween o la de Navidad en sus fechas y la normal el resto del año. */
 export function mascotSrc(date = new Date()) {
-  return isHalloween(date) ? 'icons/mochila-halloween.svg' : 'icons/mochila.svg';
+  if (isHalloween(date)) return 'icons/mochila-halloween.svg';
+  if (isChristmas(date)) return 'icons/mochila-navidad.svg';
+  return 'icons/mochila.svg';
 }
