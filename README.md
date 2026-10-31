@@ -217,3 +217,11 @@ Operadores de filtro: `eq neq gt gte lt lte like in is`.
 - La clave no está en GitHub: se escribe en cada dispositivo y se guarda en su `localStorage`.
 - La clave privada de los avisos (`VAPID_PRIVATE_KEY`) vive solo como secreto del Worker; nunca se sube al repositorio.
 - El PIN de padres sirve para que los niños no entren en las estadísticas; no es una protección fuerte frente a un adulto con acceso al dispositivo.
+
+## Pruebas automáticas
+
+Las pruebas viven en `tests/` y las ejecuta GitHub solo en cada subida a `main` (`.github/workflows/tests.yml`; el resultado sale en la pestaña **Actions**).
+Para lanzarlas a mano hace falta Node 22 o superior: dentro de `tests/`, `npm install`, `npx playwright install chromium` y `npm test`
+(o `npm test -- ui` para solo las que llevan «ui» en el nombre).
+Corren sobre una copia temporal de la app con temas de prueba (`tests/fixtures/content/`), porque Sociales, Lengua y Sciences aún no tienen temas reales:
+cuando los tengan, esos temas de prueba se pueden ir sustituyendo.

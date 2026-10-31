@@ -1,0 +1,34 @@
+# Pruebas automáticas: se ejecutan solas en cada subida a main y en cada pull request.
+# El resultado se ve en la pestaña "Actions" del repositorio (verde = todo bien, rojo = algo falla).
+name: Pruebas
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tests/package-lock.json
+
+      - name: Instalar dependencias de las pruebas
+        working-directory: tests
+        run: npm ci
+
+      - name: Instalar el navegador
+        working-directory: tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Ejecutar las pruebas
+        working-directory: tests
+        run: npm test

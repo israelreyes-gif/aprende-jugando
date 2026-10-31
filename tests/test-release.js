@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import { JSDOM } from 'jsdom';
+const dom = new JSDOM('<!doctype html><body></body>', { url: 'http://localhost/' });
+Object.assign(globalThis, { window: dom.window, document: dom.window.document, localStorage: dom.window.localStorage });
+const calls = [];
+globalThis.fetch = async (url, opt) => { calls.push({ url, method: opt.method, body: opt.body && JSON.parse(opt.body), key: opt.headers['X-Api-Key'] }); return { ok: true, json: async () => ([]) }; };
+const { setConnection } = await import('../js/core/api.js'); setConnection('https://p.example/aprende-jugando', 'k');
+const { listReleased, setReleased } = await import('../js/data/release.repo.js');
+await listReleased('p1'); await listReleased('p1', { subjectId: 'mates' });
+const ids = { profileId: 'p1', courseId: '4-primaria', subjectId: 'mates', topicId: 'numeros' };
+await setReleased(ids, true); await setReleased(ids, false);
+for (const c of calls) console.log(c.method, c.url.replace('https://p.example/aprende-jugando', ''), c.body ? JSON.stringify(c.body).replace(/"id":"[^"]+"/, '"id":"…"') : '');
+assert.equal(calls[0].url.endsWith('/api/topic_release?profile_id=eq.p1'), true);
+assert.ok(calls[1].url.includes('subject_id=eq.mates'));
+assert.equal(calls[2].method, 'POST'); assert.ok(calls[2].url.includes('conflict=ignore')); assert.equal(calls[2].body.topic_id, 'numeros'); assert.ok(calls[2].body.id);
+assert.equal(calls[3].method, 'DELETE'); for (const k of ['profile_id=eq.p1', 'course_id=eq.4-primaria', 'subject_id=eq.mates', 'topic_id=eq.numeros']) assert.ok(calls[3].url.includes(k), k);
+console.log('release.repo OK');
