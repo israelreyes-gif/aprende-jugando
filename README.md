@@ -96,8 +96,10 @@ En iPhone, los avisos push solo funcionan con la app instalada así (iOS 16.4 o 
 Cada tema de `index.js` lleva: `id`, `emoji` (el que sale en su tarjeta), `title`, `minutes` y `load` (sin `load` sale como "Soon"). Opcional: `unit`, un texto; los temas seguidos con el mismo `unit` se muestran juntos bajo ese encabezado (Inglés usa "Unit 1 · Practice Time").
 
 **Un curso nuevo** (por ejemplo, 5.º):
-1. En `js/content/registry.js`, pon `available: true` en su curso. El último curso abierto pasa a ser el actual y los anteriores salen como superados.
+1. En `js/content/courses.js`, pon `available: true` en su curso. Opcional: `subjects: ['ingles']` si solo tiene algunas asignaturas (1.º solo tiene Inglés).
 2. Crea `js/content/5-primaria/<asignatura>/index.js` para cada asignatura (mismo formato).
+
+**Curso de cada perfil**: cada perfil estudia el curso de su columna `profiles.course_id` (sin valor, 4.º). Se cambia en la zona de padres → perfil → "Curso de …". Los cursos anteriores al suyo salen como superados y los posteriores como próximos.
 
 **Una asignatura nueva**: añádela a `SUBJECTS` en `js/content/subjects.js` (con su `emoji` y sus colores) y un icono con su mismo id en `shared/icons.js`.
 

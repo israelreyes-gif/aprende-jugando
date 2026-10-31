@@ -1,4 +1,4 @@
-import { SUBJECTS, loadTopics } from '../../content/registry.js';
+import { getCourse, subjectsOf, loadTopics } from '../../content/registry.js';
 import { listReleased } from '../../data/release.repo.js';
 import { listStudied } from '../../data/study.repo.js';
 
@@ -12,7 +12,7 @@ export async function loadRetoTopics(profileId, courseId) {
   const inCourse = (rows, subjectId, topicId) => rows.some((row) => row.course_id === courseId && row.subject_id === subjectId && row.topic_id === topicId);
 
   const bySubject = await Promise.all(
-    SUBJECTS.map(async (subject) => {
+    subjectsOf(getCourse(courseId)).map(async (subject) => {
       const topics = (await loadTopics(courseId, subject.id)).filter(
         (topic) => topic.available && inCourse(releasedRows, subject.id, topic.id) && inCourse(studiedRows, subject.id, topic.id),
       );

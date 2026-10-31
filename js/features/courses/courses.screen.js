@@ -1,6 +1,6 @@
 import { h } from '../../core/dom.js';
 import { paths } from '../../core/paths.js';
-import { COURSES } from '../../content/registry.js';
+import { COURSES, profileCourse } from '../../content/registry.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { appHeader } from '../../shared/app-header.js';
 import { notFoundView } from '../../shared/not-found-view.js';
@@ -16,10 +16,12 @@ const CHEER = '¡Mira todo lo que has conseguido! Cada curso superado demuestra 
 
 /** Cursos de primaria: el actual en grande, los superados con un mensaje de ánimo y los próximos bloqueados. */
 export async function coursesScreen({ pid }) {
-  const [profile, points, percent] = await Promise.all([getProfile(pid), loadPointsOrNull(pid), loadCoursePercentOrNull(pid)]);
+  const profile = await getProfile(pid);
   if (!profile) return notFoundView();
+  const own = profileCourse(profile);
+  const [points, percent] = await Promise.all([loadPointsOrNull(pid), loadCoursePercentOrNull(pid, own.id)]);
 
-  const { current, done, locked } = courseGroups(COURSES);
+  const { current, done, locked } = courseGroups(COURSES, own.id);
 
   return h(
     'main',

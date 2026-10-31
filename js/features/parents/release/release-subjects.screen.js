@@ -1,6 +1,6 @@
 import { h } from '../../../core/dom.js';
 import { paths } from '../../../core/paths.js';
-import { getCourse, SUBJECTS, loadTopics } from '../../../content/registry.js';
+import { getCourse, subjectsOf, loadTopics } from '../../../content/registry.js';
 import { getProfile } from '../../../data/profiles.repo.js';
 import { listReleased } from '../../../data/release.repo.js';
 import { appHeader } from '../../../shared/app-header.js';
@@ -12,11 +12,12 @@ async function renderReleaseSubjects({ pid, cid }) {
   const course = getCourse(cid);
   if (!course) return notFoundView();
 
-  const [profile, rows, topicLists] = await Promise.all([getProfile(pid), listReleased(pid), Promise.all(SUBJECTS.map((s) => loadTopics(cid, s.id)))]);
+  const subjects = subjectsOf(course);
+  const [profile, rows, topicLists] = await Promise.all([getProfile(pid), listReleased(pid), Promise.all(subjects.map((s) => loadTopics(cid, s.id)))]);
   if (!profile) return notFoundView();
 
   const releasedKeys = new Set(rows.filter((r) => r.course_id === cid).map((r) => `${r.subject_id}|${r.topic_id}`));
-  const items = SUBJECTS.map((subject, i) => {
+  const items = subjects.map((subject, i) => {
     const withContent = topicLists[i].filter((t) => t.available);
     const released = withContent.filter((t) => releasedKeys.has(`${subject.id}|${t.id}`)).length;
     return subjectReleaseRow({ profile, course, subject, total: withContent.length, released });

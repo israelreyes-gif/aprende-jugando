@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS profiles (
   name         TEXT NOT NULL CHECK (length(trim(name)) BETWEEN 1 AND 20),
   avatar_color TEXT NOT NULL,
   gender       TEXT,
+  course_id    TEXT,
   created_at   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
 

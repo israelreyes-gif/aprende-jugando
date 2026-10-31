@@ -8,3 +8,8 @@ export const SUBJECTS = [
 ];
 
 export const getSubject = (id) => SUBJECTS.find((s) => s.id === id) || null;
+
+/** Asignaturas de un curso (todas, salvo que el curso indique cuáles tiene). */
+export function subjectsOf(course) {
+  return course && course.subjects ? SUBJECTS.filter((s) => course.subjects.includes(s.id)) : SUBJECTS;
+}

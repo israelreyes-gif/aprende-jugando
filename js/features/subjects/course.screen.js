@@ -1,6 +1,6 @@
 import { h } from '../../core/dom.js';
 import { paths } from '../../core/paths.js';
-import { SUBJECTS, getCourse } from '../../content/registry.js';
+import { subjectsOf, getCourse } from '../../content/registry.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { appHeader } from '../../shared/app-header.js';
 import { notFoundView } from '../../shared/not-found-view.js';
@@ -27,7 +27,7 @@ export async function courseScreen({ pid, cid }) {
       points ? levelCard({ points, profileId: pid, gender: profile.gender, course: percent }) : null,
       retoCard({ profile, course, status }),
       h('p', { class: 'lead' }, 'Toca una asignatura para empezar.'),
-      h('div', { class: 'stack' }, SUBJECTS.map((subject) => subjectCard(profile, course, subject))),
+      h('div', { class: 'stack' }, subjectsOf(course).map((subject) => subjectCard(profile, course, subject))),
     ),
   );
 }

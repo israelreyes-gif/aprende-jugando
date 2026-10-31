@@ -1,10 +1,9 @@
 /**
- * Reparte los cursos en: el actual (el último abierto), los superados (los anteriores) y los próximos (los posteriores).
- * Devuelve { current, done, locked }. Sin ningún curso abierto, todos quedan como próximos.
+ * Reparte los cursos en: el actual (el del perfil), los superados (los anteriores) y los próximos (los posteriores).
+ * Devuelve { current, done, locked }. Sin curso actual, todos quedan como próximos.
  */
-export function courseGroups(courses) {
-  const open = courses.filter((c) => c.available);
-  const current = open[open.length - 1] || null;
+export function courseGroups(courses, currentId) {
+  const current = courses.find((c) => c.id === currentId && c.available) || null;
   const index = current ? courses.indexOf(current) : -1;
   return {
     current,
