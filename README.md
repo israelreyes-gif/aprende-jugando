@@ -19,7 +19,7 @@ sw/             piezas del service worker: config, estrategias de caché, aviso 
 css/            tokens.css (paleta) · base.css · components/ · screens/
   components/     un archivo por componente
   screens/        un archivo por pantalla
-icons/          iconos de la PWA (icon.svg, mochila.svg; tools/make-icons.py los regenera) y mochila-halloween.svg (15 oct – 2 nov) y mochila-navidad.svg (15 dic – 6 ene), ver js/shared/seasons.js
+icons/          iconos de la PWA (icon.svg, apple-touch-icon.png, mochila.svg; tools/make-icons.py los regenera) y mochila-halloween.svg (15 oct – 2 nov) y mochila-navidad.svg (15 dic – 6 ene), ver js/shared/seasons.js
 js/
   main.js       mapa de pantallas (rutas) y arranque
   config.js     URL del Worker y ajustes fijos
@@ -92,6 +92,8 @@ En iPhone, los avisos push solo funcionan con la app instalada así (iOS 16.4 o 
 **Un tema nuevo en una asignatura** (por ejemplo, Divisiones en Matemáticas):
 1. Crea `js/content/4-primaria/mates/divisiones.js` exportando `study` y `exercises` (copia el formato de `tablas.js`).
 2. En `js/content/4-primaria/mates/index.js`, añade `load: () => import('./divisiones.js')` a su línea.
+
+Cada tema de `index.js` lleva: `id`, `emoji` (el que sale en su tarjeta), `title`, `minutes` y `load` (sin `load` sale como "Soon"). Opcional: `unit`, un texto; los temas seguidos con el mismo `unit` se muestran juntos bajo ese encabezado (Inglés usa "Unit 1 · Practice Time").
 
 **Un curso nuevo** (por ejemplo, 5.º):
 1. En `js/content/registry.js`, pon `available: true` en su curso. El último curso abierto pasa a ser el actual y los anteriores salen como superados.
