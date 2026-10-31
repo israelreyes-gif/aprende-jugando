@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '1433578b261f';
+const BUILD = '66144af0bb2c';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -26,7 +26,7 @@ const FILES = {
   './css/components/tabs.css': 'ee24de7137d1',
   './css/components/utilities.css': '641933208d60',
   './css/screens/home.css': '471c3093c187',
-  './css/screens/points.css': '47d03fe79cd8',
+  './css/screens/points.css': '7836a1ca0921',
   './css/screens/practice.css': '0e29504d7213',
   './css/screens/result.css': '90e1ed773227',
   './css/screens/reto.css': '6d3f06621821',
@@ -259,7 +259,7 @@ const FILES = {
   './js/data/backup.repo.js': '48f5d52bf2fb',
   './js/data/practice.repo.js': 'd44fb75c6a3c',
   './js/data/profile-options.js': '97b5ccd2cadd',
-  './js/data/profiles.repo.js': '6ab1d0733db4',
+  './js/data/profiles.repo.js': '2668b8c4f0f3',
   './js/data/push-devices.js': '53ef5ad01c89',
   './js/data/push-send.js': '213ea44d6097',
   './js/data/release.repo.js': '27e9f914c128',
@@ -314,8 +314,7 @@ const FILES = {
   './js/features/courses/done-course-card.js': 'ae782e3b71ee',
   './js/features/courses/load-course-percent.js': 'a4d93237613b',
   './js/features/courses/locked-course-card.js': 'a4b59457bd0c',
-  './js/features/parents/child-stats.screen.js': '0ab64517e16b',
-  './js/features/parents/child-stats/course-picker.js': 'acba1c0e33bc',
+  './js/features/parents/child-stats.screen.js': '59ea100d8a57',
   './js/features/parents/child-stats/delete-profile-button.js': '77e10cda8eed',
   './js/features/parents/child-stats/load-course-progress.js': 'bf1246c8009e',
   './js/features/parents/child-stats/points-days.js': '863833bc4926',
@@ -380,14 +379,15 @@ const FILES = {
   './js/features/practice/result-view.js': '30a18f221133',
   './js/features/profiles/color-picker.js': 'd8df36921318',
   './js/features/profiles/completion-bar.js': 'bdabd520437f',
+  './js/features/profiles/course-field.js': 'c22b3956e541',
   './js/features/profiles/edit-profile.screen.js': '091e425f3b41',
   './js/features/profiles/gender-picker.js': '67f84c08a387',
   './js/features/profiles/home-banner.js': 'b337db0b62f3',
-  './js/features/profiles/new-profile-form.js': '3508b8460a37',
+  './js/features/profiles/new-profile-form.js': '5dc86d144c03',
   './js/features/profiles/new-profile.screen.js': 'eb05a5e38e90',
   './js/features/profiles/profile-cards.js': '8f2b1fd9190f',
   './js/features/profiles/profile-completion.js': '4fd0761ac061',
-  './js/features/profiles/profile-form.js': 'af4bb43eff1e',
+  './js/features/profiles/profile-form.js': '58004da34bd3',
   './js/features/profiles/profile-level-chip.js': 'ff931d4eb6be',
   './js/features/profiles/profiles.screen.js': '6e644390aa19',
   './js/features/push/bell-row.js': '9b9b0f2c5903',

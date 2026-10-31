@@ -47,9 +47,9 @@ assert.deepEqual(coursePercent([{ total: 13, studied: 8 }, { total: 3, studied: 
 // Crear perfil con chica
 await visit('#/new-profile');
 assert.equal(qa('.gender').length, 2); assert.equal(qa('.gender[aria-pressed="true"]').length, 0); assert.equal(q('.completion'), null); ok('nuevo perfil: dos tarjetas Chico/Chica sin elegir y sin barra de porcentaje');
-type(q('#profile-name'), 'Lucía'); qa('.gender')[1].click(); assert.equal(qa('.gender')[1].getAttribute('aria-pressed'), 'true'); assert.equal(qa('.gender')[0].getAttribute('aria-pressed'), 'false');
+type(q('#profile-name'), 'Lucía'); qa('.gender')[1].click(); q('form').dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true })); await sleep(100); assert.match(q('.field__error').textContent, /Elige el curso/); assert.equal(db.sqlite.prepare("SELECT count(*) c FROM profiles WHERE name='Lucía'").get().c, 0); ok('sin elegir curso no se crea el perfil'); qa('.course-opt')[1].click(); assert.equal(qa('.gender')[1].getAttribute('aria-pressed'), 'true'); assert.equal(qa('.gender')[0].getAttribute('aria-pressed'), 'false');
 q('form').dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true })); await sleep(300); await settle();
-const row = db.sqlite.prepare("SELECT id, name, gender FROM profiles WHERE name='Lucía'").get(); assert.equal(row.gender, 'chica'); ok('se guarda gender = chica');
+const row = db.sqlite.prepare("SELECT id, name, gender FROM profiles WHERE name='Lucía'").get(); assert.equal(row.gender, 'chica'); assert.equal(db.sqlite.prepare("SELECT course_id c FROM profiles WHERE name='Lucía'").get().c, '4-primaria'); ok('se guarda gender = chica');
 
 // Editar: barra, 75 % (falta el aviso)
 await visit(`#/p/${row.id}/edit`); await sleep(100);

@@ -77,6 +77,9 @@ assert.equal(q('.avatar').textContent, 'A'); ok('la vista previa muestra la inic
 qa('.swatch')[1].click();
 assert.equal(qa('.swatch')[1].getAttribute('aria-pressed'), 'true');
 submit(q('form'));
+assert.match(q('.field__error').textContent, /curso/); ok('no deja crear un perfil sin curso');
+qa('.course-opt')[1].click();
+submit(q('form'));
 await settle(); await sleep(60); await settle();
 assert.equal(location.hash, '#/');
 assert.equal(qa('.profile-card').length, 2);

@@ -9,8 +9,8 @@ export function getProfile(id) {
   return api.get('profiles', id);
 }
 
-export async function createProfile({ name, color, gender }) {
-  const profile = { id: uuid(), name: name.trim(), avatar_color: color, gender: gender || null };
+export async function createProfile({ name, color, gender, courseId }) {
+  const profile = { id: uuid(), name: name.trim(), avatar_color: color, gender: gender || null, course_id: courseId || null };
   await api.insert('profiles', profile);
   return profile;
 }
@@ -23,9 +23,4 @@ export async function updateProfile(id, { name, color, gender }) {
 /** Borra el perfil y, en cascada, todo su progreso. */
 export function deleteProfile(id) {
   return api.remove('profiles', { id });
-}
-
-/** Cambia el curso que estudia el perfil. */
-export async function setProfileCourse(id, courseId) {
-  await api.update('profiles', { id }, { course_id: courseId });
 }

@@ -6,10 +6,11 @@ import { profileForm } from './profile-form.js';
 export function newProfileForm({ onCreated }) {
   return profileForm({
     initial: { name: '', color: AVATAR_COLORS[3].hex, gender: null },
+    askCourse: true,
     submitLabel: 'Crear perfil',
     errorText: 'No se ha podido crear el perfil. Inténtalo de nuevo.',
-    onSave: async ({ name, color, gender }) => {
-      await createProfile({ name, color, gender });
+    onSave: async ({ name, color, gender, courseId }) => {
+      await createProfile({ name, color, gender, courseId });
       onCreated();
     },
   });

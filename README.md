@@ -99,7 +99,7 @@ Cada tema de `index.js` lleva: `id`, `emoji` (el que sale en su tarjeta), `title
 1. En `js/content/courses.js`, pon `available: true` en su curso. Opcional: `subjects: ['ingles']` si solo tiene algunas asignaturas (1.º solo tiene Inglés).
 2. Crea `js/content/5-primaria/<asignatura>/index.js` para cada asignatura (mismo formato).
 
-**Curso de cada perfil**: cada perfil estudia el curso de su columna `profiles.course_id` (sin valor, 4.º). Se cambia en la zona de padres → perfil → "Curso de …". Los cursos anteriores al suyo salen como superados y los posteriores como próximos.
+**Curso de cada perfil**: cada perfil estudia el curso de su columna `profiles.course_id` (sin valor, 4.º). Se elige al crear el perfil (obligatorio) y después no se cambia desde la app. Los cursos anteriores al suyo salen como superados y los posteriores como próximos.
 
 **Una asignatura nueva**: añádela a `SUBJECTS` en `js/content/subjects.js` (con su `emoji` y sus colores) y un icono con su mismo id en `shared/icons.js`.
 
