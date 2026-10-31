@@ -5,7 +5,7 @@ import { makeD1 } from './d1-shim.js';
 const { chromium } = createRequire(import.meta.url)('playwright');
 const API = 'http://localhost:8801';
 const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
-db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color,gender) VALUES ('alex','Alex','#8EDBC0','chico')`);
+db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color,gender,course_id) VALUES ('alex','Alex','#8EDBC0','chico','4-primaria')`);
 db.sqlite.prepare(`INSERT INTO topic_release (id,profile_id,course_id,subject_id,topic_id) VALUES ('r','alex','4-primaria','ingles','time')`).run();
 const server = http.createServer(async (req, res) => { const chunks = []; for await (const c of req) chunks.push(c); const body = chunks.length ? Buffer.concat(chunks) : undefined;
   const r = await worker.fetch(new Request(`${API}${req.url}`, { method: req.method, headers: req.headers, body: ['GET','HEAD'].includes(req.method) ? undefined : body }), env);

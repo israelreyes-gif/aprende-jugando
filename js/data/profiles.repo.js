@@ -24,3 +24,8 @@ export async function updateProfile(id, { name, color, gender }) {
 export function deleteProfile(id) {
   return api.remove('profiles', { id });
 }
+
+/** Guarda el curso que estudia el perfil (se elige una vez). */
+export async function setProfileCourse(id, courseId) {
+  await api.update('profiles', { id }, { course_id: courseId });
+}

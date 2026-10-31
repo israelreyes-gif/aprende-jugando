@@ -16,3 +16,13 @@ g = courseGroups(COURSES, '1-primaria');
 assert.equal(g.current.id, '1-primaria'); assert.equal(g.done.length, 0); assert.equal(g.locked.length, 5); console.log('✓ grupos de 1.º');
 
 assert.deepEqual(await loadTopics('1-primaria', 'ingles'), []); console.log('✓ 1.º Inglés sin temas aún');
+
+// Pantalla de elegir curso para perfiles sin curso
+const { JSDOM } = await import('jsdom');
+const dom = new JSDOM('<!doctype html><body></body>', { url: 'https://x.github.io/a/' });
+Object.assign(globalThis, { window: dom.window, document: dom.window.document, location: dom.window.location });
+const { chooseCourseView } = await import(`${R}/features/courses/choose-course-view.js`);
+const view = chooseCourseView({ id: 'p', name: 'Alex' });
+assert.equal(view.querySelectorAll('.course-opt').length, 2); console.log('✓ perfil sin curso: tarjetas 1.º y 4.º');
+view.querySelector('form').dispatchEvent(new window.Event('submit', { cancelable: true }));
+assert.match(view.querySelector('.field__error').textContent, /Elige el curso/); console.log('✓ sin elegir no avanza');

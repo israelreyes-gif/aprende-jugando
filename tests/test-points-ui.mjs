@@ -31,7 +31,7 @@ const type = (el, v) => { el.value = v; el.dispatchEvent(new window.Event('input
 let steps = 0; const ok = (n) => { steps++; console.log('  ✓', n); };
 
 await import('../js/main.js'); await settle();
-db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color) VALUES ('alex','Alex','#8EDBC0')`);
+db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color,course_id) VALUES ('alex','Alex','#8EDBC0','4-primaria')`);
 const TOPICS = [['mates', 'tablas'], ['sociales', 'relieve'], ['ingles', 'verb-to-be'], ['lengua', 'sustantivo'], ['sciences', 'human-body']];
 const byPrompt = new Map();
 for (const [s, t] of TOPICS) for (const e of (await import(`../js/content/4-primaria/${s}/${t}/exercises.js`)).exercises) byPrompt.set(e.prompt, e);

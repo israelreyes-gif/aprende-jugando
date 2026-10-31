@@ -1,11 +1,12 @@
 import { h } from '../../core/dom.js';
 import { paths } from '../../core/paths.js';
-import { COURSES, profileCourse } from '../../content/registry.js';
+import { COURSES, getCourse, profileCourse } from '../../content/registry.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { appHeader } from '../../shared/app-header.js';
 import { notFoundView } from '../../shared/not-found-view.js';
 import { loadPointsOrNull } from '../points/load-points.js';
 import { levelCard } from '../points/ui/level-card.js';
+import { chooseCourseView } from './choose-course-view.js';
 import { courseGroups } from './course-groups.js';
 import { currentCourseCard } from './current-course-card.js';
 import { doneCourseCard } from './done-course-card.js';
@@ -18,6 +19,7 @@ const CHEER = '¡Mira todo lo que has conseguido! Cada curso superado demuestra 
 export async function coursesScreen({ pid }) {
   const profile = await getProfile(pid);
   if (!profile) return notFoundView();
+  if (!getCourse(profile.course_id)?.available) return chooseCourseView(profile);
   const own = profileCourse(profile);
   const [points, percent] = await Promise.all([loadPointsOrNull(pid), loadCoursePercentOrNull(pid, own.id)]);
 

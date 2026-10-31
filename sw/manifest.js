@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '66144af0bb2c';
+const BUILD = '7fb8146ccaeb';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -259,7 +259,7 @@ const FILES = {
   './js/data/backup.repo.js': '48f5d52bf2fb',
   './js/data/practice.repo.js': 'd44fb75c6a3c',
   './js/data/profile-options.js': '97b5ccd2cadd',
-  './js/data/profiles.repo.js': '2668b8c4f0f3',
+  './js/data/profiles.repo.js': '03963aaacecd',
   './js/data/push-devices.js': '53ef5ad01c89',
   './js/data/push-send.js': '213ea44d6097',
   './js/data/release.repo.js': '27e9f914c128',
@@ -307,9 +307,10 @@ const FILES = {
   './js/features/backup/read-backup-file.js': 'b420b9f51320',
   './js/features/backup/restore-backup.js': '763fa103090f',
   './js/features/backup/restore-card.js': 'dea59a5c6153',
+  './js/features/courses/choose-course-view.js': '7ddff7aa4a97',
   './js/features/courses/course-groups.js': 'ce22b5536196',
   './js/features/courses/course-percent.js': '9e97f526d5ee',
-  './js/features/courses/courses.screen.js': '109ab239a48d',
+  './js/features/courses/courses.screen.js': 'b5fbb651df27',
   './js/features/courses/current-course-card.js': '62880e4da2cd',
   './js/features/courses/done-course-card.js': 'ae782e3b71ee',
   './js/features/courses/load-course-percent.js': 'a4d93237613b',
