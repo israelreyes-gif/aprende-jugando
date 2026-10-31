@@ -9,5 +9,5 @@ export const topics = [
   { id: 'vocabulary', emoji: '📖', unit: UNIT_1, title: 'Vocabulary', minutes: 5, load: () => import('./vocabulary/index.js') },
   { id: 'was-were', emoji: '🕰️', unit: UNIT_1, title: 'Was / were', minutes: 5, load: () => import('./was-were/index.js') },
   { id: 'could', emoji: '💪', unit: UNIT_1, title: "Could / couldn't", minutes: 5, load: () => import('./could/index.js') },
-  { id: 'reading-diversicus', emoji: '🎪', unit: UNIT_1, title: 'Reading: Diversicus', minutes: 5 },
+  { id: 'reading-crow', emoji: '🐦', unit: UNIT_1, title: 'Reading: The Crow and the Pitcher', minutes: 5, load: () => import('./reading-crow/index.js') },
 ];

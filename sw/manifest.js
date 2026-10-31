@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '7fb8146ccaeb';
+const BUILD = '28f636e50493';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -53,7 +53,7 @@ const FILES = {
   './js/content/4-primaria/ingles/could/lib/pick-activity.js': '9079c7397467',
   './js/content/4-primaria/ingles/could/lib/sentence.js': '697b806bdc9c',
   './js/content/4-primaria/ingles/could/study.js': 'e1a60d118aee',
-  './js/content/4-primaria/ingles/index.js': 'aabe4642f370',
+  './js/content/4-primaria/ingles/index.js': '4378af8a2369',
   './js/content/4-primaria/ingles/lib/clock-svg.js': '23a5cfe62440',
   './js/content/4-primaria/ingles/lib/say-text.js': 'ba8388b64bb3',
   './js/content/4-primaria/ingles/lib/time-words.js': 'a46cb2737e3b',
@@ -90,6 +90,11 @@ const FILES = {
   './js/content/4-primaria/ingles/question-words/lib/pick-frame.js': 'fe56c7a40f92',
   './js/content/4-primaria/ingles/question-words/lib/wh-words.js': '2586808323fd',
   './js/content/4-primaria/ingles/question-words/study.js': 'ecd7812ebf04',
+  './js/content/4-primaria/ingles/reading-crow/exercises.js': 'abfe3b0a8e58',
+  './js/content/4-primaria/ingles/reading-crow/index.js': 'aae73edb9e58',
+  './js/content/4-primaria/ingles/reading-crow/story.js': '9dec73259399',
+  './js/content/4-primaria/ingles/reading-crow/study.js': '7dd409dc1fde',
+  './js/content/4-primaria/ingles/reading-crow/words.js': '176c428c3573',
   './js/content/4-primaria/ingles/time/exercises.js': '739e062de7e2',
   './js/content/4-primaria/ingles/time/gen/build-time.js': 'e7be10a948ec',
   './js/content/4-primaria/ingles/time/gen/clock-to-words.js': '55431114d72a',
