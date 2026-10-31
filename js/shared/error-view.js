@@ -4,6 +4,7 @@ function describeError(err) {
   if (err.status === 404) return 'No hemos encontrado esta página.';
   if (err.status === 401) return 'La clave de conexión no es correcta.';
   if (err.code === 'not-configured') return 'La app todavía no está conectada.';
+  if (err.code === 'timeout') return 'El servidor tarda demasiado en responder. Inténtalo de nuevo.';
   if (err instanceof TypeError) return 'No hay conexión con el servidor. Comprueba internet e inténtalo de nuevo.';
   return 'Algo ha salido mal. Inténtalo de nuevo.';
 }
