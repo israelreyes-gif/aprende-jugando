@@ -1,9 +1,9 @@
 import { isHalloween } from '../../../shared/seasons.js';
 
 const NORMAL = ['🎉', '⭐', '✨', '🎊', '⭐', '✨'];
-const HALLOWEEN = ['🦇', '🎃', '👻', '🦇', '🎃', '👻'];
+const HALLOWEEN = ['🦇', '🎃', '👻', '🕷️', '🦇', '🎃', '👻', '🕷️', '🦇', '🎃', '👻', '🕷️', '🦇', '🕷️', '👻', '🎃'];
 
-/** Los seis emojis que caen en la celebración: murciélagos, calabazas y fantasmas en Halloween. */
+/** Los emojis que caen en la celebración: 6 de confeti; en Halloween 16 (murciélagos, calabazas, fantasmas y arañas). */
 export function confettiSet(date = new Date()) {
   return isHalloween(date) ? HALLOWEEN : NORMAL;
 }
