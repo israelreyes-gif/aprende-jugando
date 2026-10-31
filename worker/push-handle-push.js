@@ -1,5 +1,6 @@
 import { HttpError, json, readJson } from './http.js';
 import { sendToDevices } from './push-send-to.js';
+import { telegramConfigured } from './telegram-send.js';
 
 const MAX_TITLE = 100;
 const MAX_BODY = 300;
@@ -23,7 +24,7 @@ async function findDevices(db, target) {
 /** POST /push/send  { target, title, body, tag?, url? } -> envía el aviso a esos móviles. */
 export async function handlePush(request, env, parts, cors) {
   if (request.method !== 'POST' || parts[1] !== 'send' || parts.length !== 2) throw new HttpError(404, 'Ruta no encontrada');
-  if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY || !env.VAPID_SUBJECT) throw new HttpError(500, 'Faltan las claves VAPID en el Worker');
+  if (!telegramConfigured(env) && (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY || !env.VAPID_SUBJECT)) throw new HttpError(500, 'Faltan las claves VAPID en el Worker');
 
   const input = await readJson(request);
   const message = { title: text(input.title, MAX_TITLE, 'title'), body: text(input.body, MAX_BODY, 'body') };
@@ -31,6 +32,6 @@ export async function handlePush(request, env, parts, cors) {
   if (typeof input.url === 'string') message.url = input.url.slice(0, 200);
 
   const devices = await findDevices(env.DB, input.target);
-  const result = await sendToDevices(env.DB, env, devices, message);
+  const result = await sendToDevices(env.DB, env, devices, message, { parents: input.target === 'parents' });
   return json({ ok: true, devices: devices.length, ...result }, 200, cors);
 }

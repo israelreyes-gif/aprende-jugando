@@ -18,4 +18,14 @@ globalThis.fetch = async (url, init) => { calls.push({ url: String(url), body: J
 calls = []; const db = { prepare: () => ({ bind: () => ({ run: async () => {} }) }) };
 const res = await sendToDevices(db, env, [], msg);
 assert.equal(calls.length, 1); assert.deepEqual(res, { sent: 0, removed: 0, failed: 0 }); console.log('✓ sendToDevices copia el aviso a Telegram');
+// Padres: solo Telegram (sin push); si Telegram falla, cae al push
+const pushed = []; const dev = { id: 'd1', endpoint: 'https://push.example/x', p256dh: 'x', auth: 'x' };
+globalThis.fetch = async (url, init) => { if (String(url).includes('telegram')) return new Response('{}', { status: 200 }); pushed.push(String(url)); return new Response('', { status: 201 }); };
+let r = await sendToDevices(db, env, [dev], msg, { parents: true });
+assert.equal(pushed.length, 0); assert.equal(r.sent, 1); assert.equal(r.via, 'telegram'); console.log('✓ a los padres: solo Telegram, sin push');
+globalThis.fetch = async (url) => { if (String(url).includes('telegram')) return new Response('{}', { status: 500 }); pushed.push(String(url)); return new Response('', { status: 201 }); };
+r = await sendToDevices(db, env, [dev], msg, { parents: true });
+assert.equal(r.via, undefined); assert.equal(r.sent + r.failed + r.removed, 1); console.log('✓ si Telegram falla, se intenta el push a los padres');
+r = await sendToDevices(db, {}, [dev], msg, { parents: true });
+assert.equal(r.via, undefined); assert.equal(r.sent + r.failed + r.removed, 1); console.log('✓ sin Telegram configurado, los padres reciben el push como antes');
 globalThis.fetch = realFetch;

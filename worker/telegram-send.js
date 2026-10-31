@@ -5,12 +5,15 @@ export function telegramText(message) {
   return `${message.title}\n${message.body}`.slice(0, MAX_TEXT);
 }
 
+/** ¿Están puestos los secretos de Telegram? */
+export const telegramConfigured = (env) => Boolean(env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID);
+
 /**
  * Envía una copia del aviso al grupo de Telegram. Nunca lanza: si faltan los secretos o Telegram falla,
  * solo queda en el registro del Worker y los avisos al móvil siguen su curso.
  */
 export async function sendTelegram(env, message) {
-  if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return false;
+  if (!telegramConfigured(env)) return false;
   try {
     const response = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',

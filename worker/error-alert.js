@@ -1,4 +1,5 @@
 import { sendToDevices } from './push-send-to.js';
+import { telegramConfigured } from './telegram-send.js';
 
 const MAX_BODY = 300;
 
@@ -19,10 +20,11 @@ export function errorMessage({ where, detail }) {
  */
 export async function alertParents(env, { where, detail }) {
   try {
-    if (!env.DB || !env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY || !env.VAPID_SUBJECT) return;
+    const telegram = telegramConfigured(env);
+    if (!env.DB || (!telegram && (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY || !env.VAPID_SUBJECT))) return;
     const devices = (await env.DB.prepare("SELECT * FROM push_devices WHERE kind = 'parent'").all()).results;
-    if (devices.length === 0) return;
-    await sendToDevices(env.DB, env, devices, errorMessage({ where, detail }));
+    if (devices.length === 0 && !telegram) return;
+    await sendToDevices(env.DB, env, devices, errorMessage({ where, detail }), { parents: true });
   } catch (err) {
     console.error('No se pudo avisar del error', String(err?.message || err));
   }
