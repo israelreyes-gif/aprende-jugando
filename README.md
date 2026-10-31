@@ -19,7 +19,7 @@ sw/             piezas del service worker: config, estrategias de caché, aviso 
 css/            tokens.css (paleta) · base.css · components/ · screens/
   components/     un archivo por componente
   screens/        un archivo por pantalla
-icons/          iconos de la PWA (icon.svg, mochila.svg; tools/make-icons.py los regenera)
+icons/          iconos de la PWA (icon.svg, mochila.svg; tools/make-icons.py los regenera) y mochila-halloween.svg (15 oct – 2 nov, ver js/shared/seasons.js)
 js/
   main.js       mapa de pantallas (rutas) y arranque
   config.js     URL del Worker y ajustes fijos

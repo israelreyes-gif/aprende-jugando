@@ -1,4 +1,5 @@
 import { h } from '../../../core/dom.js';
+import { mascotSrc } from '../../../shared/mascot.js';
 import { formatNumber, signed } from '../format-points.js';
 import { pointsOutcome } from '../points-outcome.js';
 import { POINTS } from '../rules.js';
@@ -14,7 +15,7 @@ export async function celebrateStudied({ profile, queued, topicTitle }) {
 
     await showCelebration({
       theme: 'gold',
-      art: h('img', { class: 'celebration__mascot', src: 'icons/mochila.svg', alt: '', width: 120, height: 120 }),
+      art: h('img', { class: 'celebration__mascot', src: mascotSrc(), alt: '', width: 120, height: 120 }),
       big: signed(POINTS.studied),
       title: '¡tema estudiado!',
       bubble: '¡Eso es un cerebro en marcha! 🧠',

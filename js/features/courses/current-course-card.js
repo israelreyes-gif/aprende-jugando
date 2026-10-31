@@ -1,5 +1,6 @@
 import { h } from '../../core/dom.js';
 import { paths } from '../../core/paths.js';
+import { mascotSrc } from '../../shared/mascot.js';
 
 /** Tarjeta grande del curso actual, con la mochila. */
 export function currentCourseCard(profile, course) {
@@ -14,6 +15,6 @@ export function currentCourseCard(profile, course) {
       h('span', { class: 'course-card__status' }, 'Curso actual'),
       h('span', { class: 'course-card__go' }, '¡Entrar!'),
     ),
-    h('span', { class: 'course-card__bag', 'aria-hidden': 'true' }, h('img', { src: 'icons/mochila.svg', alt: '', width: 88, height: 88 })),
+    h('span', { class: 'course-card__bag', 'aria-hidden': 'true' }, h('img', { src: mascotSrc(), alt: '', width: 88, height: 88 })),
   );
 }

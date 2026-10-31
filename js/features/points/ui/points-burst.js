@@ -1,4 +1,5 @@
 import { h } from '../../../core/dom.js';
+import { mascotSrc } from '../../../shared/mascot.js';
 import { formatNumber, signed } from '../format-points.js';
 import { pointsLines } from './points-lines.js';
 
@@ -27,7 +28,7 @@ export function pointsBurst({ result }) {
   const node = h(
     'section',
     { class: `points-burst points-burst--${tone}`, 'aria-label': 'Puntos de esta sesión' },
-    h('img', { class: 'points-burst__mascot', src: 'icons/mochila.svg', alt: '', width: 96, height: 96 }),
+    h('img', { class: 'points-burst__mascot', src: mascotSrc(), alt: '', width: 96, height: 96 }),
     h('p', { class: 'points-burst__number' }, signed(result.total)),
     h('p', { class: 'points-burst__title' }, TEXTS[tone].title),
     h('p', { class: 'points-burst__bubble' }, TEXTS[tone].bubble),
