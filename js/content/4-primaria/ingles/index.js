@@ -8,6 +8,6 @@ export const topics = [
   { id: 'question-words', emoji: '❓', unit: UNIT_1, title: 'Question words', minutes: 5, load: () => import('./question-words/index.js') },
   { id: 'activity-verbs', emoji: '🤸', unit: UNIT_1, title: 'Activity verbs', minutes: 5, load: () => import('./activity-verbs/index.js') },
   { id: 'was-were', emoji: '🕰️', unit: UNIT_1, title: 'Was / were', minutes: 5, load: () => import('./was-were/index.js') },
-  { id: 'could', emoji: '💪', unit: UNIT_1, title: "Could / couldn't", minutes: 5 },
+  { id: 'could', emoji: '💪', unit: UNIT_1, title: "Could / couldn't", minutes: 5, load: () => import('./could/index.js') },
   { id: 'reading-diversicus', emoji: '🎪', unit: UNIT_1, title: 'Reading: Diversicus', minutes: 5 },
 ];
