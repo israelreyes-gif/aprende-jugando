@@ -1,4 +1,4 @@
-const MAX_TEXT = 1000;
+const MAX_TEXT = 4000; // Telegram admite hasta 4096
 
 /** Texto del aviso en Telegram: el título y, debajo, el cuerpo. */
 export function telegramText(message) {

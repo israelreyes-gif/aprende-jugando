@@ -189,6 +189,9 @@ El Worker (`worker/push-*.js`) envía los avisos cifrados con Web Push (VAPID) y
   solo si ese día el reto no está hecho y el perfil tiene algún tema liberado y estudiado. El de las 18:30 menciona la racha si la hay.
   Los manda el Worker con una tarea programada (`triggers.crons` en `worker/wrangler.jsonc`, cada 30 minutos; el plan gratuito
   de Cloudflare solo permite 5 tareas programadas por cuenta, por eso es una sola).
+- **Resumen semanal por Telegram**: el domingo a las 20:00 (hora de Madrid) el Worker envía al grupo un resumen de todos los perfiles
+  (racha, retos de la semana, temas estudiados con su barra y temas a reforzar). Siempre lleva las mismas líneas, aunque no haya datos
+  (`worker/report-*.js`). Los temas a reforzar salen con su id convertido en texto ("was-were" → "Was were"), porque el Worker no conoce los títulos.
 - **Avisos para padres** (campanita "Avisos para padres" en la Zona de padres): cuando un perfil termina un reto, una sesión de ejercicios
   o marca un tema como estudiado, y cuando sube de nivel. Incluye la nota (con ⚠️ si está por debajo del 75 %) y los puntos (`features/parents/stats/thresholds.js`).
   Los envía el móvil del niño justo después de guardar el resultado (`features/push/parent-alerts/`); si no hay conexión, no se manda.

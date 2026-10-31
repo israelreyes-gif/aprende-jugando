@@ -7,7 +7,7 @@
  *   GET /api  ·  GET /api/:tabla  ·  GET /api/:tabla/:id
  *   POST /api/:tabla  ·  PATCH /api/:tabla/:id  ·  DELETE /api/:tabla/:id
  *   POST /push/send  (avisos push; necesita VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY y VAPID_SUBJECT)
- * Cron (wrangler.jsonc): recordatorios del reto a las 08:00 y a las 18:30, hora de Madrid.
+ * Cron (wrangler.jsonc): recordatorios del reto a las 08:00 y a las 18:30, hora de Madrid, y el resumen semanal por Telegram el domingo a las 20:00.
  * Si el Worker falla por su lado (error 5xx) o un recordatorio no sale, avisa a los móviles de padres (error-alert.js).
  */
 import { HttpError, corsHeaders, errorResponse, json, safeEqual } from './http.js';
@@ -15,6 +15,7 @@ import { loadSchema } from './schema.js';
 import { handleDelete, handleGet, handlePatch, handlePost } from './handlers.js';
 import { handlePush } from './push-handle-push.js';
 import { runReminders } from './reminder-run.js';
+import { runWeeklyReport } from './report-run.js';
 import { alertParents } from './error-alert.js';
 
 export default {
@@ -26,6 +27,14 @@ export default {
           await alertParents(env, { where: 'Recordatorios', detail: summary.error || `${summary.failed} perfil(es) sin avisar` });
         }
       }),
+    );
+    ctx.waitUntil(
+      runWeeklyReport(env, event.scheduledTime)
+        .then((summary) => summary.report && console.log('Resumen semanal', JSON.stringify(summary)))
+        .catch(async (err) => {
+          console.error('Resumen semanal fallido', err);
+          await alertParents(env, { where: 'Resumen semanal', detail: String(err?.message || err) });
+        }),
     );
   },
 
