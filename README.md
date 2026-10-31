@@ -78,7 +78,7 @@ Comprobación: abrir `URL-DEL-WORKER/api` en el navegador debe responder `Clave 
 ### 3. GitHub Pages
 1. Sube **todo el contenido de esta carpeta** al repositorio (`worker/` y `tools/` también; no pasa nada).
 2. **Settings → Pages → Deploy from a branch → main / (root)**.
-3. En `js/config.js`, `DEFAULT_API_URL` lleva la URL de tu Worker para no teclearla en cada móvil.
+3. En `js/config.js`, `DEFAULT_API_URL` lleva la dirección del proxy de Netlify (`https://israelreyes-proxy.netlify.app/aprende-jugando`), que reenvía al Worker y evita los bloqueos de LaLiga. Así no hay que teclearla en cada móvil.
 
 ### 4. Primer uso en cada dispositivo
 Al abrir la app pide la **dirección del Worker** y la **clave**. Se guardan solo en ese dispositivo.

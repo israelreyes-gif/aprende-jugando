@@ -1,7 +1,8 @@
 // Configuración fija de la app.
-// La URL del Worker no es secreta: así no hay que teclearla en cada dispositivo.
+// Dirección del proxy (Netlify) que lleva al Worker: evita los bloqueos de LaLiga en España.
+// El proxy no es secreto: así no hay que teclearla en cada dispositivo.
 // La CLAVE de API nunca va en este archivo: se escribe una vez en cada dispositivo.
-export const DEFAULT_API_URL = 'https://aprende-jugando.israel-reyes.workers.dev';
+export const DEFAULT_API_URL = 'https://israelreyes-proxy.netlify.app/aprende-jugando';
 
 // Clave PÚBLICA de los avisos push (no es secreta; la privada vive solo en el Worker).
 export const VAPID_PUBLIC_KEY = 'BHaapmRJeImDdJ2WyIeOl3JXh2VB1U9GWm5STuldUVXsdjrypURUE7lZ31OkHgu6hXDSoImwmzxtG0f2Mq8skGQ';
