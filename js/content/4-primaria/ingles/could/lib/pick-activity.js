@@ -1,8 +1,8 @@
 import { pick, shuffle } from '../../../../../core/random.js';
 import { activities } from '../../lib/vocab/activities.js';
 
-// "catch" needs an object ("catch a ball"), so it does not fit "I could ___ when I was four".
-const pool = activities.filter((a) => a.en !== 'catch');
+// Verbs that need an object ("catch a ball", "open the door") do not fit "I could ___ when I was four".
+const pool = activities.filter((a) => !a.needsObject);
 
 /** A random activity that works after "could". */
 export function randomActivity() {

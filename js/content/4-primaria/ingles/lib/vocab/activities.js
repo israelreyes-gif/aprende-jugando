@@ -1,4 +1,6 @@
 // Activity verbs and phrases (Unit 1). Spanish translations validated by Israel.
+// The first 17 come from his book; the rest were proposed by Claude and validated by him (2026-10-31).
+// `needsObject` marks verbs that cannot stand alone after "could" ("I could catch ___").
 // `group` marks words that look alike: they are never offered together as wrong options.
 export const activities = [
   { en: 'hop', es: 'saltar a la pata coja', group: 'jump' },
@@ -10,7 +12,7 @@ export const activities = [
   { en: 'shout', es: 'gritar', group: 'shout' },
   { en: 'laugh', es: 'reír', group: 'laugh' },
   { en: 'dress up', es: 'vestirse', group: 'dress' },
-  { en: 'catch', es: 'atrapar / coger', group: 'catch' },
+  { en: 'catch', es: 'atrapar / coger', group: 'catch', needsObject: true },
   { en: 'ride a bike', es: 'montar en bici', group: 'ride' },
   { en: 'ride a skateboard', es: 'montar en monopatín', group: 'ride' },
   { en: 'swim', es: 'nadar', group: 'swim' },
@@ -18,4 +20,24 @@ export const activities = [
   { en: 'skate', es: 'patinar', group: 'skate' },
   { en: 'sing', es: 'cantar', group: 'sing' },
   { en: 'cook', es: 'cocinar', group: 'cook' },
+  { en: 'run', es: 'correr', group: 'run' },
+  { en: 'walk', es: 'caminar', group: 'walk' },
+  { en: 'draw', es: 'dibujar', group: 'draw' },
+  { en: 'paint', es: 'pintar', group: 'paint' },
+  { en: 'read', es: 'leer', group: 'read' },
+  { en: 'write', es: 'escribir', group: 'write' },
+  { en: 'kick', es: 'dar patadas', group: 'kick' },
+  { en: 'throw', es: 'lanzar', group: 'throw' },
+  { en: 'swing', es: 'columpiarse', group: 'swing' },
+  { en: 'fly', es: 'volar', group: 'fly' },
+  { en: 'sleep', es: 'dormir', group: 'sleep' },
+  { en: 'eat', es: 'comer', group: 'eat' },
+  { en: 'drink', es: 'beber', group: 'drink' },
+  { en: 'open', es: 'abrir', group: 'open', needsObject: true },
+  { en: 'close', es: 'cerrar', group: 'close', needsObject: true },
+  { en: 'play football', es: 'jugar al fútbol', group: 'play' },
+  { en: 'play the piano', es: 'tocar el piano', group: 'play' },
+  { en: 'play the drums', es: 'tocar la batería', group: 'play' },
+  { en: 'ride a horse', es: 'montar a caballo', group: 'ride' },
+  { en: 'take photos', es: 'hacer fotos', group: 'photos' },
 ];
