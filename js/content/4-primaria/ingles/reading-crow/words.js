@@ -1,16 +1,16 @@
-// Words of the story: "english → español".
+// Words of the story: "english → español", in alphabetical order.
 export const words = [
-  'crow → cuervo',
-  'pitcher → jarra',
-  'beak → pico',
-  'stone → piedra',
-  'water → agua',
-  'thirsty → con sed',
-  'hot → caluroso',
-  'tall → alto',
-  'idea → idea',
-  'reach → alcanzar',
-  'drink → beber',
   'at last → por fin',
+  'beak → pico',
+  'crow → cuervo',
+  'drink → beber',
+  'hot → caluroso',
+  'idea → idea',
   'little by little → poco a poco',
+  'pitcher → jarra',
+  'reach → alcanzar',
+  'stone → piedra',
+  'tall → alto',
+  'thirsty → con sed',
+  'water → agua',
 ];

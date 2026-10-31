@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '28f636e50493';
+const BUILD = 'bd4d97681291';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -94,7 +94,7 @@ const FILES = {
   './js/content/4-primaria/ingles/reading-crow/index.js': 'aae73edb9e58',
   './js/content/4-primaria/ingles/reading-crow/story.js': '9dec73259399',
   './js/content/4-primaria/ingles/reading-crow/study.js': '7dd409dc1fde',
-  './js/content/4-primaria/ingles/reading-crow/words.js': '176c428c3573',
+  './js/content/4-primaria/ingles/reading-crow/words.js': 'a8c696c18ebf',
   './js/content/4-primaria/ingles/time/exercises.js': '739e062de7e2',
   './js/content/4-primaria/ingles/time/gen/build-time.js': 'e7be10a948ec',
   './js/content/4-primaria/ingles/time/gen/clock-to-words.js': '55431114d72a',
