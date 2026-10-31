@@ -26,7 +26,11 @@ check('estudio: lee con Samantha', (await page.evaluate(() => window.__said.at(-
 await page.screenshot({ path: 'shots/voz-estudio.png' });
 await page.goto(B + '#/p/alex/c/4-primaria/s/ingles/practice/time'); await page.reload(); await page.waitForTimeout(1800);
 check('ejercicio: sin 🔊 antes de comprobar', (await page.locator('.speak').count()) === 0);
-const opt = page.locator('.option').first(); if (await opt.count()) await opt.click(); else { await page.locator('input').first().fill('x'); }
+// La primera pregunta es de un tipo al azar (elegir, escribir, tocar o ordenar fichas): se contesta como toque.
+if (await page.locator('.option').count()) await page.locator('.option').first().click();
+else if (await page.locator('.tap-item').count()) await page.locator('.tap-item').first().click();
+else if (await page.locator('.word-pool .word').count()) { for (let i = 0; i < 20 && (await page.locator('.word-pool .word:not([disabled])').count()); i++) await page.locator('.word-pool .word:not([disabled])').first().click(); }
+else await page.locator('input').first().fill('x');
 await page.getByRole('button', { name: /check/i }).click(); await page.waitForTimeout(400);
 check('ejercicio: 🔊 tras comprobar', (await page.locator('.feedback .speak').count()) === 1);
 await page.locator('.feedback .speak').click();
