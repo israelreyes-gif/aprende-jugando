@@ -1,5 +1,5 @@
 export const study = [
-  { h: 'Question words' },
+  { h: 'Wh- questions' },
   { list: [
     'Who → ¿Quién?',
     'When → ¿Cuándo?',
@@ -20,5 +20,5 @@ export const study = [
     'Where is your book? It is in the bag.',
     'Which is your apple? The green one.',
   ] },
-  { tip: 'We use a question word at the start of the question to ask for information.', label: 'Remember' },
+  { tip: 'We use a Wh- word at the start of the question to ask for information.', label: 'Remember' },
 ];

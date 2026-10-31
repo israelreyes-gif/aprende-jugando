@@ -6,5 +6,5 @@ import { twinOf } from '../lib/wh-words.js';
 export function writeWh() {
   const f = randomFrame();
   const answers = [f.wh, twinOf(f.wh)].filter(Boolean);
-  return textQ(`Write the question word.  ${f.q.replace(f.wh, '___')}  ${f.a}`, answers, `${f.q}  ${f.a}`);
+  return textQ(`Write the Wh- word.  ${f.q.replace(f.wh, '___')}  ${f.a}`, answers, `${f.q}  ${f.a}`);
 }
