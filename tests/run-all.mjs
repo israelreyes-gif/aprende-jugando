@@ -43,7 +43,11 @@ for (const file of files) {
     const timer = setTimeout(() => child.kill('SIGKILL'), 4 * 60 * 1000);
     child.on('close', (c) => {
       clearTimeout(timer);
-      if (c !== 0 || /^\s*✗/m.test(out)) console.log(`\n--- ${file} ---\n${out.split('\n').slice(-40).join('\n')}`);
+      if (c !== 0 || /^\s*✗/m.test(out)) {
+        console.log(`\n--- ${file} ---\n${out.split('\n').slice(-40).join('\n')}`);
+        // En GitHub Actions, un resumen del fallo aparece como anotación en la pantalla de la ejecución.
+        if (process.env.GITHUB_ACTIONS) console.log(`::error title=${file}::${out.split('\n').slice(-12).join('\n').replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A')}`);
+      }
       resolve(c !== 0 || /^\s*✗/m.test(out) ? 1 : 0);
     });
   });
