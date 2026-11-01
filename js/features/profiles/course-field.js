@@ -13,5 +13,5 @@ export function courseField({ onChange }) {
       },
     }, course.title),
   );
-  return h('div', { class: 'field' }, h('span', { class: 'field__label' }, 'Curso'), h('div', { class: 'course-row' }, buttons), h('p', { class: 'field__hint' }, 'Es el curso que va a estudiar. Después no se puede cambiar desde la app.'));
+  return h('div', { class: 'field' }, h('span', { class: 'field__label' }, 'Curso'), h('div', { class: 'course-row' }, buttons), h('p', { class: 'field__hint' }, 'Es el curso que va a estudiar. Los padres pueden cambiarlo después.'));
 }

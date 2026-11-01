@@ -116,6 +116,22 @@ assert.match(text(), /Elige un perfil/); ok('PIN correcto desbloquea');
 await visit('#/parents/' + alex.id);
 assert.match(text(), /aún no tiene actividad/); ok('perfil sin actividad: estado vacío');
 
+/* ---------- 3a. Cambiar el curso del perfil ---------- */
+assert.match(text(), /Curso de Alex/); assert.deepEqual(qa('.stack button.btn').filter((b) => /de Primaria/.test(b.textContent)).map((b) => b.textContent), ['1.º de Primaria', '4.º de Primaria']);
+assert.equal(q('button[aria-pressed="true"]').textContent, '4.º de Primaria'); ok('padres: selector de curso con los cursos abiertos y el actual marcado');
+const pick = (label) => qa('button[aria-pressed]').find((b) => b.textContent === label);
+pick('1.º de Primaria').click(); await sleep(60);
+assert.match(document.querySelector('.modal').textContent, /Su progreso no se pierde/);
+[...document.querySelectorAll('.modal .btn')].find((b) => /Cancelar/.test(b.textContent)).click(); await sleep(60);
+assert.equal(rows("SELECT course_id c FROM profiles WHERE id='" + alex.id + "'")[0].c, '4-primaria'); ok('padres: cancelar no cambia el curso');
+pick('1.º de Primaria').click(); await sleep(60);
+[...document.querySelectorAll('.modal .btn')].find((b) => /Cambiar/.test(b.textContent)).click(); await sleep(200); await settle();
+assert.equal(rows("SELECT course_id c FROM profiles WHERE id='" + alex.id + "'")[0].c, '1-primaria'); assert.equal(q('button[aria-pressed="true"]').textContent, '1.º de Primaria'); ok('padres: confirmar cambia el curso del perfil y recarga la pantalla');
+await visit('#/p/' + alex.id); assert.equal(qa('a.course-card--current').length, 1); assert.match(q('a.course-card--current').textContent, /1\.º/);
+await visit('#/parents/' + alex.id); pick('4.º de Primaria').click(); await sleep(60);
+[...document.querySelectorAll('.modal .btn')].find((b) => /Cambiar/.test(b.textContent)).click(); await sleep(200); await settle();
+assert.equal(rows("SELECT course_id c FROM profiles WHERE id='" + alex.id + "'")[0].c, '4-primaria'); ok('padres: se puede volver al curso anterior');
+
 /* ---------- 3b. Liberar temas ---------- */
 assert.ok(q('a[href="#/parents/' + alex.id + '/release/4-primaria"]')); 
 await visit('#/parents/' + alex.id + '/release/4-primaria');

@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '9b6106ee2db2';
+const BUILD = 'c041a3c59afc';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -322,7 +322,8 @@ const FILES = {
   './js/features/courses/done-course-card.js': 'ae782e3b71ee',
   './js/features/courses/load-course-percent.js': 'a4d93237613b',
   './js/features/courses/locked-course-card.js': 'a4b59457bd0c',
-  './js/features/parents/child-stats.screen.js': '59ea100d8a57',
+  './js/features/parents/child-stats.screen.js': '0ab64517e16b',
+  './js/features/parents/child-stats/course-picker.js': 'c5b59406605a',
   './js/features/parents/child-stats/delete-profile-button.js': '77e10cda8eed',
   './js/features/parents/child-stats/load-course-progress.js': 'bf1246c8009e',
   './js/features/parents/child-stats/points-days.js': '863833bc4926',
@@ -387,7 +388,7 @@ const FILES = {
   './js/features/practice/result-view.js': '30a18f221133',
   './js/features/profiles/color-picker.js': 'd8df36921318',
   './js/features/profiles/completion-bar.js': 'bdabd520437f',
-  './js/features/profiles/course-field.js': 'c22b3956e541',
+  './js/features/profiles/course-field.js': '655ad1f15304',
   './js/features/profiles/edit-profile.screen.js': '091e425f3b41',
   './js/features/profiles/gender-picker.js': '67f84c08a387',
   './js/features/profiles/home-banner.js': 'b337db0b62f3',
