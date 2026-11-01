@@ -1,13 +1,16 @@
 import { sendToDevices } from './push-send-to.js';
 import { telegramConfigured } from './telegram-send.js';
+import { escapeHtml } from './telegram-html.js';
 
 const MAX_BODY = 300;
 
 /** Aviso a los padres: título corto y, en el cuerpo, dónde falló y por qué. */
 export function errorMessage({ where, detail }) {
+  const body = `${where} · ${detail}`.slice(0, MAX_BODY);
   return {
     title: 'Error en el servidor',
-    body: `${where} · ${detail}`.slice(0, MAX_BODY),
+    body,
+    html: `<b>Error en el servidor</b>\n<code>${escapeHtml(where)}</code> · ${escapeHtml(body.slice(`${where} · `.length))}`,
     tag: `error-${where}`.slice(0, 60),
     url: '#/parents',
   };

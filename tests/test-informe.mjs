@@ -51,7 +51,7 @@ const realFetch = globalThis.fetch; const sent = [];
 globalThis.fetch = async (url, init) => { sent.push(JSON.parse(init.body)); return new Response('{}', { status: 200 }); };
 const env = { DB: db, TELEGRAM_BOT_TOKEN: 'T', TELEGRAM_CHAT_ID: '-1' };
 let r = await runWeeklyReport(env, new Date('2026-11-01T19:00:00Z').getTime());
-assert.equal(r.sent, true); assert.equal(sent.length, 1); assert.match(sent[0].text, /^📊 Resumen de la semana\n👦 Alex · 4\.º[\s\S]*A reforzar: División con resto[\s\S]*🧑 Mamá · 1\.º/); console.log('✓ el domingo a las 20:00 se envía a Telegram');
+assert.equal(r.sent, true); assert.equal(sent.length, 1); assert.equal(sent[0].parse_mode, 'HTML'); assert.match(sent[0].text, /^<b>📊 Resumen de la semana<\/b>\n\n<b>👦 Alex · 4\.º<\/b>[\s\S]*<b>A reforzar:<\/b> División con resto[\s\S]*<b>🧑 Mamá · 1\.º<\/b>/); console.log('✓ el domingo a las 20:00 se envía a Telegram');
 r = await runWeeklyReport(env, new Date('2026-11-01T19:30:00Z').getTime()); assert.equal(r.report, false); assert.equal(sent.length, 1); console.log('✓ a otra hora no se envía');
 r = await runWeeklyReport({ DB: db }, new Date('2026-11-01T19:00:00Z').getTime()); assert.equal(r.report, false); assert.ok(r.error); console.log('✓ sin Telegram no envía y lo dice');
 globalThis.fetch = realFetch;

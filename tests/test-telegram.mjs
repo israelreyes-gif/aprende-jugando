@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import { sendTelegram, telegramText } from '../worker/telegram-send.js';
+import { telegramHtml, stripHtml } from '../worker/telegram-html.js';
+import { errorMessage } from '../worker/error-alert.js';
 import { sendToDevices } from '../worker/push-send-to.js';
 
 const realFetch = globalThis.fetch;
@@ -28,4 +30,17 @@ r = await sendToDevices(db, env, [dev], msg, { parents: true });
 assert.equal(r.via, undefined); assert.equal(r.sent + r.failed + r.removed, 1); console.log('✓ si Telegram falla, se intenta el push a los padres');
 r = await sendToDevices(db, {}, [dev], msg, { parents: true });
 assert.equal(r.via, undefined); assert.equal(r.sent + r.failed + r.removed, 1); console.log('✓ sin Telegram configurado, los padres reciben el push como antes');
+// Formato (negrita)
+assert.equal(telegramHtml({ title: 'Alex ha hecho el reto', body: '10 de 10 (100 %) ✅ · +15 puntos' }), '<b>Alex ha hecho el reto</b>\n<b>10 de 10 (100 %)</b> ✅ · +15 puntos');
+assert.equal(telegramHtml({ title: 'Alex ha practicado', body: 'Inglés · Was / were · 7 de 8 (88 %) ✅ · +11 puntos' }), '<b>Alex ha practicado</b>\nInglés · Was / were · <b>7 de 8 (88 %)</b> ✅ · +11 puntos');
+assert.equal(telegramHtml({ title: '¡Alex ha subido a Detective!', body: 'Nivel 5 · 350 puntos 🔍' }), '<b>¡Alex ha subido a Detective!</b>\nNivel 5 · <b>350 puntos</b> 🔍');
+assert.equal(telegramHtml({ title: '¡No pierdas tu racha, Alex! 🔥', body: 'Llevas 5 días seguidos. Haz el reto.' }), '<b>¡No pierdas tu racha, Alex! 🔥</b>\nLlevas <b>5 días seguidos</b>. Haz el reto.');
+assert.equal(telegramHtml({ title: 'A <b> & B', body: 'x < y' }), '<b>A &lt;b&gt; &amp; B</b>\nx &lt; y'); console.log('✓ negrita en título y en lo importante; el texto se escapa');
+const err = errorMessage({ where: 'POST /api/profiles', detail: 'fallo <raro>' });
+assert.equal(telegramHtml(err), '<b>Error en el servidor</b>\n<code>POST /api/profiles</code> · fallo &lt;raro&gt;'); assert.equal(stripHtml(telegramHtml(err)), 'Error en el servidor\nPOST /api/profiles · fallo <raro>'); console.log('✓ el error lleva el origen en código');
+
+// Telegram rechaza el HTML → se reenvía en texto plano
+const bodies = [];
+globalThis.fetch = async (url, init) => { const b = JSON.parse(init.body); bodies.push(b); return new Response('{}', { status: b.parse_mode ? 400 : 200 }); };
+assert.equal(await sendTelegram(env, { title: 'T', body: 'B' }), true); assert.equal(bodies.length, 2); assert.equal(bodies[1].parse_mode, undefined); assert.equal(bodies[1].text, 'T\nB'); console.log('✓ si rechaza el formato, reenvía en texto plano');
 globalThis.fetch = realFetch;
