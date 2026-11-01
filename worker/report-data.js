@@ -32,6 +32,12 @@ async function profileData(db, profile, today) {
   };
 }
 
+/** Títulos de los temas (tabla topic_titles): Map "curso|asignatura|tema" → título. */
+export async function topicTitles(db) {
+  const rows = (await db.prepare('SELECT course_id, subject_id, topic_id, title FROM topic_titles').all()).results;
+  return new Map(rows.map((row) => [keyOf(row), row.title]));
+}
+
 /** Datos de todos los perfiles, en orden de creación. */
 export async function weeklyData(db, today) {
   const profiles = (await db.prepare('SELECT id, name, gender, course_id FROM profiles ORDER BY created_at ASC').all()).results;

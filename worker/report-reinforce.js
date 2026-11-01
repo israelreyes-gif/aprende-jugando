@@ -18,7 +18,7 @@ export function recentPct(sessions) {
 
 const keyOf = (row) => `${row.course_id}|${row.subject_id}|${row.topic_id}`;
 
-/** Ids de los temas liberados con menos del 75 %, del más flojo al menos flojo. */
+/** Claves "curso|asignatura|tema" de los temas liberados con menos del 75 %, del más flojo al menos flojo. */
 export function reinforceTopics(sessions, releasedRows) {
   const released = new Set(releasedRows.map(keyOf));
   const byTopic = new Map();
@@ -26,8 +26,8 @@ export function reinforceTopics(sessions, releasedRows) {
     if (released.has(keyOf(s))) byTopic.set(keyOf(s), [...(byTopic.get(keyOf(s)) || []), s]);
   }
   return [...byTopic.entries()]
-    .map(([key, list]) => ({ topicId: key.split('|')[2], pct: recentPct(list) }))
+    .map(([key, list]) => ({ key, pct: recentPct(list) }))
     .filter((t) => t.pct != null && t.pct < REINFORCE_BELOW)
     .sort((a, b) => a.pct - b.pct)
-    .map((t) => t.topicId);
+    .map((t) => t.key);
 }

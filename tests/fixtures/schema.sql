@@ -109,3 +109,35 @@ CREATE TABLE IF NOT EXISTS push_devices (
   auth       TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
+
+-- Títulos de los temas (la app y el Worker los leen de aquí) --
+CREATE TABLE IF NOT EXISTS topic_titles (
+  id         TEXT PRIMARY KEY,
+  course_id  TEXT NOT NULL,
+  subject_id TEXT NOT NULL,
+  topic_id   TEXT NOT NULL,
+  title      TEXT NOT NULL,
+  UNIQUE (course_id, subject_id, topic_id)
+);
+
+-- Títulos reales de producción (para las pruebas) --
+INSERT OR IGNORE INTO topic_titles (id, course_id, subject_id, topic_id, title) VALUES
+('4-primaria|ingles|time', '4-primaria', 'ingles', 'time', 'Telling the time'),
+('4-primaria|ingles|question-words', '4-primaria', 'ingles', 'question-words', 'Wh- questions'),
+('4-primaria|ingles|vocabulary', '4-primaria', 'ingles', 'vocabulary', 'Vocabulary'),
+('4-primaria|ingles|was-were', '4-primaria', 'ingles', 'was-were', 'Was / were'),
+('4-primaria|ingles|could', '4-primaria', 'ingles', 'could', 'Could / couldn''t'),
+('4-primaria|ingles|reading-crow', '4-primaria', 'ingles', 'reading-crow', 'Reading: The Crow and the Pitcher'),
+('4-primaria|mates|numeros', '4-primaria', 'mates', 'numeros', 'Números hasta 6 cifras'),
+('4-primaria|mates|romanos', '4-primaria', 'mates', 'romanos', 'Números romanos'),
+('4-primaria|mates|pares', '4-primaria', 'mates', 'pares', 'Pares e impares'),
+('4-primaria|mates|redondear', '4-primaria', 'mates', 'redondear', 'Redondear y estimar'),
+('4-primaria|mates|tablas', '4-primaria', 'mates', 'tablas', 'Tablas de multiplicar'),
+('4-primaria|mates|descomponer', '4-primaria', 'mates', 'descomponer', 'Multiplicar descomponiendo'),
+('4-primaria|mates|cajitas', '4-primaria', 'mates', 'cajitas', 'Cajitas multiplicativas'),
+('4-primaria|mates|relacionar', '4-primaria', 'mates', 'relacionar', 'Relacionar multiplicaciones'),
+('4-primaria|mates|repartir', '4-primaria', 'mates', 'repartir', 'Repartir y hacer grupos'),
+('4-primaria|mates|division', '4-primaria', 'mates', 'division', 'División con resto'),
+('4-primaria|mates|problemas', '4-primaria', 'mates', 'problemas', 'Problemas con operaciones'),
+('4-primaria|mates|vocabulario', '4-primaria', 'mates', 'vocabulario', 'Vocabulario geométrico'),
+('4-primaria|mates|simetria', '4-primaria', 'mates', 'simetria', 'Triángulos y simetría');

@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'bd4d97681291';
+const BUILD = '9b6106ee2db2';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -53,7 +53,7 @@ const FILES = {
   './js/content/4-primaria/ingles/could/lib/pick-activity.js': '9079c7397467',
   './js/content/4-primaria/ingles/could/lib/sentence.js': '697b806bdc9c',
   './js/content/4-primaria/ingles/could/study.js': 'e1a60d118aee',
-  './js/content/4-primaria/ingles/index.js': '4378af8a2369',
+  './js/content/4-primaria/ingles/index.js': '78a916b08c30',
   './js/content/4-primaria/ingles/lib/clock-svg.js': '23a5cfe62440',
   './js/content/4-primaria/ingles/lib/say-text.js': 'ba8388b64bb3',
   './js/content/4-primaria/ingles/lib/time-words.js': 'a46cb2737e3b',
@@ -148,7 +148,7 @@ const FILES = {
   './js/content/4-primaria/mates/division/gen/resto-imposible.js': '1ebf3921fac4',
   './js/content/4-primaria/mates/division/index.js': 'aae73edb9e58',
   './js/content/4-primaria/mates/division/study.js': '2d72f23e9873',
-  './js/content/4-primaria/mates/index.js': '27380345388a',
+  './js/content/4-primaria/mates/index.js': '4d77544f06bf',
   './js/content/4-primaria/mates/lib/cajita.js': '01546628a957',
   './js/content/4-primaria/mates/lib/cartas.js': '628a037fd2d3',
   './js/content/4-primaria/mates/lib/clean-roman.js': '62e3fdd7a248',
@@ -242,7 +242,8 @@ const FILES = {
   './js/content/courses.js': '2e4725a6b44f',
   './js/content/registry.js': 'ca5f630bb278',
   './js/content/subjects.js': 'd6767e487a52',
-  './js/content/topics.js': '6f7a80ff6a2e',
+  './js/content/topic-title.js': '7ce1e3ad15bf',
+  './js/content/topics.js': '68a38ddf50ad',
   './js/core/api.js': '94f6643b87da',
   './js/core/api/cache-store.js': 'c484ad81d9ea',
   './js/core/api/connection.js': '2d605383159e',
@@ -276,6 +277,7 @@ const FILES = {
   './js/data/reto/start-reto.js': '42195396a6e6',
   './js/data/settings.repo.js': 'feae7d71f55b',
   './js/data/study.repo.js': '2080eb376b82',
+  './js/data/titles.repo.js': '233f1e2446e0',
   './js/exercises/bank.js': 'a39a03ba3fab',
   './js/exercises/kinds/choice.js': 'c0d155548da4',
   './js/exercises/kinds/fields-render.js': '1fcfb5e824d9',

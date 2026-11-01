@@ -93,7 +93,7 @@ En iPhone, los avisos push solo funcionan con la app instalada así (iOS 16.4 o 
 1. Crea `js/content/4-primaria/mates/divisiones.js` exportando `study` y `exercises` (copia el formato de `tablas.js`).
 2. En `js/content/4-primaria/mates/index.js`, añade `load: () => import('./divisiones.js')` a su línea.
 
-Cada tema de `index.js` lleva: `id`, `emoji` (el que sale en su tarjeta), `title`, `minutes` y `load` (sin `load` sale como "Soon"). Opcional: `unit`, un texto; los temas seguidos con el mismo `unit` se muestran juntos bajo ese encabezado (Inglés usa "Unit 1 · Practice Time").
+Cada tema de `index.js` lleva: `id`, `emoji` (el que sale en su tarjeta), `minutes` y `load` (sin `load` sale como "Soon"). El título NO va en el código: se añade una fila a `topic_titles` en D1 (`INSERT INTO topic_titles (id, course_id, subject_id, topic_id, title) VALUES ('4-primaria|mates|divisiones', '4-primaria', 'mates', 'divisiones', 'Divisiones');`); mientras no exista, la app muestra el id del tema. Opcional: `unit`, un texto; los temas seguidos con el mismo `unit` se muestran juntos bajo ese encabezado (Inglés usa "Unit 1 · Practice Time").
 
 **Un curso nuevo** (por ejemplo, 5.º):
 1. En `js/content/courses.js`, pon `available: true` en su curso. Opcional: `subjects: ['ingles']` si solo tiene algunas asignaturas (1.º solo tiene Inglés).
@@ -129,6 +129,7 @@ Cada versión de la app es un **paquete cerrado**: el service worker la descarga
 | `answers` | una fila por respuesta dentro de una sesión |
 | `study_progress` | temas marcados como estudiados |
 | `topic_release` | temas liberados por los padres para cada perfil (sin fila = bloqueado) |
+| `topic_titles` | título de cada tema (`id` = `curso\|asignatura\|tema`). La app y el resumen semanal leen los títulos de aquí; no están en el código |
 | `reto_diario` | el reto de cada perfil y día: preguntas, respuestas y si está terminado |
 | `push_devices` | móviles con avisos activados: una fila por móvil y uso (`child` = recordatorios de un perfil, `parent` = avisos a los padres) |
 
