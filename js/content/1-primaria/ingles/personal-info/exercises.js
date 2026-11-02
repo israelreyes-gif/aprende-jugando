@@ -30,6 +30,16 @@ const fact = () => {
   const phrase = f === 'last' ? `¿Cuál es el apellido de ${c.first}?` : f === 'city' ? `¿En qué ciudad vive ${c.first}?` : `¿Cuál es ${FIELDS[f]} de ${c.first}?`;
   return { ...choiceQ(`${phrase} (ficha: ${c.first} ${c.last})`, c[f], others, `${c.first} ${c.last}: ${c.country}, ${c.city}, ${c.nat}, ${c.job}`), say: c[f] };
 };
+const FIELD_ES = { country: 'es de', nat: 'es', job: 'trabaja de' };
+const mix = () => {
+  const c = pick(CARDS);
+  const [f1, f2] = shuffle(['country', 'nat', 'job']).slice(0, 2);
+  const part = (card, f) => (f === 'country' ? `from ${card.country}` : f === 'nat' ? card.nat : withArticle(card.job));
+  const make = (card, other) => `${c.first} is ${part(f1 === 'country' ? card : card, f1)} and ${c.he ? 'he' : 'she'} is ${part(other, f2)}.`;
+  const right = make(c, c);
+  const wrongs = CARDS.filter((x) => x !== c).map((x) => make(c, x)).filter((x) => x !== right);
+  return { ...choiceQ(`Ficha de ${c.first} ${c.last}. ¿Qué frase es verdadera?`, right, [...new Set(wrongs)].slice(0, 3), right), say: right };
+};
 const buildNat = () => {
   const c = pick(CARDS);
   const text = `${c.first} is ${c.nat}.`;
@@ -75,6 +85,7 @@ const CAP_BOOK = ['Lisa is American.', 'John is from Montreal.', 'Jessie and I a
 
 export const exercises = [
   { id: 'fact', generate: fact, weight: 2 },
+  { id: 'mix', generate: mix, weight: 2 },
   { id: 'build-nat', generate: buildNat },
   { id: 'build-from', generate: buildFrom },
   { id: 'build-job', generate: buildJob },

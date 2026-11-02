@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'eeaa30c0f636';
+const BUILD = 'a69625e184d7';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -82,7 +82,7 @@ const FILES = {
   './js/content/1-primaria/ingles/numbers-20-100/exercises.js': 'd04a513f811f',
   './js/content/1-primaria/ingles/numbers-20-100/index.js': 'aae73edb9e58',
   './js/content/1-primaria/ingles/numbers-20-100/study.js': 'f0ef5f7a4c98',
-  './js/content/1-primaria/ingles/personal-info/exercises.js': '322bf65283bd',
+  './js/content/1-primaria/ingles/personal-info/exercises.js': '4cc73b884b2c',
   './js/content/1-primaria/ingles/personal-info/index.js': 'aae73edb9e58',
   './js/content/1-primaria/ingles/personal-info/study.js': 'a450ffcd1cf4',
   './js/content/1-primaria/ingles/plurals/exercises.js': '37cd4c853c56',
