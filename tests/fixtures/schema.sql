@@ -141,3 +141,10 @@ INSERT OR IGNORE INTO topic_titles (id, course_id, subject_id, topic_id, title) 
 ('4-primaria|mates|problemas', '4-primaria', 'mates', 'problemas', 'Problemas con operaciones'),
 ('4-primaria|mates|vocabulario', '4-primaria', 'mates', 'vocabulario', 'Vocabulario geométrico'),
 ('4-primaria|mates|simetria', '4-primaria', 'mates', 'simetria', 'Triángulos y simetría');
+
+-- Índices añadidos el 2026-11-02: avisos por perfil (y borrado en cascada de un perfil) y sesiones de un perfil por fecha.
+CREATE INDEX IF NOT EXISTS idx_push_profile
+  ON push_devices (profile_id, kind);
+
+CREATE INDEX IF NOT EXISTS idx_sessions_profile_date
+  ON practice_sessions (profile_id, finished_at);
