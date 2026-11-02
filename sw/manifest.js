@@ -1,12 +1,12 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '6777d24af56a';
+const BUILD = '051927a458de';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
   './css/components/buttons.css': '4de68e7411e6',
   './css/components/cards.css': '5955c5c70a8b',
-  './css/components/catalog-cards.css': '1b6eefc5f25f',
+  './css/components/catalog-cards.css': '784bbb454ba0',
   './css/components/chips.css': 'f60ecb83d718',
   './css/components/exercise-cajita.css': '11ffc0534db2',
   './css/components/exercise-digit-cards.css': 'fe6617edffcd',
@@ -462,7 +462,7 @@ const FILES = {
   './js/features/subjects/topic-access.js': '007d7f16624d',
   './js/features/subjects/topic-action.js': '85940590b053',
   './js/features/subjects/topic-card.js': '2889b63c7f83',
-  './js/features/subjects/topic-group.js': '0e5f8922a61d',
+  './js/features/subjects/topic-group.js': '8d6c341be584',
   './js/features/subjects/topic-meta.js': 'f85310802eea',
   './js/features/subjects/topic-state.js': '3f339a087327',
   './js/features/subjects/topic-tile.js': '9b8086717537',
