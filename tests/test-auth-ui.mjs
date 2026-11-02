@@ -70,7 +70,7 @@ assert.match(q('.field__error').textContent, /Demasiados intentos/); ok('durante
 
 // 6. Padres: crean su código (usuario padres), y con su sesión no se pide nada más
 await visit('#/parents');
-assert.equal(location.hash, '#/login/parent'); assert.equal(document.getElementById('parent-user').value, 'padres'); ok('zona de padres: pide acceso con el usuario "padres"');
+assert.equal(location.hash, '#/login/parent'); assert.equal(document.getElementById('parent-user'), null); ok('zona de padres: pide solo el código, sin campo de usuario');
 type('login-new', '1234'); type('login-repeat', '1234'); await submit();
 assert.match(q('.field__error').textContent, /entre 6 y 8/); ok('el código de padres necesita 6 cifras como mínimo');
 type('login-new', '739201'); type('login-repeat', '739201'); await submit();
@@ -78,6 +78,13 @@ assert.equal(location.hash, '#/parents'); assert.match(text(), /Elige un perfil/
 await visit('#/p/lucia'); assert.equal(location.hash, '#/p/lucia'); ok('con sesión de padres se abre cualquier perfil sin pedir nada');
 await visit('#/p/lucia/edit'); assert.equal(location.hash, '#/p/lucia/edit'); ok('y también su edición');
 await visit('#/parents/alex'); assert.match(text(), /Restablecer su código/); ok('padres: botón para restablecer el código de un perfil');
+
+// 6b. Atajo "Entrar como padre" desde la tarjeta de un perfil
+clearSession('parent'); resetFlags();
+await visit('#/p/lucia'); assert.equal(location.hash, '#/login/lucia');
+const link = [...app().querySelectorAll('a')].find((a) => /Entrar como padre/.test(a.textContent)); assert.ok(link); assert.equal(link.getAttribute('href'), '#/login/parent'); ok('el login de un perfil tiene el botón "Entrar como padre"');
+await visit('#/login/parent'); type('login-code', '739201'); await submit();
+assert.equal(location.hash, '#/p/lucia'); ok('con el código de padres vuelve a la tarjeta que se quería abrir');
 
 // 7. Un perfil sin sesión no ve a otro perfil
 clearSession('parent'); resetFlags();

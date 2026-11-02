@@ -83,7 +83,7 @@ Comprobación: abrir `URL-DEL-WORKER/api` en el navegador debe responder `Clave 
 
 ### 4. Primer uso en cada dispositivo
 Al abrir la app pide la **dirección del Worker** y la **clave**. Se guardan solo en ese dispositivo.
-Después, al entrar en **Zona de padres** se crea el código de padres la primera vez (usuario `padres`; la primera vez se pide el PIN de siempre, que luego se borra). Cada perfil crea el suyo al entrar si aún no lo tiene.
+Después, al entrar en **Zona de padres** se crea el código de padres la primera vez (el usuario `padres` va implícito, no se escribe; la primera vez se pide el PIN de siempre, que luego se borra). Cada perfil crea el suyo al entrar si aún no lo tiene.
 
 Instalar como app: menú del navegador → *Añadir a pantalla de inicio*.
 En iPhone, los avisos push solo funcionan con la app instalada así (iOS 16.4 o superior).

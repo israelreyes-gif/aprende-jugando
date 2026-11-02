@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '78d7739de82a';
+const BUILD = '052e423fcb4e';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -401,7 +401,7 @@ const FILES = {
   './js/features/auth/code-rules.js': '2da0a1bd94dc',
   './js/features/auth/code-view.js': 'ce66e05e2f3c',
   './js/features/auth/flags.js': 'f1ccff03e8e9',
-  './js/features/auth/login.screen.js': 'cc9f1320c76d',
+  './js/features/auth/login.screen.js': '8c2cca4fadb7',
   './js/features/auth/logout-button.js': 'c4ffb0de347d',
   './js/features/auth/new-code-fields.js': 'd2fc0af77e78',
   './js/features/auth/next-page.js': 'e8c84dc0571b',

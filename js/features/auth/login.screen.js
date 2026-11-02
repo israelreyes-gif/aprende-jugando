@@ -4,6 +4,7 @@ import { paths } from '../../core/paths.js';
 import { PARENT_OWNER } from '../../core/api/session-store.js';
 import { createCode, fetchParentStatus, login } from '../../data/auth.repo.js';
 import { listProfiles } from '../../data/profiles.repo.js';
+import { icon } from '../../shared/icons.js';
 import { notFoundView } from '../../shared/not-found-view.js';
 import { codeInput } from './code-input.js';
 import { codeView } from './code-view.js';
@@ -11,7 +12,8 @@ import { markEditOk, markEntered } from './flags.js';
 import { newCodeFields } from './new-code-fields.js';
 import { takeNext } from './next-page.js';
 
-const parentUser = () => h('input', { class: 'input', id: 'parent-user', type: 'text', value: 'padres', readonly: true, 'aria-label': 'Usuario' });
+/** Atajo para los padres: lleva al acceso de padres y, al acertar, vuelve a la pantalla que se quería abrir. */
+const asParentLink = () => h('a', { class: 'btn btn--outline btn--block', href: paths.login(PARENT_OWNER) }, icon('lock', 22), 'Entrar como padre');
 
 /** Tras entrar: se anota y se sigue a la pantalla que se quería abrir. */
 function done(owner, edit) {
@@ -22,11 +24,12 @@ function done(owner, edit) {
   go(takeNext(owner === PARENT_OWNER ? paths.parents() : paths.courses(owner)), { replace: true });
 }
 
-function enterView({ owner, edit, title, sub, extraFields = [] }) {
+function enterView({ owner, edit, title, sub }) {
   const code = codeInput('login-code');
   return codeView({
     title, sub, back: paths.home(), buttonLabel: 'Entrar',
-    fields: [...extraFields, { label: owner === PARENT_OWNER ? 'Código de padres' : 'Tu código', node: code }],
+    fields: [{ label: owner === PARENT_OWNER ? 'Código de padres' : 'Tu código', node: code }],
+    extra: owner === PARENT_OWNER ? null : asParentLink(),
     onSubmit: async () => {
       try {
         await login(owner, code.value);
@@ -46,7 +49,8 @@ function createView({ owner, edit, title, sub, withPin = false }) {
   const fields = newCodeFields({ owner, prefix: 'login', label: owner === PARENT_OWNER ? 'Código de padres nuevo' : 'Crea tu código' });
   return codeView({
     title, sub, back: paths.home(), buttonLabel: 'Guardar y entrar',
-    fields: [...(owner === PARENT_OWNER ? [{ label: 'Usuario', node: parentUser() }] : []), ...(pin ? [{ label: 'PIN de siempre (el de la zona de padres)', node: pin }] : []), { node: fields }],
+    fields: [...(pin ? [{ label: 'PIN de siempre (el de la zona de padres)', node: pin }] : []), { node: fields }],
+    extra: owner === PARENT_OWNER ? null : asParentLink(),
     onSubmit: async () => {
       const { code, error } = fields.read();
       if (error) return error;
@@ -63,8 +67,8 @@ export async function loginScreen({ owner, then }) {
   const edit = then === 'edit';
   if (owner === PARENT_OWNER) {
     const status = await fetchParentStatus();
-    if (status.has_code) return enterView({ owner, edit, title: 'Zona de padres', sub: 'Entra con tu usuario y tu código', extraFields: [{ label: 'Usuario', node: parentUser() }] });
-    return createView({ owner, edit, title: 'Zona de padres', sub: status.legacy ? 'Crea tu código de padres (usuario: padres)' : 'Crea el acceso de padres', withPin: status.legacy });
+    if (status.has_code) return enterView({ owner, edit, title: 'Zona de padres', sub: 'Escribe el código de padres' });
+    return createView({ owner, edit, title: 'Zona de padres', sub: status.legacy ? 'Crea el código de padres' : 'Crea el código de padres', withPin: status.legacy });
   }
   const profile = (await listProfiles()).find((p) => p.id === owner);
   if (!profile) return notFoundView();
