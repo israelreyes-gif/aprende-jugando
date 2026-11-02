@@ -41,15 +41,16 @@ export function json(data, status, cors) {
   });
 }
 
+/** Respuesta de error. Nunca lleva el texto interno de la base de datos: ese detalle solo va a los avisos a padres. */
 export function errorResponse(err, cors) {
   if (err instanceof HttpError) return json({ error: err.message }, err.status, cors);
 
   const message = String(err?.message || err);
   if (/UNIQUE constraint|FOREIGN KEY constraint|PRIMARY KEY/i.test(message)) {
-    return json({ error: 'Conflicto con los datos existentes', detail: message }, 409, cors);
+    return json({ error: 'Conflicto con los datos existentes' }, 409, cors);
   }
   if (/CHECK constraint|NOT NULL constraint/i.test(message)) {
-    return json({ error: 'Datos no válidos', detail: message }, 400, cors);
+    return json({ error: 'Datos no válidos' }, 400, cors);
   }
-  return json({ error: 'Error interno', detail: message }, 500, cors);
+  return json({ error: 'Error interno' }, 500, cors);
 }
