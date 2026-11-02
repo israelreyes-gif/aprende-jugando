@@ -41,7 +41,7 @@ for (const meta of topics) {
       if (q.type === 'words') assert.ok(q.answer.every((w) => w && !/undefined|NaN/.test(w)) && !(q.extra || []).some((x) => q.answer.includes(x)), `ficha extra repetida · ${where}`);
       assert.ok(!/undefined|NaN|\[object/.test(JSON.stringify(q)), where);
       assert.ok(K[q.type].check(q, right[q.type](q)), where);
-      seen.add(q.prompt);
+      seen.add(q.prompt + '|' + JSON.stringify(q.options || q.answer || q.answers));
     }
   }
   const generated = exercises.filter((e) => e.generate).length;
