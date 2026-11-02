@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '463c7dc17694';
+const BUILD = '6777d24af56a';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -386,8 +386,8 @@ const FILES = {
   './js/features/parents/subject-stats.screen.js': '0afd6271ef59',
   './js/features/parents/subject-stats/topic-stat-row.js': 'ef6ccdb5b21b',
   './js/features/points/format-points.js': 'db90c288505d',
-  './js/features/points/levels.js': '5e97765636ae',
-  './js/features/points/levels.screen.js': 'f79a3fc68bab',
+  './js/features/points/levels.js': '2863faccd340',
+  './js/features/points/levels.screen.js': 'c9084e19ed45',
   './js/features/points/load-points.js': '58c0289aa8de',
   './js/features/points/period-points.js': '2525c8baf795',
   './js/features/points/points-outcome.js': 'ca88a2d9f4c6',

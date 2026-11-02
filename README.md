@@ -7,7 +7,7 @@ Empieza en 4.º de Primaria con Matemáticas, Sociales, Inglés, Lengua y Scienc
 - **Datos**: base de datos D1 con tablas reales, accesible a través de un Worker mínimo y genérico.
 - **Offline**: `sw.js` guarda la app; los resultados hechos sin internet se guardan y se envían solos al volver la conexión.
 - **Reto diario**: hasta 10 preguntas al día por perfil, de temas liberados y estudiados, con racha.
-- **Puntos y niveles**: +1 por acierto, −1 por fallo, +10 por tema estudiado y ±5 de bonus por sesión; 10 niveles, en masculino o femenino según el perfil (ver más abajo).
+- **Puntos y niveles**: +1 por acierto, −1 por fallo, +10 por tema estudiado y ±5 de bonus por sesión; 20 niveles, en masculino o femenino según el perfil (ver más abajo).
 - **Zona de padres**: estadísticas, refuerzo (regla del 75 %), puntos y temas liberados por perfil.
 - **Avisos push**: recordatorios del reto a cada perfil (08:00 y 18:30) y avisos a los padres cuando un perfil termina un reto, un estudio o ejercicios (ver más abajo).
 
@@ -168,6 +168,16 @@ Las reglas están en `features/points/rules.js` y los niveles en `features/point
 | 8 | Campeón | Campeona | 1.050 |
 | 9 | Maestro | Maestra | 1.450 |
 | 10 | Leyenda | Leyenda | 2.000 |
+| 11 | Sabio | Sabia | 2.700 |
+| 12 | Genio | Genia | 3.500 |
+| 13 | Pionero | Pionera | 4.400 |
+| 14 | Héroe | Heroína | 5.400 |
+| 15 | Gran Maestro | Gran Maestra | 6.500 |
+| 16 | Titán | Titana | 7.700 |
+| 17 | Gladiador | Gladiadora | 9.000 |
+| 18 | Guardián | Guardiana | 10.500 |
+| 19 | Dragón | Dragón | 12.200 |
+| 20 | Inmortal | Inmortal | 14.000 |
 
 Un perfil sin chico/chica elegido usa los nombres en masculino.
 

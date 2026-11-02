@@ -1,4 +1,4 @@
-/** Los 10 niveles: puntos mínimos para alcanzar cada uno. name: masculino; fem: femenino. */
+/** Los 20 niveles: puntos mínimos para alcanzar cada uno. name: masculino; fem: femenino. */
 export const LEVELS = [
   { n: 1, name: 'Explorador', fem: 'Exploradora', emoji: '🌱', min: 0 },
   { n: 2, name: 'Aprendiz', fem: 'Aprendiz', emoji: '📘', min: 50 },
@@ -10,6 +10,16 @@ export const LEVELS = [
   { n: 8, name: 'Campeón', fem: 'Campeona', emoji: '🏆', min: 1050 },
   { n: 9, name: 'Maestro', fem: 'Maestra', emoji: '🎓', min: 1450 },
   { n: 10, name: 'Leyenda', fem: 'Leyenda', emoji: '👑', min: 2000 },
+  { n: 11, name: 'Sabio', fem: 'Sabia', emoji: '🦉', min: 2700 },
+  { n: 12, name: 'Genio', fem: 'Genia', emoji: '🧠', min: 3500 },
+  { n: 13, name: 'Pionero', fem: 'Pionera', emoji: '🔭', min: 4400 },
+  { n: 14, name: 'Héroe', fem: 'Heroína', emoji: '🦸', min: 5400 },
+  { n: 15, name: 'Gran Maestro', fem: 'Gran Maestra', emoji: '🥋', min: 6500 },
+  { n: 16, name: 'Titán', fem: 'Titana', emoji: '⚡', min: 7700 },
+  { n: 17, name: 'Gladiador', fem: 'Gladiadora', emoji: '🛡️', min: 9000 },
+  { n: 18, name: 'Guardián', fem: 'Guardiana', emoji: '🏰', min: 10500 },
+  { n: 19, name: 'Dragón', fem: 'Dragón', emoji: '🐉', min: 12200 },
+  { n: 20, name: 'Inmortal', fem: 'Inmortal', emoji: '🌟', min: 14000 },
 ];
 
 /** Los niveles con el nombre según el género ('chica' → femenino; cualquier otro valor → masculino). */

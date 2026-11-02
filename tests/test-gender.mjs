@@ -38,8 +38,8 @@ const { coursePercent } = await import('../js/features/courses/course-percent.js
 // Lógica
 assert.equal(levelFor(250).name, 'Aventurero'); assert.equal(levelFor(250, 'chico').name, 'Aventurero'); assert.equal(levelFor(250, 'chica').name, 'Aventurera'); assert.equal(levelFor(250, null).name, 'Aventurero');
 assert.equal(levelFor(250, 'chica').next.name, 'Detective'); assert.equal(levelFor(100, 'chica').next.name, 'Curiosa');
-assert.deepEqual(levelsFor('chica').map((l) => l.name), ['Exploradora','Aprendiz','Curiosa','Aventurera','Detective','Inventora','Experta','Campeona','Maestra','Leyenda']);
-assert.deepEqual(levelsFor().map((l) => l.name), ['Explorador','Aprendiz','Curioso','Aventurero','Detective','Inventor','Experto','Campeón','Maestro','Leyenda']); ok('niveles en masculino, femenino y sin elegir (masculino)');
+assert.deepEqual(levelsFor('chica').map((l) => l.name), ['Exploradora','Aprendiz','Curiosa','Aventurera','Detective','Inventora','Experta','Campeona','Maestra','Leyenda','Sabia','Genia','Pionera','Heroína','Gran Maestra','Titana','Gladiadora','Guardiana','Dragón','Inmortal']);
+assert.deepEqual(levelsFor().map((l) => l.name), ['Explorador','Aprendiz','Curioso','Aventurero','Detective','Inventor','Experto','Campeón','Maestro','Leyenda','Sabio','Genio','Pionero','Héroe','Gran Maestro','Titán','Gladiador','Guardián','Dragón','Inmortal']); ok('niveles en masculino, femenino y sin elegir (masculino)');
 assert.deepEqual(profileCompletion({ name: 'A', color: '#1', gender: null, bell: false }), { pct: 50, missing: ['elegir chico o chica', 'activar los avisos'] });
 assert.equal(profileCompletion({ name: 'A', color: '#1', gender: 'chica', bell: null }).pct, 75); assert.equal(profileCompletion({ name: ' ', color: '#1', gender: 'chica', bell: true }).pct, 75); assert.equal(profileCompletion({ name: 'A', color: '#1', gender: 'chico', bell: true }).pct, 100); ok('porcentaje del perfil: 25 % por dato');
 assert.deepEqual(coursePercent([{ total: 13, studied: 8 }, { total: 3, studied: 1 }, { total: 0, studied: 0 }]), { studied: 9, total: 16, pct: 56, missing: 44 }); assert.equal(coursePercent([]).pct, 0); ok('porcentaje del curso');

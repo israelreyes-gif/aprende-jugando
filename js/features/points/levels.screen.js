@@ -8,7 +8,7 @@ import { levelFor, levelsFor } from './levels.js';
 import { loadPointsOrNull } from './load-points.js';
 import { levelCard } from './ui/level-card.js';
 
-/** Lista de los 10 niveles, con el actual marcado. */
+/** Lista de los 20 niveles, con el actual marcado. */
 export async function levelsScreen({ pid }) {
   const [profile, points] = await Promise.all([getProfile(pid), loadPointsOrNull(pid)]);
   if (!profile) return notFoundView();

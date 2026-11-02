@@ -8,10 +8,10 @@ const { signed, pointsText, formatNumber } = await import(P + 'format-points.js'
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
 
 // Niveles: justo en el límite y uno antes
-const expected = [[0, 1], [49, 1], [50, 2], [119, 2], [120, 3], [219, 3], [220, 4], [349, 4], [350, 5], [519, 5], [520, 6], [749, 6], [750, 7], [1049, 7], [1050, 8], [1449, 8], [1450, 9], [1999, 9], [2000, 10], [99999, 10], [-5, 1]];
+const expected = [[0, 1], [49, 1], [50, 2], [119, 2], [120, 3], [219, 3], [220, 4], [349, 4], [350, 5], [519, 5], [520, 6], [749, 6], [750, 7], [1049, 7], [1050, 8], [1449, 8], [1450, 9], [1999, 9], [2000, 10], [2699, 10], [2700, 11], [3500, 12], [4400, 13], [5400, 14], [6500, 15], [7700, 16], [9000, 17], [10500, 18], [12200, 19], [13999, 19], [14000, 20], [99999, 20], [-5, 1]];
 for (const [pts, lvl] of expected) assert.equal(levelFor(pts).n, lvl, `${pts} puntos`);
-assert.deepEqual(LEVELS.map((l) => l.name), ['Explorador', 'Aprendiz', 'Curioso', 'Aventurero', 'Detective', 'Inventor', 'Experto', 'Campeón', 'Maestro', 'Leyenda']); ok('10 niveles, cada uno empieza en su punto exacto (0, 50, 120, 220, 350, 520, 750, 1050, 1450, 2000)');
-const l = levelFor(258); assert.equal(l.name, 'Aventurero'); assert.equal(l.next.name, 'Detective'); assert.equal(l.toNext, 92); assert.equal(l.progress, Math.round((38 * 100) / 130)); assert.equal(levelFor(2500).next, null); assert.equal(levelFor(2500).progress, 100); ok('258 puntos: Aventurero, faltan 92 para Detective; el nivel 10 no tiene siguiente');
+assert.deepEqual(LEVELS.map((l) => l.name), ['Explorador', 'Aprendiz', 'Curioso', 'Aventurero', 'Detective', 'Inventor', 'Experto', 'Campeón', 'Maestro', 'Leyenda', 'Sabio', 'Genio', 'Pionero', 'Héroe', 'Gran Maestro', 'Titán', 'Gladiador', 'Guardián', 'Dragón', 'Inmortal']); ok('20 niveles, cada uno empieza en su punto exacto (0, 50, 120, 220, 350, 520, 750, 1050, 1450, 2000, 2700… 14000)');
+const l = levelFor(258); assert.equal(l.name, 'Aventurero'); assert.equal(l.next.name, 'Detective'); assert.equal(l.toNext, 92); assert.equal(l.progress, Math.round((38 * 100) / 130)); assert.equal(levelFor(20000).next, null); assert.equal(levelFor(20000).progress, 100); assert.equal(levelFor(2500).next.name, 'Sabio'); ok('258 puntos: Aventurero, faltan 92 para Detective; Leyenda ya tiene siguiente (Sabio); el nivel 20 no');
 
 // Sesión: +1 / −1 y bonus ±5
 assert.deepEqual(sessionPoints(8, 8), { right: 8, wrong: 0, base: 8, bonus: 5, total: 13 });

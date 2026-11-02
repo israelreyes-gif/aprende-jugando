@@ -95,7 +95,7 @@ assert.match(pushes[0].body, /8 de 10 \(80 %\) ✅ · \+11 puntos/); ok('el avis
 
 // 6) Lista de niveles
 await visit('#/p/alex/levels');
-assert.equal(qa('.level-row').length, 10); assert.deepEqual(qa('.level-row__min').map((e) => e.textContent.replace(' ◀', '')), ['0', '50', '120', '220', '350', '520', '750', '1.050', '1.450', '2.000']);
+assert.equal(qa('.level-row').length, 20); assert.deepEqual(qa('.level-row__min').map((e) => e.textContent.replace(' ◀', '')), ['0', '50', '120', '220', '350', '520', '750', '1.050', '1.450', '2.000', '2.700', '3.500', '4.400', '5.400', '6.500', '7.700', '9.000', '10.500', '12.200', '14.000']);
 const cur = qa('.level-row--current'); assert.equal(cur.length, 1); const lvNow = (await import('../js/features/points/levels.js')).levelFor(before + 11); assert.match(cur[0].textContent, new RegExp(`${lvNow.n} · ${lvNow.name}`)); assert.equal(qa('.level-row--done').length, lvNow.n - 1); assert.ok(q('a.icon-btn[href="#/p/alex"]')); ok('pantalla "Mis niveles": 10 filas con sus puntos (1.050, 2.000…), el actual marcado y los anteriores en gris');
 
 // 7) Zona de padres
