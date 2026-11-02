@@ -18,9 +18,11 @@ import { runReminders } from './reminder-run.js';
 import { runWeeklyReport } from './report-run.js';
 import { alertParents } from './error-alert.js';
 import { alertSyncFailures } from './sync-alert.js';
+import { purgeWeekly } from './purge-sync.js';
 
 export default {
   async scheduled(event, env, ctx) {
+    ctx.waitUntil(purgeWeekly(env, event.scheduledTime));
     ctx.waitUntil(
       runReminders(env, event.scheduledTime).then(async (summary) => {
         console.log('Recordatorios', JSON.stringify(summary));

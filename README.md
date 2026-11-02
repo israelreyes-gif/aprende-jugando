@@ -243,3 +243,17 @@ Para lanzarlas a mano hace falta Node 22 o superior: dentro de `tests/`, `npm in
 (o `npm test -- ui` para solo las que llevan «ui» en el nombre).
 Corren sobre una copia temporal de la app con temas de prueba (`tests/fixtures/content/`), porque Sociales, Lengua y Sciences aún no tienen temas reales:
 cuando los tengan, esos temas de prueba se pueden ir sustituyendo.
+
+## Privacidad
+
+La app está pensada para uso familiar privado. Qué datos maneja y dónde:
+
+- **Perfiles** (tabla `profiles`): solo nombre de pila (máximo 20 caracteres), color, chico/chica y curso. No hay apellidos, fechas de nacimiento, correos ni fotos.
+- **Progreso**: sesiones, respuestas, temas estudiados y liberados, retos y puntos. En `answers.given` queda lo que el niño contestó (como mucho 200 caracteres).
+- **Móviles con avisos** (`push_devices`): la suscripción push de cada móvil. No entra en las copias de seguridad.
+- **PIN de padres** (`settings`): solo una huella (`sal:huella`); el PIN no se guarda. No entra en las copias ni en la caché del dispositivo.
+- **Avisos de sincronización** (`sync_events`): qué se guardaba, un motivo corto y el perfil, nunca el contenido. Se borran solos a los 90 días (domingo a las 20:00, junto al resumen semanal).
+- **Dónde está todo**: en la base de datos D1 de tu cuenta de Cloudflare. En cada dispositivo quedan la clave de la API, la última lectura de cada pantalla y las escrituras pendientes de enviar.
+- **Telegram**: el grupo recibe nombre de pila, notas de los ejercicios, rachas, puntos, temas por reforzar y los avisos de error o de guardado fallido. No lleva ids, claves ni datos de contacto. Telegram no cifra de extremo a extremo los mensajes de los grupos, así que conviene que en el grupo solo estén los padres.
+- **Borrar un perfil** (zona de padres → estadísticas → "Borrar este perfil") borra de la base de datos todo lo suyo: sesiones, respuestas, progreso, temas liberados, retos, móviles con avisos y avisos de sincronización (`tests/test-privacidad.mjs` lo comprueba). Lo que ya esté en una copia de seguridad guardada por ti no se borra: hay que eliminar ese archivo.
+- Si algún día se ofrece a otras familias, habría que revisar con asesoramiento legal las obligaciones aplicables a datos de menores. Esta sección describe lo que hace la app, no certifica el cumplimiento de ninguna norma.
