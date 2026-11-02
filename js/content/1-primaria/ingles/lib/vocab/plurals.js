@@ -1,0 +1,27 @@
+// Plurales. Regla (su cuaderno): -y → -ies, -f → -ves, -s → -es; irregulares man/men, woman/women, person/people, child/children.
+// Los nombres de ejemplo salen de sus ejercicios (chair, table, dictionary, computer, pencil, notebook...); el resto son de Claude (por validar).
+export const plurals = [
+  { one: 'chair', many: 'chairs', rule: '+s' },
+  { one: 'table', many: 'tables', rule: '+s' },
+  { one: 'computer', many: 'computers', rule: '+s' },
+  { one: 'pencil', many: 'pencils', rule: '+s' },
+  { one: 'notebook', many: 'notebooks', rule: '+s' },
+  { one: 'pen', many: 'pens', rule: '+s' },
+  { one: 'book', many: 'books', rule: '+s' },
+  { one: 'student', many: 'students', rule: '+s' },
+  { one: 'dictionary', many: 'dictionaries', rule: '-y → -ies' },
+  { one: 'family', many: 'families', rule: '-y → -ies' },
+  { one: 'country', many: 'countries', rule: '-y → -ies' },
+  { one: 'baby', many: 'babies', rule: '-y → -ies' },
+  { one: 'wife', many: 'wives', rule: '-f → -ves' },
+  { one: 'knife', many: 'knives', rule: '-f → -ves' },
+  { one: 'leaf', many: 'leaves', rule: '-f → -ves' },
+  { one: 'shelf', many: 'shelves', rule: '-f → -ves' },
+  { one: 'bus', many: 'buses', rule: '-s → -es' },
+  { one: 'class', many: 'classes', rule: '-s → -es' },
+  { one: 'box', many: 'boxes', rule: '-s → -es' },
+  { one: 'man', many: 'men', rule: 'irregular' },
+  { one: 'woman', many: 'women', rule: 'irregular' },
+  { one: 'person', many: 'people', rule: 'irregular' },
+  { one: 'child', many: 'children', rule: 'irregular' },
+];

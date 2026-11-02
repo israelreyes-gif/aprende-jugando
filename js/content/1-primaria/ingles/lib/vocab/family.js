@@ -1,0 +1,23 @@
+// Familia de su cuaderno. Las aclaraciones entre paréntesis las añade Claude para que cada palabra en español sea única.
+export const family = [
+  { en: 'husband', es: 'marido' },
+  { en: 'wife', es: 'mujer (esposa)' },
+  { en: 'father', es: 'padre', alt: ['dad'] },
+  { en: 'mother', es: 'madre', alt: ['mum'] },
+  { en: 'parents', es: 'padres (papá y mamá)' },
+  { en: 'child', es: 'niño o niña (un hijo)' },
+  { en: 'children', es: 'niños o niñas (hijos)' },
+  { en: 'son', es: 'hijo (chico)' },
+  { en: 'daughter', es: 'hija (chica)' },
+  { en: 'brother', es: 'hermano' },
+  { en: 'sister', es: 'hermana' },
+  { en: 'uncle', es: 'tío' },
+  { en: 'aunt', es: 'tía' },
+  { en: 'grandchild', es: 'nieto o nieta' },
+  { en: 'grandchildren', es: 'nietos y nietas' },
+  { en: 'grandfather', es: 'abuelo' },
+  { en: 'grandmother', es: 'abuela' },
+  { en: 'grandparents', es: 'abuelos (abuelo y abuela)' },
+  { en: 'grandson', es: 'nieto (chico)' },
+  { en: 'granddaughter', es: 'nieta (chica)' },
+];

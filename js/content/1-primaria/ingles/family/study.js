@@ -1,0 +1,28 @@
+export const study = [
+  { h: 'Family' },
+  { list: [
+    'husband → marido',
+    'wife → mujer',
+    'father / dad → padre',
+    'mother / mum → madre',
+    'parents → padres',
+    'child → niño / niña',
+    'children → niños / niñas (hijos / hijas)',
+    'son → hijo',
+    'daughter → hija',
+    'brother → hermano',
+    'sister → hermana',
+    'uncle → tío',
+    'aunt → tía',
+  ] },
+  { h: 'Grandparents' },
+  { list: [
+    'grandfather → abuelo',
+    'grandmother → abuela',
+    'grandparents → abuelos',
+    'grandchild → nieto / nieta',
+    'grandchildren → nietos / nietas',
+    'grandson → nieto',
+    'granddaughter → nieta',
+  ] },
+];
