@@ -3,6 +3,14 @@
 PWA para que Alex (y otros perfiles) aprendan y practiquen los contenidos de primaria.
 Empieza en 4.º de Primaria con Matemáticas, Sociales, Inglés, Lengua y Sciences.
 
+## Alcance: app familiar (no multifamilia)
+
+Esta app es **solo para la familia de Alex** (sus perfiles, sus padres y los familiares que ellos autoricen, como la abuela). **No está pensada para abrirse a otras familias ni para publicarse.** Por eso, a propósito:
+
+- Hay **una sola base de datos, un solo Worker y una sola `API_KEY`** compartida por todos los dispositivos de la familia. Los códigos de cada perfil y el de los padres separan a las personas de la casa, no a unas familias de otras.
+- **No se plantea** separar datos por familia, claves por familia, cuentas multiusuario, registro público, política de privacidad, consentimientos, exportación o borrado de datos de terceros ni revisión legal (RGPD).
+- Si alguna revisión (humana o de una IA) propone cosas de ese tipo, están **descartadas** salvo que el objetivo cambie y se decida abrir la app a otras familias. En ese caso habría que replantear antes la base de datos, el Worker y los permisos.
+
 - **App**: archivos estáticos en GitHub Pages (sin Node, sin compilar).
 - **Datos**: base de datos D1 con tablas reales, accesible a través de un Worker mínimo y genérico. Cada tabla tiene permisos por operación en `worker/permissions.js` (leer, crear, editar, borrar); lo que no esté ahí da 403. Si añades una tabla nueva, dale permisos en ese fichero.
 - **Offline**: `sw.js` guarda la app; los resultados hechos sin internet se guardan y se envían solos al volver la conexión.
