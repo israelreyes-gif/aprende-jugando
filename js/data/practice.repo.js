@@ -32,8 +32,8 @@ export async function savePractice({ profileId, courseId, subjectId, topicId, re
     given: r.given == null ? null : String(r.given).slice(0, 200),
   }));
 
-  const first = await api.queueInsert('practice_sessions', session);
-  const second = await api.queueInsert('answers', answers);
+  const first = await api.queueInsert('practice_sessions', session, { profileId });
+  const second = await api.queueInsert('answers', answers, { profileId });
   return { queued: first.queued || second.queued };
 }
 

@@ -17,6 +17,7 @@ import { handlePush } from './push-handle-push.js';
 import { runReminders } from './reminder-run.js';
 import { runWeeklyReport } from './report-run.js';
 import { alertParents } from './error-alert.js';
+import { alertSyncFailures } from './sync-alert.js';
 
 export default {
   async scheduled(event, env, ctx) {
@@ -65,8 +66,13 @@ export default {
       switch (request.method) {
         case 'GET':
           return json(await handleGet(env.DB, table, params, id), 200, cors);
-        case 'POST':
-          return json(await handlePost(env.DB, table, params, request), 201, cors);
+        case 'POST': {
+          // Los guardados fallidos que anota la app (sync_events) avisan a los padres.
+          const received = table.name === 'sync_events' ? await request.clone().json().catch(() => null) : null;
+          const result = await handlePost(env.DB, table, params, request);
+          if (received) ctx?.waitUntil(alertSyncFailures(env, received));
+          return json(result, 201, cors);
+        }
         case 'PATCH':
           return json(await handlePatch(env.DB, table, params, request, id), 200, cors);
         case 'DELETE':

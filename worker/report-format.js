@@ -21,6 +21,15 @@ function bar(done, total, { b }) {
   return `${'🟩'.repeat(filled)}${'⬜'.repeat(SQUARES - filled)} ${b(`${pct} %`)}`;
 }
 
+/** Línea de sincronización: siempre aparece, con el estado de la semana. */
+function syncLine(sync, { b }) {
+  const label = `🔄 ${b('Sincronización:')}`;
+  if (!sync || (sync.activity === 0 && sync.late === 0 && sync.failed === 0)) return `${label} sin datos esta semana`;
+  if (sync.failed > 0) return `${label} ⚠️ ${sync.late} con retraso, ${b(`${sync.failed} sin guardar`)}`;
+  if (sync.late > 0) return `${label} ✅ todo guardado (${sync.late} con retraso)`;
+  return `${label} todo guardado ✅`;
+}
+
 /** Bloque de un perfil. Siempre lleva las mismas líneas, aunque no haya datos. */
 export function formatProfile(p, titles = new Map(), format = plain) {
   const { b, x } = format;
@@ -34,6 +43,7 @@ export function formatProfile(p, titles = new Map(), format = plain) {
     `📚 ${b('Temas estudiados:')} ${p.newTopics} ${p.newTopics === 1 ? 'nuevo' : 'nuevos'} esta semana (${x(topics)})`,
     bar(p.studied, p.released, format),
     `⚠️ ${b('A reforzar:')} ${x(shown.length ? shown.join(', ') + extra : 'nada')}`,
+    syncLine(p.sync, format),
   ].join('\n');
 }
 

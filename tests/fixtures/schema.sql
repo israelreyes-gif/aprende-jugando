@@ -148,3 +148,15 @@ CREATE INDEX IF NOT EXISTS idx_push_profile
 
 CREATE INDEX IF NOT EXISTS idx_sessions_profile_date
   ON practice_sessions (profile_id, finished_at);
+
+CREATE TABLE IF NOT EXISTS sync_events (
+  id         TEXT PRIMARY KEY,
+  profile_id TEXT REFERENCES profiles(id) ON DELETE CASCADE,
+  outcome    TEXT NOT NULL CHECK (outcome IN ('late', 'failed')),
+  what       TEXT NOT NULL,
+  detail     TEXT,
+  created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_sync_profile_date
+  ON sync_events (profile_id, created_at);

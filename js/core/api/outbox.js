@@ -3,6 +3,9 @@ import { isConfigured } from './connection.js';
 import { insertRows } from './request.js';
 import { isRetryable } from './retry.js';
 import { readOutbox, writeOutbox } from './outbox-store.js';
+import { logSync } from './sync-log.js';
+
+const reason = (err) => (err.status ? `error ${err.status}` : 'sin conexión');
 
 let flushing = false;
 
@@ -16,9 +19,11 @@ export async function flushOutbox() {
       const [first, ...rest] = items;
       try {
         await insertRows(first.table, first.rows, first.conflict);
+        logSync({ outcome: 'late', what: first.table, detail: 'guardado al volver la conexión', profileId: first.profileId });
       } catch (err) {
         if (isRetryable(err)) return;
         console.warn('Se descarta una escritura rechazada por el servidor:', err.message);
+        logSync({ outcome: 'failed', what: first.table, detail: reason(err), profileId: first.profileId });
       }
       items = rest;
       writeOutbox(items);
@@ -33,8 +38,8 @@ export async function flushOutbox() {
  * dispositivo y se reenvía sola más tarde. Devuelve { queued: boolean }.
  * Usar siempre con ids generados en el cliente y conflict: 'ignore' (idempotente).
  */
-export async function queueInsert(table, rows, { conflict = 'ignore' } = {}) {
-  const item = { table, rows, conflict };
+export async function queueInsert(table, rows, { conflict = 'ignore', profileId = null } = {}) {
+  const item = { table, rows, conflict, profileId };
   if (readOutbox().length > 0) {
     writeOutbox([...readOutbox(), item]);
     flushOutbox();
@@ -44,7 +49,10 @@ export async function queueInsert(table, rows, { conflict = 'ignore' } = {}) {
     await insertRows(table, rows, conflict);
     return { queued: false };
   } catch (err) {
-    if (!isRetryable(err)) throw err;
+    if (!isRetryable(err)) {
+      logSync({ outcome: 'failed', what: table, detail: reason(err), profileId });
+      throw err;
+    }
     writeOutbox([item]);
     return { queued: true };
   }

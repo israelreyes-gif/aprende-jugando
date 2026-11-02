@@ -5,6 +5,17 @@ import { reinforceTopics } from './report-reinforce.js';
 
 const keyOf = (row) => `${row.course_id}|${row.subject_id}|${row.topic_id}`;
 
+/** Guardados de la semana: { activity, late, failed }. activity = sesiones y temas estudiados de la semana. */
+async function syncOfWeek(db, profileId, monday, sessions, studied) {
+  const rows = (await db.prepare('SELECT outcome FROM sync_events WHERE profile_id = ? AND created_at >= ?').bind(profileId, monday).all()).results;
+  const inWeek = (value) => String(value).slice(0, 10) >= monday;
+  return {
+    activity: sessions.filter((x) => inWeek(x.finished_at)).length + studied.filter((x) => inWeek(x.completed_at)).length,
+    late: rows.filter((r) => r.outcome === 'late').length,
+    failed: rows.filter((r) => r.outcome === 'failed').length,
+  };
+}
+
 /** Datos de la semana de un perfil. today: 'AAAA-MM-DD' (domingo). */
 async function profileData(db, profile, today) {
   const all = async (sql) => (await db.prepare(sql).bind(profile.id).all()).results;
@@ -15,6 +26,7 @@ async function profileData(db, profile, today) {
     all('SELECT course_id, subject_id, topic_id, total, correct, finished_at FROM practice_sessions WHERE profile_id = ?'),
   ]);
   const monday = mondayOf(today);
+  const sync = await syncOfWeek(db, profile.id, monday, sessions, studied);
   const releasedKeys = new Set(released.map(keyOf));
   return {
     name: profile.name,
@@ -27,6 +39,7 @@ async function profileData(db, profile, today) {
     studied: studied.filter((s) => releasedKeys.has(keyOf(s))).length,
     released: releasedKeys.size,
     reinforce: reinforceTopics(sessions, released),
+    sync,
     from: monday,
     to: addDays(monday, 6),
   };

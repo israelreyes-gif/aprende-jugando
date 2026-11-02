@@ -3,6 +3,8 @@ import { paths } from '../../core/paths.js';
 import { profileCourse, subjectsOf } from '../../content/registry.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { listSessions } from '../../data/practice.repo.js';
+import { listStudied } from '../../data/study.repo.js';
+import { listSyncEvents } from '../../data/sync.repo.js';
 import { appHeader } from '../../shared/app-header.js';
 import { icon } from '../../shared/icons.js';
 import { notFoundView } from '../../shared/not-found-view.js';
@@ -13,6 +15,8 @@ import { coursePicker } from './child-stats/course-picker.js';
 import { deleteProfileButton } from './child-stats/delete-profile-button.js';
 import { reinforceCards } from './child-stats/reinforce-cards.js';
 import { subjectRows } from './child-stats/subject-rows.js';
+import { syncSection } from './child-stats/sync-section.js';
+import { summarizeSync, weekActivity } from './child-stats/sync-summary.js';
 import { summaryChips } from './child-stats/summary-chips.js';
 import { loadCourseProgress } from './child-stats/load-course-progress.js';
 import { pointsSection } from './child-stats/points-section.js';
@@ -31,6 +35,8 @@ async function renderChildStats({ pid }) {
   const stats = computeStats(sessions, subjectsOf(course).map((s) => s.id), streak);
   const topicTitles = await loadTopicTitles(stats.reinforce);
 
+  const [events, studied] = await Promise.all([listSyncEvents(pid).catch(() => []), listStudied(pid).catch(() => [])]);
+  const sync = summarizeSync(events, weekActivity(sessions, 'finished_at') + weekActivity(studied, 'completed_at'));
   const progress = await loadCourseProgress(pid, course.id);
   const progressSection = h('section', { class: 'stack' }, h('h2', { class: 'title-lg' }, 'Progreso del curso'), courseMeter(coursePercent(progress)), ...progressRows(profile, course, progress));
   const releaseLink = h('a', { class: 'btn btn--outline btn--block', href: paths.release(pid, course.id) }, icon('lock', 22), 'Liberar temas');
@@ -47,7 +53,7 @@ async function renderChildStats({ pid }) {
     'main',
     { class: 'screen' },
     appHeader({ title: profile.name, sub: 'Estadísticas', back: paths.parents(), profile }),
-    h('div', { class: 'screen__body' }, points ? pointsSection(points, spainDay(), profile.gender) : null, coursePicker(profile), releaseLink, progressSection, ...body, h('div', { class: 'spacer' }), deleteProfileButton(profile)),
+    h('div', { class: 'screen__body' }, points ? pointsSection(points, spainDay(), profile.gender) : null, coursePicker(profile), releaseLink, progressSection, ...body, syncSection(sync, profile.name), h('div', { class: 'spacer' }), deleteProfileButton(profile)),
   );
 }
 

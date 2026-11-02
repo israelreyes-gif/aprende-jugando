@@ -132,6 +132,7 @@ Cada versión de la app es un **paquete cerrado**: el service worker la descarga
 | `topic_titles` | título de cada tema (`id` = `curso\|asignatura\|tema`). La app y el resumen semanal leen los títulos de aquí; no están en el código |
 | `reto_diario` | el reto de cada perfil y día: preguntas, respuestas y si está terminado |
 | `push_devices` | móviles con avisos activados: una fila por móvil y uso (`child` = recordatorios de un perfil, `parent` = avisos a los padres) |
+| `sync_events` | guardados que no fueron a la primera: `late` (quedó en cola y se guardó después) o `failed` (el servidor lo rechazó y se descartó). Solo lleva qué se guardaba, un motivo corto y el perfil; sale en la zona de padres y en el resumen semanal, y un `failed` avisa a los padres |
 
 Borrar un perfil borra en cascada todo su progreso y sus móviles de avisos. Las estadísticas y el refuerzo se calculan en la app
 (`features/parents/stats.logic.js`): un tema necesita refuerzo según la regla del 75 % (`features/parents/stats/thresholds.js`).

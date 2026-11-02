@@ -9,7 +9,7 @@ export function markStudied({ profileId, courseId, subjectId, topicId }) {
     subject_id: subjectId,
     topic_id: topicId,
     completed_at: new Date().toISOString(),
-  });
+  }, { profileId });
 }
 
 export function listStudied(profileId, { subjectId } = {}) {

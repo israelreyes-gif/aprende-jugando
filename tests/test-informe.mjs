@@ -26,7 +26,7 @@ const empty = { name: 'Mamá', gender: null, courseId: '1-primaria', streak: 0, 
 const full = { name: 'Alex', gender: 'chico', courseId: null, streak: 5, retoDays: 5, weekDays: 7, newTopics: 3, studied: 12, released: 15, reinforce: ['4-primaria|mates|division', '4-primaria|ingles|was-were'] };
 const titles = new Map([['4-primaria|mates|division', 'División con resto'], ['4-primaria|ingles|was-were', 'Was / were']]);
 const lines = (p) => formatProfile(p).split('\n');
-assert.equal(lines(empty).length, 6); assert.equal(lines(full).length, 6); console.log('✓ 6 líneas siempre');
+assert.equal(lines(empty).length, 7); assert.equal(lines(full).length, 7); console.log('✓ 7 líneas siempre');
 assert.equal(lines(empty)[0], '🧑 Mamá · 1.º'); assert.equal(lines(full)[0], '👦 Alex · 4.º'); assert.match(lines(empty)[3], /sin temas liberados/); assert.match(lines(empty)[4], /⬜{8} 0 %/); assert.match(lines(empty)[5], /nada$/); console.log('✓ sin datos: aparecen todos los apartados');
 assert.match(lines(full)[4], /🟩🟩🟩🟩🟩🟩⬜⬜ 80 %/); assert.equal(formatProfile(full).split('\n')[5], '⚠️ A reforzar: Division, Was were'); assert.equal(formatProfile(full, titles).split('\n')[5], '⚠️ A reforzar: División con resto, Was / were'); assert.match(lines(full)[1], /5 días/); console.log('✓ con datos: barra, refuerzo y racha');
 assert.equal(weeklyReport([]).body, 'Todavía no hay perfiles.');
