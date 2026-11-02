@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import http from 'node:http';
 import { createRequire } from 'node:module';
 import { createDecipheriv, createECDH, hkdfSync, webcrypto } from 'node:crypto';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 const { chromium } = createRequire(import.meta.url)('playwright');
 
@@ -67,7 +67,7 @@ const toggle = (page) => page.locator('.switch-row .switch');
 const settle = async (page) => { await page.waitForSelector('.switch-row'); await page.waitForFunction(() => !document.querySelector('.switch-row .switch')?.disabled || document.querySelector('.switch-row__meta')?.textContent.length > 60, null, { timeout: 8000 }).catch(() => {}); await page.waitForTimeout(150); };
 
 db.sqlite.exec("INSERT INTO topic_release (id, profile_id, course_id, subject_id, topic_id) VALUES ('r1','alex','4-primaria','mates','tablas')");
-const unlockKey = "sessionStorage.setItem('aj.parentsUnlockedUntil', String(Date.now() + 600000));";
+const unlockKey = "localStorage.setItem('aj.session.parent','test');";
 {
   const { ctx, page, errors } = await newPage(); await ctx.addInitScript(unlockKey);
   await page.goto(BASE + '#/parents'); await settle(page); await page.evaluate(() => navigator.serviceWorker.ready);

@@ -18,7 +18,7 @@ export async function flushOutbox() {
     while (items.length > 0) {
       const [first, ...rest] = items;
       try {
-        await insertRows(first.table, first.rows, first.conflict);
+        await insertRows(first.table, first.rows, first.conflict, first.profileId || undefined);
         logSync({ outcome: 'late', what: first.table, detail: 'guardado al volver la conexión', profileId: first.profileId });
       } catch (err) {
         if (isRetryable(err)) return;
@@ -46,7 +46,7 @@ export async function queueInsert(table, rows, { conflict = 'ignore', profileId 
     return { queued: true };
   }
   try {
-    await insertRows(table, rows, conflict);
+    await insertRows(table, rows, conflict, profileId || undefined);
     return { queued: false };
   } catch (err) {
     if (!isRetryable(err)) {

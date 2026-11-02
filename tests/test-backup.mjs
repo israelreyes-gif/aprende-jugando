@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import { createRequire } from 'node:module';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 const { chromium } = createRequire(import.meta.url)('playwright');
 const API = 'http://localhost:8793', B = 'http://localhost:8761/';
@@ -18,7 +18,7 @@ const server = http.createServer(async (req, res) => { const chunks = []; for aw
 const getSetting = () => db.sqlite.prepare(`SELECT value FROM settings WHERE key='last_backup_at'`).get()?.value;
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
 const browser = await chromium.launch(); const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, locale: 'es-ES' });
-await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); sessionStorage.setItem('aj.parentsUnlockedUntil', String(Date.now()+600000));
+await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); localStorage.setItem('aj.session.parent','test');
   window.__mode = 'ok'; window.__shared = null;
   navigator.canShare = () => true;
   navigator.share = async ({ files }) => { if (window.__mode === 'abort') throw Object.assign(new Error('x'), { name: 'AbortError' }); if (window.__mode === 'tap') { window.__mode = 'ok'; throw Object.assign(new Error('x'), { name: 'NotAllowedError' }); } window.__shared = { name: files[0].name, text: await files[0].text() }; };`);

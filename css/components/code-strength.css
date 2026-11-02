@@ -1,0 +1,8 @@
+/* Barra de fuerza del código (crear o cambiar código) */
+.strength { display: flex; align-items: center; gap: 10px; margin-top: 8px; min-height: 20px; }
+.strength__track { flex: 1; height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.strength__fill { display: block; height: 100%; width: 0; border-radius: 999px; background: var(--bad); transition: width .2s ease, background .2s ease; }
+.strength[data-level="1"] .strength__fill { width: 33%; background: var(--bad); }
+.strength[data-level="2"] .strength__fill { width: 66%; background: var(--warn-line); }
+.strength[data-level="3"] .strength__fill { width: 100%; background: var(--ok); }
+.strength__text { flex: none; min-width: 90px; font-size: 14px; font-weight: 700; color: var(--muted); }

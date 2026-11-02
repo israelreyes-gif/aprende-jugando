@@ -5,7 +5,6 @@ import { getProfile } from '../../../data/profiles.repo.js';
 import { listReleased } from '../../../data/release.repo.js';
 import { appHeader } from '../../../shared/app-header.js';
 import { notFoundView } from '../../../shared/not-found-view.js';
-import { withParentsGate } from '../pin-gate.js';
 import { topicSwitchRow } from './topic-switch-row.js';
 
 async function renderReleaseTopics({ pid, cid, sid }) {
@@ -45,5 +44,5 @@ async function renderReleaseTopics({ pid, cid, sid }) {
 }
 
 export function releaseTopicsScreen(params) {
-  return withParentsGate(() => renderReleaseTopics(params));
+  return renderReleaseTopics(params);
 }

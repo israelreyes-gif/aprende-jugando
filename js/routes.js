@@ -6,7 +6,9 @@ import { setupScreen } from './features/setup/setup.screen.js';
 import { profilesScreen } from './features/profiles/profiles.screen.js';
 import { newProfileScreen } from './features/profiles/new-profile.screen.js';
 import { editProfileScreen } from './features/profiles/edit-profile.screen.js';
-import { parentsScreen, changePinScreen } from './features/parents/parents.screen.js';
+import { parentsScreen } from './features/parents/parents.screen.js';
+import { loginScreen } from './features/auth/login.screen.js';
+import { changeCodeScreen, changeParentCodeScreen } from './features/auth/change-code.screen.js';
 import { childStatsScreen } from './features/parents/child-stats.screen.js';
 import { subjectStatsScreen } from './features/parents/subject-stats.screen.js';
 import { releaseSubjectsScreen } from './features/parents/release/release-subjects.screen.js';
@@ -23,15 +25,18 @@ export function registerRoutes() {
   route('/setup', setupScreen);
   route('/', profilesScreen);
   route('/new-profile', newProfileScreen);
+  route('/login/:owner', loginScreen);
+  route('/login/:owner/:then', loginScreen);
 
   route('/parents', parentsScreen);
-  route('/parents/pin', changePinScreen);
+  route('/parents/code', changeParentCodeScreen);
   route('/parents/:pid', childStatsScreen);
   route('/parents/:pid/stats/:cid/:sid', subjectStatsScreen);
   route('/parents/:pid/release/:cid', releaseSubjectsScreen);
   route('/parents/:pid/release/:cid/:sid', releaseTopicsScreen);
 
   route('/p/:pid/edit', editProfileScreen);
+  route('/p/:pid/code', changeCodeScreen);
   route('/p/:pid', coursesScreen);
   route('/p/:pid/levels', levelsScreen);
   route('/p/:pid/c/:cid', courseScreen);

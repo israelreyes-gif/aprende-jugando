@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createDecipheriv, createECDH, hkdfSync, webcrypto } from 'node:crypto';
 import { toBase64Url } from '../worker/push-base64url.js';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { errorMessage } from '../worker/error-alert.js';
 import { makeD1 } from './d1-shim.js';
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };

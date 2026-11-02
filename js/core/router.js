@@ -5,6 +5,7 @@ import { compile, findRoute } from './route-match.js';
 const routes = [];
 let rootEl = null;
 let guard = null;
+let onAuthError = null;
 let renderToken = 0;
 
 /** Registra una ruta. El manejador recibe los parámetros y devuelve (o promete) un nodo DOM. */
@@ -26,10 +27,14 @@ export function reload() {
   return render();
 }
 
-/** guard(path) puede devolver una ruta '#/...' a la que redirigir, o null para continuar. */
+/**
+ * guard(path) puede devolver una ruta '#/...' a la que redirigir, o null para continuar.
+ * onAuthError(err, path) hace lo mismo cuando una petición dice que la sesión ya no vale (error con code 'auth').
+ */
 export function start(root, options = {}) {
   rootEl = root;
   guard = options.guard || null;
+  onAuthError = options.onAuthError || null;
   window.addEventListener('hashchange', render);
   return render();
 }
@@ -57,6 +62,11 @@ async function render() {
     window.scrollTo(0, 0);
   } catch (err) {
     if (token !== renderToken) return;
+    const redirect = err.code === 'auth' && onAuthError ? onAuthError(err, path) : null;
+    if (redirect) {
+      go(redirect, { replace: true });
+      return;
+    }
     console.error(err);
     rootEl.replaceChildren(errorView(err, reload));
   }

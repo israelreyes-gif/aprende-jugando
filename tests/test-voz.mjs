@@ -1,6 +1,6 @@
 import http from 'node:http';
 import { createRequire } from 'node:module';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 const { chromium } = createRequire(import.meta.url)('playwright');
 const API = 'http://localhost:8801';
@@ -14,7 +14,7 @@ const browser = await chromium.launch(); const B = 'http://localhost:8761/';
 let ok = 0, bad = 0; const check = (name, cond) => { if (cond) ok++; else { bad++; console.log('✗', name); } };
 
 const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
-await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k');
+await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); localStorage.setItem('aj.session.parent','test');
   window.__said = []; const vs=[{name:'Daniel',lang:'en-GB'},{name:'Samantha',lang:'en-US'},{name:'Monica',lang:'es-ES'}];
   window.SpeechSynthesisUtterance = function(t){ this.text=t };
   Object.defineProperty(window,'speechSynthesis',{value:{getVoices:()=>vs,cancel(){},speak(u){window.__said.push((u.voice&&u.voice.name)+'|'+u.lang+'|'+u.text)}}});`);

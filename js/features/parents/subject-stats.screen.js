@@ -9,7 +9,6 @@ import { appHeader } from '../../shared/app-header.js';
 import { notFoundView } from '../../shared/not-found-view.js';
 import { topicStatRow } from './subject-stats/topic-stat-row.js';
 import { topicStats } from './stats.logic.js';
-import { withParentsGate } from './pin-gate.js';
 
 async function renderSubjectStats({ pid, cid, sid }) {
   const course = getCourse(cid);
@@ -44,5 +43,5 @@ async function renderSubjectStats({ pid, cid, sid }) {
 }
 
 export function subjectStatsScreen(params) {
-  return withParentsGate(() => renderSubjectStats(params));
+  return renderSubjectStats(params);
 }

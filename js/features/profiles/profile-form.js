@@ -79,7 +79,7 @@ export function profileForm({ initial, submitLabel, errorText, onSave, extra, sh
       await onSave({ name, color, gender, courseId });
     } catch (err) {
       console.error(err);
-      error.textContent = errorText;
+      error.textContent = err.userMessage || errorText;
       submit.disabled = false;
     }
   }

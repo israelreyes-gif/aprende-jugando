@@ -8,7 +8,7 @@ import { spainDay as appDay, addDays as appAdd } from '../js/features/reto/strea
 import { mondayOf as appMonday } from '../js/features/reto/streak/week-start.js';
 import { reminderMessage } from '../worker/reminder-message.js';
 import { runReminders } from '../worker/reminder-run.js';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
 const Z = (s) => new Date(s);

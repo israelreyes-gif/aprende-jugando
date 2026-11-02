@@ -3,13 +3,16 @@
 import assert from 'node:assert/strict';
 import worker from '../worker/worker.js';
 import { makeD1 } from './d1-shim.js';
+import { createSession } from '../worker/auth-sessions.js';
 
 const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
 const env = { DB: db, API_KEY: 'secreto', ALLOWED_ORIGIN: 'https://yo.github.io' };
 const SECRETO_INTERNO = 'tabla_secreta_xyz';
+const parentToken = await createSession(db, 'parent');
 
-async function call(method, path, { key = 'secreto', body, rawBody, environment = env } = {}) {
+async function call(method, path, { key = 'secreto', body, rawBody, environment = env, session = parentToken } = {}) {
   const headers = {};
+  if (session) headers['X-Session'] = session;
   if (key !== null) headers['X-Api-Key'] = key;
   if (body !== undefined || rawBody !== undefined) headers['Content-Type'] = 'application/json';
   const init = { method, headers, body: rawBody ?? (body !== undefined ? JSON.stringify(body) : undefined) };
@@ -33,6 +36,11 @@ assert.equal((await call('GET', '/api', { key: '' })).status, 401);
 assert.equal((await call('GET', '/api', { key: 'secret' })).status, 401);
 assert.equal((await call('GET', '/api', { key: 'secretoo' })).status, 401);
 assert.equal((await call('GET', '/api', { key: 'SECRETO' })).status, 401); ok('claves parecidas, vacía o de otra longitud -> 401');
+
+// Con la clave buena pero sin sesión (o con una falsa) tampoco se entra.
+assert.equal((await call('GET', '/api/profiles', { session: null })).status, 401);
+assert.equal((await call('GET', '/api/profiles', { session: 'inventada' })).status, 401);
+assert.equal((await call('POST', '/push/send', { session: null, body: {} })).status, 401); ok('con clave pero sin sesión válida -> 401');
 
 // El Worker mal configurado no deja pasar a nadie.
 assert.equal((await call('GET', '/api', { environment: { DB: db } })).status, 500);

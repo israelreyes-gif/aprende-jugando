@@ -25,7 +25,7 @@ export function corsHeaders(request, env) {
   const allowed = (env.ALLOWED_ORIGIN || '*').split(',').map((s) => s.trim()).filter(Boolean);
   const headers = {
     'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, X-Api-Key',
+    'Access-Control-Allow-Headers': 'Content-Type, X-Api-Key, X-Session',
     'Access-Control-Max-Age': '86400',
     Vary: 'Origin',
   };

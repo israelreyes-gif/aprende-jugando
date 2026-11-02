@@ -160,3 +160,34 @@ CREATE TABLE IF NOT EXISTS sync_events (
 
 CREATE INDEX IF NOT EXISTS idx_sync_profile_date
   ON sync_events (profile_id, created_at);
+
+-- Acceso con código (autenticación) --------------------------
+-- ask_always: 1 = pedir el código cada vez que se abre la tarjeta del perfil.
+ALTER TABLE profiles ADD COLUMN ask_always INTEGER NOT NULL DEFAULT 0;
+
+-- Código de cada perfil y de los padres (owner = id del perfil, o 'parent'). Nunca se guarda el código: solo sal + huella.
+CREATE TABLE IF NOT EXISTS credentials (
+  owner        TEXT PRIMARY KEY,
+  salt         TEXT NOT NULL,
+  hash         TEXT NOT NULL,
+  fails        INTEGER NOT NULL DEFAULT 0,
+  level        INTEGER NOT NULL DEFAULT 0,
+  locked_until TEXT,
+  updated_at   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+-- Sesiones abiertas: solo se guarda la huella del identificador. Caducan a los 7 días sin usarse.
+CREATE TABLE IF NOT EXISTS sessions (
+  token_hash   TEXT PRIMARY KEY,
+  owner        TEXT NOT NULL,
+  created_at   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  last_used_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+CREATE INDEX IF NOT EXISTS idx_sessions_owner ON sessions (owner);
+
+-- Al borrar un perfil se borran su código y sus sesiones.
+CREATE TRIGGER IF NOT EXISTS trg_profile_delete AFTER DELETE ON profiles
+BEGIN
+  DELETE FROM credentials WHERE owner = OLD.id;
+  DELETE FROM sessions WHERE owner = OLD.id;
+END;

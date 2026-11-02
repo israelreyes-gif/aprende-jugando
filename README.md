@@ -33,7 +33,8 @@ js/
   features/     una carpeta por funcionalidad, con sus pantallas y su lógica
     setup/        conectar el dispositivo con el Worker
     profiles/     selección, alta y edición de perfiles (chico/chica, porcentaje del perfil), banner de inicio
-    parents/      PIN, lista de perfiles, estadísticas, refuerzo y liberación de temas
+    auth/         códigos de acceso (entrar, crear, cambiar, restablecer)
+    parents/      lista de perfiles, estadísticas, refuerzo y liberación de temas
     courses/      cursos de primaria: el actual en grande, los superados y los próximos (solo 4.º abierto)
     subjects/     asignaturas de un curso y pestañas Estudio / Ejercicios
     study/        lecciones
@@ -82,7 +83,7 @@ Comprobación: abrir `URL-DEL-WORKER/api` en el navegador debe responder `Clave 
 
 ### 4. Primer uso en cada dispositivo
 Al abrir la app pide la **dirección del Worker** y la **clave**. Se guardan solo en ese dispositivo.
-Después, en **Zona de padres**, se crea el PIN la primera vez.
+Después, al entrar en **Zona de padres** se crea el código de padres la primera vez (usuario `padres`; la primera vez se pide el PIN de siempre, que luego se borra). Cada perfil crea el suyo al entrar si aún no lo tiene.
 
 Instalar como app: menú del navegador → *Añadir a pantalla de inicio*.
 En iPhone, los avisos push solo funcionan con la app instalada así (iOS 16.4 o superior).
@@ -124,7 +125,9 @@ Cada versión de la app es un **paquete cerrado**: el service worker la descarga
 | Tabla | Para qué |
 |---|---|
 | `profiles` | perfiles (nombre, color del icono y `gender`: `chico` o `chica`) |
-| `settings` | ajustes; guarda el PIN de padres (con sal y hash, nunca en claro) |
+| `settings` | ajustes de la app |
+| `credentials` | código de acceso de cada perfil y de los padres (`owner`): sal y hash, intentos fallidos y bloqueo; nunca en claro |
+| `sessions` | sesiones abiertas (solo la huella SHA-256 del identificador); caducan a los 7 días sin usarse |
 | `practice_sessions` | una fila por sesión de ejercicios o de reto (perfil, tema, total, aciertos, fecha, `kind`) |
 | `answers` | una fila por respuesta dentro de una sesión |
 | `study_progress` | temas marcados como estudiados |
@@ -234,7 +237,13 @@ Operadores de filtro: `eq neq gt gte lt lte like in is`.
 - Los datos solo se leen y escriben con la clave `API_KEY`; sin ella el Worker responde 401.
 - La clave no está en GitHub: se escribe en cada dispositivo y se guarda en su `localStorage`.
 - La clave privada de los avisos (`VAPID_PRIVATE_KEY`) vive solo como secreto del Worker; nunca se sube al repositorio.
-- El PIN de padres sirve para que los niños no entren en las estadísticas; no es una protección fuerte frente a un adulto con acceso al dispositivo.
+- **Códigos de acceso**: cada perfil entra con un código numérico de 4 a 8 cifras; los padres, usuario `padres` y 6 a 8 cifras. Se guardan con PBKDF2-SHA256 (100 000 vueltas) y sal propia.
+- **Sesiones**: al acertar el código el Worker da un identificador que el móvil guarda y envía en `X-Session`. Se renueva con el uso y caduca a los 7 días sin usarse. El Worker solo guarda su huella.
+- **Cada perfil solo ve lo suyo**: el Worker añade el filtro del perfil dueño de la sesión a cada petición. Con sesión de padres se ve todo.
+- **Bloqueo**: 5 fallos seguidos bloquean 1 min, luego 5 y 15 (máximo) y avisan por Telegram.
+- **Editar un perfil** pide siempre el código del perfil (la sesión de padres lo salta). En el perfil se puede activar «Pedir el código siempre al abrir la tarjeta».
+- Los padres restablecen el código de un perfil desde sus estadísticas. Si se olvida el código de padres: en la consola de D1, `DELETE FROM credentials WHERE owner = 'parent';` y se crea uno nuevo.
+- Los códigos no entran en las copias de seguridad ni en la caché del dispositivo.
 
 ## Pruebas automáticas
 
@@ -251,7 +260,7 @@ La app está pensada para uso familiar privado. Qué datos maneja y dónde:
 - **Perfiles** (tabla `profiles`): solo nombre de pila (máximo 20 caracteres), color, chico/chica y curso. No hay apellidos, fechas de nacimiento, correos ni fotos.
 - **Progreso**: sesiones, respuestas, temas estudiados y liberados, retos y puntos. En `answers.given` queda lo que el niño contestó (como mucho 200 caracteres).
 - **Móviles con avisos** (`push_devices`): la suscripción push de cada móvil. No entra en las copias de seguridad.
-- **PIN de padres** (`settings`): solo una huella (`sal:huella`); el PIN no se guarda. No entra en las copias ni en la caché del dispositivo.
+- **Códigos de acceso** (`credentials`) y **sesiones** (`sessions`): solo huellas con sal; el código no se guarda. No entran en las copias ni en la caché del dispositivo.
 - **Avisos de sincronización** (`sync_events`): qué se guardaba, un motivo corto y el perfil, nunca el contenido. Se borran solos a los 90 días (domingo a las 20:00, junto al resumen semanal).
 - **Dónde está todo**: en la base de datos D1 de tu cuenta de Cloudflare. En cada dispositivo quedan la clave de la API, la última lectura de cada pantalla y las escrituras pendientes de enviar.
 - **Telegram**: el grupo recibe nombre de pila, notas de los ejercicios, rachas, puntos, temas por reforzar y los avisos de error o de guardado fallido. No lleva ids, claves ni datos de contacto. Telegram no cifra de extremo a extremo los mensajes de los grupos, así que conviene que en el grupo solo estén los padres.

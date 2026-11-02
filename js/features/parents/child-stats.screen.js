@@ -12,6 +12,7 @@ import { loadPointsOrNull } from '../points/load-points.js';
 import { loadStreak } from '../reto/load-streak.js';
 import { spainDay } from '../reto/streak/date-keys.js';
 import { coursePicker } from './child-stats/course-picker.js';
+import { resetCodeButton } from '../auth/reset-code-button.js';
 import { deleteProfileButton } from './child-stats/delete-profile-button.js';
 import { reinforceCards } from './child-stats/reinforce-cards.js';
 import { subjectRows } from './child-stats/subject-rows.js';
@@ -24,7 +25,6 @@ import { courseMeter } from '../points/ui/course-meter.js';
 import { coursePercent } from '../courses/course-percent.js';
 import { progressRows } from './child-stats/progress-rows.js';
 import { loadTopicTitles } from './child-stats/topic-titles.js';
-import { withParentsGate } from './pin-gate.js';
 import { computeStats } from './stats.logic.js';
 
 async function renderChildStats({ pid }) {
@@ -53,10 +53,10 @@ async function renderChildStats({ pid }) {
     'main',
     { class: 'screen' },
     appHeader({ title: profile.name, sub: 'Estadísticas', back: paths.parents(), profile }),
-    h('div', { class: 'screen__body' }, points ? pointsSection(points, spainDay(), profile.gender) : null, coursePicker(profile), releaseLink, progressSection, ...body, syncSection(sync, profile.name), h('div', { class: 'spacer' }), deleteProfileButton(profile)),
+    h('div', { class: 'screen__body' }, points ? pointsSection(points, spainDay(), profile.gender) : null, coursePicker(profile), releaseLink, progressSection, ...body, syncSection(sync, profile.name), h('div', { class: 'spacer' }), resetCodeButton(profile), deleteProfileButton(profile)),
   );
 }
 
 export function childStatsScreen(params) {
-  return withParentsGate(() => renderChildStats(params));
+  return renderChildStats(params);
 }

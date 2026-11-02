@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 
 const dom = new JSDOM('<!doctype html><html><body><div id="app"></div></body></html>', { url: 'https://yo.github.io/aprende/', pretendToBeVisual: true });
 const { window } = dom;
 Object.assign(globalThis, { window, document: window.document, location: window.location, localStorage: window.localStorage, sessionStorage: window.sessionStorage });
+const { setSession } = await import('../js/core/api/session-store.js'); setSession('parent', 'test');
 window.scrollTo = () => {};
 const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
 let offline = false;
@@ -96,7 +97,6 @@ await visit(reto);
 assert.ok(q('.result__score')); assert.equal(rows('SELECT * FROM reto_diario').length, 1); assert.equal(rows(`SELECT * FROM practice_sessions WHERE kind='reto'`).length, 5); ok('entrar otra vez al reto de hoy solo enseña el resultado, sin repetirlo');
 
 // zona de padres: la racha sustituye a "Días activo" y el reto cuenta en las estadísticas del tema
-const { unlock } = await import('../js/features/parents/pin/unlock-state.js'); unlock();
 await visit('#/parents/alex');
 const chips = qa('.grid-3 .stat-chip'); assert.equal(chips.length, 3);
 assert.deepEqual(chips.map((c) => c.querySelector('.stat-chip__label').textContent), ['Ejercicios hechos', 'Acierto medio', 'Días de racha']);

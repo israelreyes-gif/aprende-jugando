@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import http from 'node:http';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 const { chromium } = createRequire(import.meta.url)('playwright');
 const API = 'http://localhost:8794', B = 'http://localhost:8761/';
@@ -23,7 +23,7 @@ const server = http.createServer(async (req, res) => { const chunks = []; for aw
   res.writeHead(r.status, Object.fromEntries(r.headers)); res.end(Buffer.from(await r.arrayBuffer())); }).listen(8794);
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
 const browser = await chromium.launch(); const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, locale: 'es-ES' });
-await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); sessionStorage.setItem('aj.parentsUnlockedUntil', String(Date.now()+600000));
+await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); localStorage.setItem('aj.session.parent','test');
   navigator.canShare = () => true; window.__shared = null; navigator.share = async ({ files }) => { window.__shared = await files[0].text(); };`);
 const page = await ctx.newPage(); const errors = []; page.on('pageerror', (e) => errors.push(String(e)));
 const open = async () => { await page.goto(B + '#/parents'); await page.reload(); await page.waitForSelector('.backup-card'); };

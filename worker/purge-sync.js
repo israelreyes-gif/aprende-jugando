@@ -1,4 +1,5 @@
 import { isWeeklyReportTime } from './report-time.js';
+import { purgeExpiredSessions } from './auth-sessions.js';
 
 export const SYNC_KEEP_DAYS = 90;
 
@@ -13,6 +14,7 @@ export async function purgeOldSyncEvents(db, now = Date.now()) {
 export async function purgeWeekly(env, scheduledTime) {
   try {
     if (!env.DB || !isWeeklyReportTime(new Date(scheduledTime))) return 0;
+    await purgeExpiredSessions(env.DB, scheduledTime);
     return await purgeOldSyncEvents(env.DB, scheduledTime);
   } catch (err) {
     console.error('No se pudo limpiar sync_events', String(err?.message || err));

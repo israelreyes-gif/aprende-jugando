@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 
 const dom = new JSDOM('<!doctype html><html><body><div id="app"></div></body></html>', { url: 'https://yo.github.io/aprende/', pretendToBeVisual: true });
 const { window } = dom;
 Object.assign(globalThis, { window, document: window.document, location: window.location, localStorage: window.localStorage, sessionStorage: window.sessionStorage });
+const { setSession } = await import('../js/core/api/session-store.js'); setSession('parent', 'test');
 window.scrollTo = () => {};
 const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
 const pushes = []; let pushFails = false;
@@ -99,7 +100,6 @@ assert.equal(qa('.level-row').length, 20); assert.deepEqual(qa('.level-row__min'
 const cur = qa('.level-row--current'); assert.equal(cur.length, 1); const lvNow = (await import('../js/features/points/levels.js')).levelFor(before + 11); assert.match(cur[0].textContent, new RegExp(`${lvNow.n} · ${lvNow.name}`)); assert.equal(qa('.level-row--done').length, lvNow.n - 1); assert.ok(q('a.icon-btn[href="#/p/alex"]')); ok('pantalla "Mis niveles": 10 filas con sus puntos (1.050, 2.000…), el actual marcado y los anteriores en gris');
 
 // 7) Zona de padres
-const { unlock } = await import('../js/features/parents/pin/unlock-state.js'); unlock();
 await visit('#/parents');
 const row = q('a.row-card'); assert.match(row.querySelector('.row-card__points').textContent, new RegExp(`${before + 11}.*Nivel ${lvNow.n}`)); ok('lista de perfiles: puntos y nivel de Alex a la derecha');
 await visit('#/parents/alex');

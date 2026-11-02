@@ -4,7 +4,7 @@ import { toBase64Url, fromBase64Url } from '../worker/push-base64url.js';
 import { encryptPayload } from '../worker/push-encrypt.js';
 import { vapidAuthorization } from '../worker/push-vapid.js';
 import { sendPush } from '../worker/push-send-push.js';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 
 let passed = 0; const ok = (n) => { passed++; console.log('  ✓', n); };

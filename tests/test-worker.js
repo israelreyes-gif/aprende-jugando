@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 
 const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
@@ -28,7 +28,7 @@ assert.deepEqual(root.data.tables.sort(), ['answers', 'practice_sessions', 'prof
 // CORS
 const pre = await call('OPTIONS', '/api/profiles', { key: '', origin: 'https://yo.github.io' });
 assert.equal(pre.status, 204);
-assert.equal(pre.headers.get('Access-Control-Allow-Headers'), 'Content-Type, X-Api-Key'); ok('preflight CORS');
+assert.equal(pre.headers.get('Access-Control-Allow-Headers'), 'Content-Type, X-Api-Key, X-Session'); ok('preflight CORS');
 const withOrigin = await call('GET', '/api', { origin: 'https://yo.github.io' });
 assert.equal(withOrigin.headers.get('Access-Control-Allow-Origin'), 'https://yo.github.io');
 const badOrigin = await call('GET', '/api', { origin: 'https://malo.com' });

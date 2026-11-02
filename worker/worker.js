@@ -4,6 +4,8 @@
  *
  * Necesita: binding D1 "DB", secreto "API_KEY" y, opcional, variable "ALLOWED_ORIGIN".
  * Permisos por tabla y operación en permissions.js (lo demás da 403).
+ * Acceso con código: /auth/* (login, setup, change, reset, logout); el resto exige además la cabecera X-Session (auth-*.js).
+ * Un perfil solo toca sus propios datos (auth-scope.js); los padres, todo lo que permite permissions.js.
  * Rutas (cabecera X-Api-Key obligatoria):
  *   GET /api  ·  GET /api/:tabla  ·  GET /api/:tabla/:id
  *   POST /api/:tabla  ·  PATCH /api/:tabla/:id  ·  DELETE /api/:tabla/:id
@@ -21,6 +23,9 @@ import { alertParents } from './error-alert.js';
 import { alertSyncFailures } from './sync-alert.js';
 import { purgeWeekly } from './purge-sync.js';
 import { assertAllowed, visibleTables } from './permissions.js';
+import { handleAuth } from './auth-routes.js';
+import { findSession } from './auth-sessions.js';
+import { enforceScope } from './auth-scope.js';
 
 export default {
   async scheduled(event, env, ctx) {
@@ -56,7 +61,10 @@ export default {
 
       const url = new URL(request.url);
       const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
-      if (parts[0] === 'push') return await handlePush(request, env, parts, cors);
+      if (parts[0] === 'auth') return await handleAuth(request, env, parts, cors);
+      const session = await findSession(env.DB, request.headers.get('X-Session') || '');
+      if (!session) throw new HttpError(401, 'Sesión no válida');
+      if (parts[0] === 'push') return await handlePush(request, env, parts, cors, session);
       if (parts[0] !== 'api' || parts.length > 3) throw new HttpError(404, 'Ruta no encontrada');
 
       const schema = await loadSchema(env.DB);
@@ -67,6 +75,7 @@ export default {
       assertAllowed(request.method, table.name);
       const id = parts[2];
       const params = url.searchParams;
+      await enforceScope(env.DB, session, request.method, table, params, id, request);
 
       switch (request.method) {
         case 'GET':

@@ -11,7 +11,7 @@ const { setConnection } = await import(`${R}/core/api/connection.js`);
 const { queueInsert, flushOutbox } = await import(`${R}/core/api/outbox.js`);
 const { readOutbox } = await import(`${R}/core/api/outbox-store.js`);
 import { formatProfile } from '../worker/report-format.js';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };

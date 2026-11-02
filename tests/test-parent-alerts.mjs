@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 
 const dom = new JSDOM('<!doctype html><html><body><div id="app"></div></body></html>', { url: 'https://yo.github.io/aprende/', pretendToBeVisual: true });
 const { window } = dom;
 Object.assign(globalThis, { window, document: window.document, location: window.location, localStorage: window.localStorage, sessionStorage: window.sessionStorage });
+const { setSession } = await import('../js/core/api/session-store.js'); setSession('parent', 'test');
 window.scrollTo = () => {};
 const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
 const pushes = []; let pushFails = false;
@@ -94,7 +95,6 @@ assert.equal(pushes.length, 1); assert.deepEqual({ t: pushes[0].title, b: pushes
 await visit('#/p/alex/c/4-primaria/reto'); await sleep(50); assert.equal(pushes.length, 1); ok('volver a entrar al reto terminado no repite el aviso');
 
 // 7) Zona de padres: campanita
-const { unlock } = await import('../js/features/parents/pin/unlock-state.js'); unlock();
 await visit('#/parents');
 assert.equal(qa('.switch-row').length, 1); assert.match(q('.switch-row__title').textContent, /Avisos para padres/); assert.ok(q('.switch-row .switch')); ok('zona de padres: aparece la campanita "Avisos para padres"');
 assert.equal(errors.filter((e) => !/Experimental/.test(e)).length, 0, errors.join('\n')); ok('sin errores');

@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 
 const dom = new JSDOM('<!doctype html><html><body><div id="app"></div></body></html>', { url: 'https://yo.github.io/aprende/', pretendToBeVisual: true });
 const { window } = dom;
 Object.assign(globalThis, { window, document: window.document, location: window.location, localStorage: window.localStorage, sessionStorage: window.sessionStorage });
+const { setSession } = await import('../js/core/api/session-store.js'); setSession('parent', 'test');
 window.scrollTo = () => {};
 const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
 const pushes = []; let pushFails = false;
@@ -29,7 +30,6 @@ async function settle() { await sleep(25); for (let i = 0; i < 400; i++) { if (!
 async function visit(h) { if (location.hash === h) reload(); else location.hash = h; await settle(); }
 const type = (el, v) => { el.value = v; el.dispatchEvent(new window.Event('input', { bubbles: true })); };
 let steps = 0; const ok = (n) => { steps++; console.log('  ✓', n); };
-const { unlock } = await import('../js/features/parents/pin/unlock-state.js'); unlock();
 await import('../js/main.js'); await settle();
 const { levelFor, levelsFor } = await import('../js/features/points/levels.js');
 const { profileCompletion } = await import('../js/features/profiles/profile-completion.js');

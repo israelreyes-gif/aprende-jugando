@@ -3,7 +3,7 @@ import { JSDOM } from 'jsdom';
 const P = new URL('../', import.meta.url).pathname.replace(/\/$/, '');
 const dom = new JSDOM('<!doctype html><body></body>', { url: 'https://yo.github.io/aprende/' });
 Object.assign(globalThis, { window: dom.window, document: dom.window.document, localStorage: dom.window.localStorage });
-const { default: worker } = await import(`${P}/worker/worker.js`);
+const { default: worker } = await import(`${P}/tests/parent-worker.js`);
 const { makeD1 } = await import('./d1-shim.js');
 const db = makeD1(new URL("./fixtures/schema.sql", import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
 globalThis.fetch = async (url, init = {}) => worker.fetch(new Request(url, init), env);

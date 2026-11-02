@@ -3,11 +3,13 @@ import { paths } from '../../core/paths.js';
 import { listProfiles } from '../../data/profiles.repo.js';
 import { icon } from '../../shared/icons.js';
 import { loadPointsOrNull } from '../points/load-points.js';
+import { resetFlags } from '../auth/flags.js';
 import { homeBanner } from './home-banner.js';
 import { addProfileCard, profileCard } from './profile-cards.js';
 
 /** Primera pantalla: selección de perfil. */
 export async function profilesScreen() {
+  resetFlags(); // al volver al inicio, las tarjetas que piden el código siempre lo piden de nuevo
   const profiles = await listProfiles();
   const points = await Promise.all(profiles.map((profile) => loadPointsOrNull(profile.id)));
 

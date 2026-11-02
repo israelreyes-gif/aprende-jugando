@@ -6,13 +6,15 @@ export const paths = {
   newProfile: () => '#/new-profile',
 
   parents: () => '#/parents',
-  parentsPin: () => '#/parents/pin',
+  parentsCode: () => '#/parents/code',
   childStats: (pid) => `#/parents/${pid}`,
   subjectStats: (pid, cid, sid) => `#/parents/${pid}/stats/${cid}/${sid}`,
   release: (pid, cid) => `#/parents/${pid}/release/${cid}`,
   releaseSubject: (pid, cid, sid) => `#/parents/${pid}/release/${cid}/${sid}`,
 
+  login: (owner, then) => `#/login/${owner}${then ? `/${then}` : ''}`,
   editProfile: (pid) => `#/p/${pid}/edit`,
+  changeCode: (pid) => `#/p/${pid}/code`,
   levels: (pid) => `#/p/${pid}/levels`,
   courses: (pid) => `#/p/${pid}`,
   course: (pid, cid) => `#/p/${pid}/c/${cid}`,

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
-import worker from '../worker/worker.js';
+import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 
 /* ---------- Entorno: navegador simulado + Worker + SQLite ---------- */
@@ -69,6 +69,7 @@ assert.equal(location.hash, '#/'); assert.match(text(), /¿Quién va a estudiar 
 assert.equal(qa('.profile-card').length, 1); // solo "Añadir"
 assert.ok(q('a[href="#/parents"]')); ok('inicio: botón Añadir y botón Zona de padres');
 
+localStorage.setItem('aj.session.parent','test');
 await visit('#/new-profile');
 submit(q('form'));
 assert.match(q('.field__error').textContent, /nombre/); ok('no deja crear un perfil sin nombre');
@@ -86,32 +87,10 @@ assert.equal(qa('.profile-card').length, 2);
 const alex = rows('SELECT * FROM profiles')[0];
 assert.equal(alex.name, 'Alex'); assert.equal(alex.avatar_color, '#8EDBC0'); ok('crea el perfil en D1 y aparece en el inicio');
 
-/* ---------- 3. Zona de padres: PIN ---------- */
+/* ---------- 3. Zona de padres (con la sesión de padres abierta no se pide nada) ---------- */
 await visit('#/parents');
-assert.match(text(), /Crea un PIN/); ok('primera vez: pide crear un PIN');
-type(document.getElementById('pin-new'), '12');
-type(document.getElementById('pin-confirm'), '12');
-submit(q('form')); await sleep(40);
-assert.match(q('.field__error').textContent, /entre 4 y 8/); ok('PIN demasiado corto rechazado');
-type(document.getElementById('pin-new'), '1234');
-type(document.getElementById('pin-confirm'), '9999');
-submit(q('form')); await sleep(40);
-assert.match(q('.field__error').textContent, /no coinciden/); ok('PIN que no coincide rechazado');
-type(document.getElementById('pin-confirm'), '1234');
-submit(q('form')); await sleep(80); await settle();
-assert.match(text(), /Elige un perfil/); assert.ok(q('a[href="#/parents/' + alex.id + '"]')); ok('crea el PIN y entra a la zona de padres');
-const stored = rows("SELECT value FROM settings WHERE key='parent_pin'")[0].value;
-assert.match(stored, /^[0-9a-f]{16}:[0-9a-f]{64}$/); assert.ok(!stored.includes('1234')); ok('el PIN se guarda con sal y hash, nunca en claro');
-
-sessionStorage.clear();
-await visit('#/parents');
-assert.match(text(), /Introduce tu PIN/);
-type(document.getElementById('pin-enter'), '0000');
-submit(q('form')); await sleep(60);
-assert.match(q('.field__error').textContent, /incorrecto/); ok('PIN incorrecto rechazado');
-type(document.getElementById('pin-enter'), '1234');
-submit(q('form')); await sleep(80); await settle();
-assert.match(text(), /Elige un perfil/); ok('PIN correcto desbloquea');
+assert.match(text(), /Elige un perfil/); assert.ok(q('a[href="#/parents/' + alex.id + '"]')); ok('con sesión de padres entra directo, sin pedir código');
+assert.ok(q('a[href="#/parents/code"]')); assert.match(text(), /Cerrar sesión de padres/); ok('padres: cambiar código y cerrar sesión');
 
 await visit('#/parents/' + alex.id);
 assert.match(text(), /aún no tiene actividad/); ok('perfil sin actividad: estado vacío');
@@ -293,9 +272,10 @@ await visit('#/');
 assert.ok(qa('.profile-card').length === 2 && /Alex/.test(text())); ok('sin conexión: el inicio muestra los perfiles guardados en el dispositivo');
 await visit('#/p/' + alex.id + '/c/4-primaria/s/mates/practice/tablas');
 assert.match(text(), /Pregunta 1 de 8/); ok('sin conexión: se puede abrir y hacer una sesión de ejercicios');
-sessionStorage.clear();
+localStorage.removeItem('aj.session.parent');
 await visit('#/parents');
-assert.match(text(), /No hay conexión/); ok('sin conexión y bloqueada: la zona de padres no se abre desde la caché');
+assert.match(location.hash, /^#\/login\/parent/); assert.doesNotMatch(text(), /Elige un perfil/); ok('sin conexión y sin sesión de padres: pide el código, no abre la zona de padres desde la caché');
+localStorage.setItem('aj.session.parent', 'test');
 await visit('#/p/' + alex.id + '/c/4-primaria/s/mates/practice/tablas');
 await playSession(() => true);
 assert.match(text(), /Sin conexión: se guardará/);
@@ -315,7 +295,7 @@ assert.match(text(), /No hemos encontrado/); ok('perfil inexistente -> pantalla 
 await visit('#/ruta/rara');
 assert.match(text(), /No hemos encontrado/); ok('ruta desconocida -> pantalla de no encontrado');
 
-sessionStorage.setItem('aj.parentsUnlockedUntil', String(Date.now() + 600000));
+localStorage.setItem('aj.session.parent','test');
 await visit('#/parents/' + alex.id);
 q('.btn--danger').click(); await sleep(20);
 assert.ok(document.querySelector('.modal--danger')); assert.match(document.querySelector('.modal').textContent, /¿Borrar el perfil de Alex\?/);
