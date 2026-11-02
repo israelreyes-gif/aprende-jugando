@@ -120,6 +120,6 @@ db.sqlite.exec('CREATE TABLE premios (id TEXT PRIMARY KEY, nombre TEXT NOT NULL)
 const realNow = Date.now; Date.now = () => realNow() + 61_000;
 r = await call('POST', '/api/premios', { body: { id: 'x', nombre: 'Estrella' } });
 Date.now = realNow;
-assert.equal(r.status, 201); ok('tablas nuevas se descubren solas');
+assert.equal(r.status, 403); ok('una tabla nueva se descubre pero no se puede usar hasta darle permisos (permissions.js)');
 
 console.log(`\n${passed} comprobaciones del Worker OK`);

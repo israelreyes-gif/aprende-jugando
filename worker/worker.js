@@ -3,6 +3,7 @@
  * No conoce las reglas de la app: solo expone un CRUD sobre las tablas que existan.
  *
  * Necesita: binding D1 "DB", secreto "API_KEY" y, opcional, variable "ALLOWED_ORIGIN".
+ * Permisos por tabla y operación en permissions.js (lo demás da 403).
  * Rutas (cabecera X-Api-Key obligatoria):
  *   GET /api  ·  GET /api/:tabla  ·  GET /api/:tabla/:id
  *   POST /api/:tabla  ·  PATCH /api/:tabla/:id  ·  DELETE /api/:tabla/:id
@@ -19,6 +20,7 @@ import { runWeeklyReport } from './report-run.js';
 import { alertParents } from './error-alert.js';
 import { alertSyncFailures } from './sync-alert.js';
 import { purgeWeekly } from './purge-sync.js';
+import { assertAllowed, visibleTables } from './permissions.js';
 
 export default {
   async scheduled(event, env, ctx) {
@@ -58,10 +60,11 @@ export default {
       if (parts[0] !== 'api' || parts.length > 3) throw new HttpError(404, 'Ruta no encontrada');
 
       const schema = await loadSchema(env.DB);
-      if (parts.length === 1) return json({ ok: true, tables: Object.keys(schema) }, 200, cors);
+      if (parts.length === 1) return json({ ok: true, tables: visibleTables(Object.keys(schema)) }, 200, cors);
 
       const table = schema[parts[1]];
       if (!table) throw new HttpError(404, `Tabla desconocida: ${parts[1]}`);
+      assertAllowed(request.method, table.name);
       const id = parts[2];
       const params = url.searchParams;
 

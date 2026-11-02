@@ -4,7 +4,7 @@ PWA para que Alex (y otros perfiles) aprendan y practiquen los contenidos de pri
 Empieza en 4.º de Primaria con Matemáticas, Sociales, Inglés, Lengua y Sciences.
 
 - **App**: archivos estáticos en GitHub Pages (sin Node, sin compilar).
-- **Datos**: base de datos D1 con tablas reales, accesible a través de un Worker mínimo y genérico.
+- **Datos**: base de datos D1 con tablas reales, accesible a través de un Worker mínimo y genérico. Cada tabla tiene permisos por operación en `worker/permissions.js` (leer, crear, editar, borrar); lo que no esté ahí da 403. Si añades una tabla nueva, dale permisos en ese fichero.
 - **Offline**: `sw.js` guarda la app; los resultados hechos sin internet se guardan y se envían solos al volver la conexión.
 - **Reto diario**: hasta 10 preguntas al día por perfil, de temas liberados y estudiados, con racha.
 - **Puntos y niveles**: +1 por acierto, −1 por fallo, +10 por tema estudiado y ±5 de bonus por sesión; 20 niveles, en masculino o femenino según el perfil (ver más abajo).

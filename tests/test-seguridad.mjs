@@ -64,4 +64,28 @@ assert.equal(fail.status, 500);
 assert.deepEqual(fail.data, { error: 'Error interno' });
 assert.doesNotMatch(fail.text, new RegExp(SECRETO_INTERNO)); ok('error 500: solo "Error interno", sin detalles');
 
+// Permisos por tabla y operación: aunque la clave sea buena, solo se puede lo que la app necesita.
+await call('POST', '/api/profiles', { body: { id: 'pz', name: 'Zeta', avatar_color: '#fff' } });
+const forbidden = [
+  ['DELETE', '/api/answers?id=eq.x'], ['DELETE', '/api/practice_sessions?id=eq.x'], ['DELETE', '/api/study_progress?id=eq.x'],
+  ['DELETE', '/api/settings?key=eq.parent_pin'], ['DELETE', '/api/topic_titles?id=eq.x'], ['DELETE', '/api/sync_events?id=eq.x'], ['DELETE', '/api/reto_diario?id=eq.x'],
+  ['PATCH', '/api/answers?id=eq.x', { x: 1 }], ['PATCH', '/api/settings/parent_pin', { value: 'z' }], ['PATCH', '/api/topic_titles/x', { title: 'z' }], ['PATCH', '/api/practice_sessions/x', { kind: 'z' }],
+  ['POST', '/api/topic_titles', { id: 'x', course_id: 'c', subject_id: 's', topic_id: 't', title: 'T' }],
+  ['GET', '/api/sqlite_master'], ['GET', '/api/_cf_KV'],
+];
+for (const [method, path, body] of forbidden) {
+  const r = await call(method, path, body ? { body } : {});
+  assert.ok(r.status === 403 || r.status === 404, `${method} ${path} debería rechazarse (dio ${r.status})`);
+  if (r.status === 403) assert.deepEqual(r.data, { error: 'Operación no permitida' });
+}
+ok('operaciones que la app no usa -> 403 (borrar respuestas, tocar el PIN, cambiar títulos…)');
+const allowed = [['GET', '/api/profiles'], ['PATCH', '/api/profiles/pz', { name: 'Zeta2' }], ['GET', '/api/topic_titles'], ['GET', '/api/settings/parent_pin'], ['DELETE', '/api/profiles/pz']];
+for (const [method, path, body] of allowed) {
+  const r = await call(method, path, body ? { body } : {});
+  assert.ok(r.status < 400 || r.status === 404, `${method} ${path} debería funcionar (dio ${r.status})`);
+}
+ok('las operaciones que usa la app siguen funcionando');
+const list = await call('GET', '/api');
+assert.ok(!list.data.tables.includes('sqlite_sequence') && list.data.tables.includes('profiles')); ok('GET /api solo enseña las tablas con permisos');
+
 console.log(`${passed} comprobaciones de seguridad correctas`);
