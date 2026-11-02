@@ -15,7 +15,7 @@ assert.equal(g.current.id, '4-primaria'); assert.deepEqual(g.done.map((c) => c.i
 g = courseGroups(COURSES, '1-primaria');
 assert.equal(g.current.id, '1-primaria'); assert.equal(g.done.length, 0); assert.equal(g.locked.length, 5); console.log('✓ grupos de 1.º');
 
-assert.deepEqual(await loadTopics('1-primaria', 'ingles'), []); console.log('✓ 1.º Inglés sin temas aún');
+assert.equal((await loadTopics('1-primaria', 'ingles')).length, 16); console.log('✓ 1.º Inglés tiene sus 16 temas');
 
 // Pantalla de elegir curso para perfiles sin curso
 const { JSDOM } = await import('jsdom');
