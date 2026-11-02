@@ -48,7 +48,7 @@ const fakePush = `
     PushManager.prototype.subscribe = async (opts) => { window.__subscribeOpts = { userVisible: opts.userVisibleOnly, keyLen: opts.applicationServerKey.length, key: Array.from(opts.applicationServerKey) }; localStorage.setItem('fake-sub', '1'); return make(); };
   })();
 `;
-const setup = `localStorage.setItem('aj.apiUrl', '${API}'); localStorage.setItem('aj.apiKey', 'k'); localStorage.setItem('aj.session.parent', 'test');`;
+const setup = `localStorage.setItem('aj.apiUrl', '${API}'); localStorage.setItem('aj.apiKey', 'k'); sessionStorage.setItem('aj.session.parent', 'test');`;
 
 let steps = 0; const ok = (n) => { steps++; console.log('  ✓', n); };
 const browser = await chromium.launch();

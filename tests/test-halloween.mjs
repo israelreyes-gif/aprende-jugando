@@ -17,7 +17,7 @@ const dates = [['2026-10-14', false], ['2026-10-15', true], ['2026-10-31', true]
 for (const [iso, hall] of dates) {
   const [y, m, d] = iso.split('-').map(Number);
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
-  await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); localStorage.setItem('aj.session.parent','test');
+  await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); sessionStorage.setItem('aj.session.parent','test');
     (() => { const fixed = new Date(${y}, ${m - 1}, ${d}, 12).valueOf(); const D = Date;
       class F extends D { constructor(...a) { if (a.length === 0) super(fixed); else super(...a); } static now() { return fixed; } }
       window.Date = F; })();`);

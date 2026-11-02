@@ -2,6 +2,7 @@ import { HttpError } from './http.js';
 
 export const PARENT = 'parent';
 export const SESSION_DAYS = 7;
+export const PARENT_IDLE_MINUTES = 30; // los padres caducan antes: 30 minutos sin usar
 
 /** Perfiles: de 4 a 8 cifras. Padres: de 6 a 8. */
 export function assertValidCode(code, owner) {

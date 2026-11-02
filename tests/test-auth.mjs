@@ -117,6 +117,15 @@ assert.equal(one("SELECT COUNT(*) AS n FROM credentials WHERE owner = 'legacy-pi
 assert.deepEqual((await call('GET', '/auth/parent')).data, { has_code: true, legacy: false });
 assert.equal((await call('POST', '/auth/setup', { body: { owner: 'parent', code: '654321' } })).status, 409);
 assert.equal((await call('POST', '/auth/login', { body: { owner: 'parent', code: '123456' } })).status, 200); ok('después, solo se entra con el código de padres');
+{
+  const parentTok = (await call('POST', '/auth/login', { body: { owner: 'parent', code: '123456' } })).data.token;
+  const ph = shaOf(parentTok);
+  sql('UPDATE sessions SET last_used_at = ? WHERE token_hash = ?', new Date(Date.now() - 20 * 60_000).toISOString(), ph);
+  assert.equal((await call('GET', '/api/profiles', { session: parentTok })).status, 200); ok('padres: con 20 minutos sin usar sigue valiendo');
+  sql('UPDATE sessions SET last_used_at = ? WHERE token_hash = ?', new Date(Date.now() - 31 * 60_000).toISOString(), ph);
+  assert.equal((await call('GET', '/api/profiles', { session: parentTok })).status, 401);
+  assert.equal(one('SELECT COUNT(*) AS n FROM sessions WHERE token_hash = ?', ph).n, 0); ok('padres: a los 30 minutos sin usar caduca y se borra');
+}
 
 // El PIN antiguo también está protegido contra intentos
 sql("INSERT INTO settings (key, value) VALUES ('parent_pin', ?)", `${legacySalt}:${legacyHash}`);

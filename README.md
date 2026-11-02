@@ -127,7 +127,7 @@ Cada versión de la app es un **paquete cerrado**: el service worker la descarga
 | `profiles` | perfiles (nombre, color del icono y `gender`: `chico` o `chica`) |
 | `settings` | ajustes de la app |
 | `credentials` | código de acceso de cada perfil y de los padres (`owner`): sal y hash, intentos fallidos y bloqueo; nunca en claro |
-| `sessions` | sesiones abiertas (solo la huella SHA-256 del identificador); caducan a los 7 días sin usarse |
+| `sessions` | sesiones abiertas (solo la huella SHA-256 del identificador); caducan a los 7 días sin usarse (30 minutos las de padres) |
 | `practice_sessions` | una fila por sesión de ejercicios o de reto (perfil, tema, total, aciertos, fecha, `kind`) |
 | `answers` | una fila por respuesta dentro de una sesión |
 | `study_progress` | temas marcados como estudiados |
@@ -238,7 +238,7 @@ Operadores de filtro: `eq neq gt gte lt lte like in is`.
 - La clave no está en GitHub: se escribe en cada dispositivo y se guarda en su `localStorage`.
 - La clave privada de los avisos (`VAPID_PRIVATE_KEY`) vive solo como secreto del Worker; nunca se sube al repositorio.
 - **Códigos de acceso**: cada perfil entra con un código numérico de 4 a 8 cifras; los padres, usuario `padres` y 6 a 8 cifras. Se guardan con PBKDF2-SHA256 (100 000 vueltas) y sal propia.
-- **Sesiones**: al acertar el código el Worker da un identificador que el móvil guarda y envía en `X-Session`. Se renueva con el uso y caduca a los 7 días sin usarse. El Worker solo guarda su huella.
+- **Sesiones**: al acertar el código el Worker da un identificador que el móvil guarda y envía en `X-Session`. Se renueva con el uso. La de un perfil caduca a los 7 días sin usarse; la de padres, a los 30 minutos, y además solo vive mientras la app esté abierta (memoria temporal del móvil): cerrar la app la libera. El Worker solo guarda su huella.
 - **Cada perfil solo ve lo suyo**: el Worker añade el filtro del perfil dueño de la sesión a cada petición. Con sesión de padres se ve todo.
 - **Bloqueo**: 5 fallos seguidos bloquean 1 min, luego 5 y 15 (máximo) y avisan por Telegram.
 - **Editar un perfil** pide siempre el código del perfil (la sesión de padres lo salta). En el perfil se puede activar «Pedir el código siempre al abrir la tarjeta».

@@ -23,7 +23,7 @@ const server = http.createServer(async (req, res) => { const chunks = []; for aw
   res.writeHead(r.status, Object.fromEntries(r.headers)); res.end(Buffer.from(await r.arrayBuffer())); }).listen(8794);
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
 const browser = await chromium.launch(); const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, locale: 'es-ES' });
-await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); localStorage.setItem('aj.session.parent','test');
+await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); sessionStorage.setItem('aj.session.parent','test');
   navigator.canShare = () => true; window.__shared = null; navigator.share = async ({ files }) => { window.__shared = await files[0].text(); };`);
 const page = await ctx.newPage(); const errors = []; page.on('pageerror', (e) => errors.push(String(e)));
 const open = async () => { await page.goto(B + '#/parents'); await page.reload(); await page.waitForSelector('.backup-card'); };

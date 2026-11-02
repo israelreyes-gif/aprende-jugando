@@ -67,7 +67,7 @@ const toggle = (page) => page.locator('.switch-row .switch');
 const settle = async (page) => { await page.waitForSelector('.switch-row'); await page.waitForFunction(() => !document.querySelector('.switch-row .switch')?.disabled || document.querySelector('.switch-row__meta')?.textContent.length > 60, null, { timeout: 8000 }).catch(() => {}); await page.waitForTimeout(150); };
 
 db.sqlite.exec("INSERT INTO topic_release (id, profile_id, course_id, subject_id, topic_id) VALUES ('r1','alex','4-primaria','mates','tablas')");
-const unlockKey = "localStorage.setItem('aj.session.parent','test');";
+const unlockKey = "sessionStorage.setItem('aj.session.parent','test');";
 {
   const { ctx, page, errors } = await newPage(); await ctx.addInitScript(unlockKey);
   await page.goto(BASE + '#/parents'); await settle(page); await page.evaluate(() => navigator.serviceWorker.ready);

@@ -69,7 +69,7 @@ assert.equal(location.hash, '#/'); assert.match(text(), /¿Quién va a estudiar 
 assert.equal(qa('.profile-card').length, 1); // solo "Añadir"
 assert.ok(q('a[href="#/parents"]')); ok('inicio: botón Añadir y botón Zona de padres');
 
-localStorage.setItem('aj.session.parent','test');
+sessionStorage.setItem('aj.session.parent','test');
 await visit('#/new-profile');
 submit(q('form'));
 assert.match(q('.field__error').textContent, /nombre/); ok('no deja crear un perfil sin nombre');
@@ -272,10 +272,10 @@ await visit('#/');
 assert.ok(qa('.profile-card').length === 2 && /Alex/.test(text())); ok('sin conexión: el inicio muestra los perfiles guardados en el dispositivo');
 await visit('#/p/' + alex.id + '/c/4-primaria/s/mates/practice/tablas');
 assert.match(text(), /Pregunta 1 de 8/); ok('sin conexión: se puede abrir y hacer una sesión de ejercicios');
-localStorage.removeItem('aj.session.parent');
+sessionStorage.removeItem('aj.session.parent');
 await visit('#/parents');
 assert.match(location.hash, /^#\/login\/parent/); assert.doesNotMatch(text(), /Elige un perfil/); ok('sin conexión y sin sesión de padres: pide el código, no abre la zona de padres desde la caché');
-localStorage.setItem('aj.session.parent', 'test');
+sessionStorage.setItem('aj.session.parent', 'test');
 await visit('#/p/' + alex.id + '/c/4-primaria/s/mates/practice/tablas');
 await playSession(() => true);
 assert.match(text(), /Sin conexión: se guardará/);
@@ -295,7 +295,7 @@ assert.match(text(), /No hemos encontrado/); ok('perfil inexistente -> pantalla 
 await visit('#/ruta/rara');
 assert.match(text(), /No hemos encontrado/); ok('ruta desconocida -> pantalla de no encontrado');
 
-localStorage.setItem('aj.session.parent','test');
+sessionStorage.setItem('aj.session.parent','test');
 await visit('#/parents/' + alex.id);
 q('.btn--danger').click(); await sleep(20);
 assert.ok(document.querySelector('.modal--danger')); assert.match(document.querySelector('.modal').textContent, /¿Borrar el perfil de Alex\?/);

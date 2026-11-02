@@ -18,7 +18,7 @@ const server = http.createServer(async (req, res) => { const chunks = []; for aw
 const getSetting = () => db.sqlite.prepare(`SELECT value FROM settings WHERE key='last_backup_at'`).get()?.value;
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
 const browser = await chromium.launch(); const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, locale: 'es-ES' });
-await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); localStorage.setItem('aj.session.parent','test');
+await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); sessionStorage.setItem('aj.session.parent','test');
   window.__mode = 'ok'; window.__shared = null;
   navigator.canShare = () => true;
   navigator.share = async ({ files }) => { if (window.__mode === 'abort') throw Object.assign(new Error('x'), { name: 'AbortError' }); if (window.__mode === 'tap') { window.__mode = 'ok'; throw Object.assign(new Error('x'), { name: 'NotAllowedError' }); } window.__shared = { name: files[0].name, text: await files[0].text() }; };`);
