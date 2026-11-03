@@ -21,4 +21,7 @@ export const topics = [
 ];
 
 /** Mix de preguntas de una unidad: `size` preguntas de sus temas estudiados. */
-export const mixes = [{ id: 'unit-1', unit: UNIT_1, emoji: '🎲', title: 'Mix · Unit 1', size: 36 }];
+export const mixes = [
+  { id: 'unit-1', unit: UNIT_1, emoji: '🎲', title: 'Mix · Unit 1', size: 36 },
+  { id: 'unit-2', unit: UNIT_2, emoji: '🎲', title: 'Mix · Unit 2', size: 36 },
+];

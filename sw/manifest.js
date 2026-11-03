@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'f2193744801a';
+const BUILD = '556a809bd5cb';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -124,7 +124,7 @@ const FILES = {
   './js/content/4-primaria/ingles/food-groups/index.js': 'aae73edb9e58',
   './js/content/4-primaria/ingles/food-groups/study.js': '9f0bcdacc076',
   './js/content/4-primaria/ingles/food-groups/words.js': '626147fb6116',
-  './js/content/4-primaria/ingles/index.js': '3d6f37320016',
+  './js/content/4-primaria/ingles/index.js': 'e41c704372c9',
   './js/content/4-primaria/ingles/irregular-verbs/exercises.js': '2d058cfc0958',
   './js/content/4-primaria/ingles/irregular-verbs/index.js': 'aae73edb9e58',
   './js/content/4-primaria/ingles/irregular-verbs/study.js': '41907a27487f',
@@ -234,7 +234,7 @@ const FILES = {
   './js/content/4-primaria/mates/division/gen/resto-imposible.js': '1ebf3921fac4',
   './js/content/4-primaria/mates/division/index.js': 'aae73edb9e58',
   './js/content/4-primaria/mates/division/study.js': '2d72f23e9873',
-  './js/content/4-primaria/mates/index.js': '4d77544f06bf',
+  './js/content/4-primaria/mates/index.js': '6bfa87ba763a',
   './js/content/4-primaria/mates/lib/cajita.js': '01546628a957',
   './js/content/4-primaria/mates/lib/cartas.js': '628a037fd2d3',
   './js/content/4-primaria/mates/lib/clean-roman.js': '62e3fdd7a248',

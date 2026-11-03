@@ -34,11 +34,11 @@ async function visit(hash) { if (location.hash === hash) reload(); else location
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
 await import('../js/main.js'); await settle();
 
-// 1. Tarjeta: solo en Ejercicios y al final de la Unit 1
+// 1. Tarjeta: solo en Ejercicios y al final de cada unidad
 await visit(`#/p/alex/c/${C}/s/ingles/practice`);
 const groups = qa('details.topic-group');
 const withMix = groups.filter((g) => g.querySelector('a[href*="/mix/"]'));
-assert.equal(withMix.length, 1); assert.match(withMix[0].textContent, /Unit 1/); assert.equal(qa('a[href*="/mix/"]').length, 1); ok('la tarjeta del mix sale una vez, dentro de la Unit 1');
+assert.equal(withMix.length, 2); assert.match(withMix[0].textContent, /Unit 1/); assert.match(withMix[1].textContent, /Unit 2/); assert.equal(qa('a[href*="/mix/"]').length, 2); ok('hay una tarjeta de mix en cada unidad (Unit 1 y Unit 2)');
 assert.match(withMix[0].querySelector('.topic-group__count').textContent, /^6 temas$/); ok('el mix no cuenta como tema');
 const last = withMix[0].querySelector('.topic-list').lastElementChild; assert.ok(last.matches('a[href*="/mix/unit-1"]')); assert.match(last.textContent, /Mix · Unit 1/); assert.match(last.textContent, /36 questions/); ok('es la última tarjeta de la unidad y dice 36 questions');
 await visit(`#/p/alex/c/${C}/s/ingles/study`); assert.equal(qa('a[href*="/mix/"]').length, 0); ok('en la pestaña Estudio no hay mix');
@@ -100,4 +100,12 @@ assert.equal(pts.right, 5); assert.equal(pts.wrong, 1); assert.equal(pts.bonus, 
 await visit(`#/p/alex/c/${C}/s/ingles/practice`);
 assert.match(text(), /⭐ 2\/2/); ok('cuenta en las estadísticas de cada tema (mejor nota del tema)');
 await visit('#/parents/alex/stats/' + C + '/ingles'); assert.ok(/time|Time/i.test(text())); ok('la zona de padres lo ve en las estadísticas del tema');
+{
+  // Otros mixes: Unit 2 de Inglés (sin la lectura) y Matemáticas (toda la asignatura)
+  const { loadMixes, mixTopics } = await import('../js/content/mixes.js');
+  const ing = await loadMixes(C, 'ingles'); assert.deepEqual(ing.map((m) => m.id), ['unit-1', 'unit-2']); assert.ok(ing.every((m) => m.size === 36));
+  const u2 = (await mixTopics(C, 'ingles', ing[1])).map((x) => x.id); assert.deepEqual(u2, ['food-drink', 'who-which-where', 'irregular-verbs', 'past-when', 'food-groups']); ok('Unit 2 de Inglés: 5 temas y sin la lectura');
+  const mm = await loadMixes(C, 'mates'); assert.equal(mm.length, 1); assert.equal(mm[0].size, 36); assert.equal(mm[0].unit, undefined);
+  const mt = await mixTopics(C, 'mates', mm[0]); assert.ok(mt.length >= 1); ok('Mates: un mix sin unidad (todos los temas de la asignatura)');
+}
 console.log(`\n${n} comprobaciones OK`);

@@ -16,3 +16,6 @@ export const topics = [
   { id: 'vocabulario', emoji: '📐', minutes: 8, load: () => import('./vocabulario/index.js') },
   { id: 'simetria', emoji: '🦋', minutes: 7, load: () => import('./simetria/index.js') },
 ];
+
+/** Mix de preguntas de toda la asignatura (sin `unit`: mezcla todos los temas estudiados). */
+export const mixes = [{ id: 'mates', emoji: '🎲', title: 'Mix · Matemáticas', size: 36 }];

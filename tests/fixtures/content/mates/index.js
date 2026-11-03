@@ -7,3 +7,5 @@ export const topics = [
   { id: 'geometria', title: 'Geometría', minutes: 6 },
   { id: 'medidas', title: 'Medidas', minutes: 5 },
 ];
+
+export const mixes = [{ id: 'mates', emoji: '🎲', title: 'Mix · Matemáticas', size: 36 }];
