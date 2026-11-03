@@ -31,6 +31,13 @@ export function retoMessage({ name, answers }) {
   return { title: `${name} ha hecho el reto`, body: low ? `${score} ⚠️ Necesita refuerzo · ${points}` : `${score} ✅ · ${points}` };
 }
 
+/** Aviso al terminar un mix de preguntas. */
+export function mixMessage({ name, mixTitle, subjectName, answers }) {
+  const { low, score, points } = grade(countCorrect(answers), answers.length);
+  const detail = `${subjectName} · ${short(mixTitle)} · ${score}`;
+  return low ? { title: `${name} necesita refuerzo`, body: `${detail} ⚠️ · ${points}` } : { title: `${name} ha hecho un mix`, body: `${detail} ✅ · ${points}` };
+}
+
 /** Aviso al marcar un tema como estudiado (no tiene nota). */
 export function studiedMessage({ name, topicTitle, subjectName }) {
   return { title: `${name} ha estudiado`, body: `${subjectName} · ${short(topicTitle)} · ${pointsText(POINTS.studied)}` };

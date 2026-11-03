@@ -2,11 +2,14 @@ import { spainDay } from '../reto/streak/date-keys.js';
 import { POINTS } from './rules.js';
 import { sessionPoints } from './session-points.js';
 
-/** Agrupa las sesiones: un reto (varias sesiones, una por tema) cuenta como una sola. */
+// Un reto o un mix guardan varias sesiones (una por tema) que comparten el principio del id: cuentan como una sola.
+const GROUPED_KINDS = new Set(['reto', 'mix']);
+
+/** Agrupa las sesiones: un reto o un mix (varias sesiones, una por tema) cuenta como uno solo. */
 function groupSessions(sessions) {
   const groups = new Map();
   for (const s of sessions) {
-    const key = s.kind === 'reto' ? `reto:${String(s.id).split(':')[0]}` : `sesion:${s.id}`;
+    const key = GROUPED_KINDS.has(s.kind) ? `${s.kind}:${String(s.id).split(':')[0]}` : `sesion:${s.id}`;
     const group = groups.get(key) || { correct: 0, total: 0, at: s.finished_at };
     group.correct += s.correct;
     group.total += s.total;

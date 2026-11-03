@@ -8,6 +8,7 @@ import { newProfileScreen } from './features/profiles/new-profile.screen.js';
 import { editProfileScreen } from './features/profiles/edit-profile.screen.js';
 import { parentsScreen } from './features/parents/parents.screen.js';
 import { loginScreen } from './features/auth/login.screen.js';
+import { mixScreen } from './features/mix/mix.screen.js';
 import { changeCodeScreen, changeParentCodeScreen } from './features/auth/change-code.screen.js';
 import { childStatsScreen } from './features/parents/child-stats.screen.js';
 import { subjectStatsScreen } from './features/parents/subject-stats.screen.js';
@@ -44,4 +45,5 @@ export function registerRoutes() {
   route('/p/:pid/c/:cid/s/:sid/:tab', subjectScreen);
   route('/p/:pid/c/:cid/s/:sid/study/:tid', studyScreen);
   route('/p/:pid/c/:cid/s/:sid/practice/:tid', practiceScreen);
+  route('/p/:pid/c/:cid/s/:sid/mix/:mid', mixScreen);
 }

@@ -1,16 +1,6 @@
 import { api } from '../../core/api.js';
 import { savePractice } from '../practice.repo.js';
-
-/** Agrupa las respuestas por tema: [{ subjectId, topicId, results }]. */
-function groupByTopic(answers) {
-  const groups = new Map();
-  for (const answer of answers) {
-    const key = `${answer.subjectId}/${answer.topicId}`;
-    if (!groups.has(key)) groups.set(key, { subjectId: answer.subjectId, topicId: answer.topicId, results: [] });
-    groups.get(key).results.push(answer);
-  }
-  return [...groups.values()];
-}
+import { groupByTopic } from './group-by-topic.js';
 
 /**
  * Cierra el reto: guarda las respuestas de cada tema como una sesión de tipo 'reto' (así cuentan en las

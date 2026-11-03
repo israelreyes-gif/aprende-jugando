@@ -1,6 +1,7 @@
 import { h } from '../../core/dom.js';
 import { paths } from '../../core/paths.js';
 import { getCourse, getSubject, loadTopics } from '../../content/registry.js';
+import { loadMixes } from '../../content/mixes.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { listSessions } from '../../data/practice.repo.js';
 import { listReleased } from '../../data/release.repo.js';
@@ -10,6 +11,7 @@ import { texts } from '../../shared/i18n.js';
 import { notFoundView } from '../../shared/not-found-view.js';
 import { buildProgress } from './subject-progress.js';
 import { groupTopics } from './group-topics.js';
+import { mixCard } from '../mix/mix-card.js';
 import { topicCard } from './topic-card.js';
 import { topicGroup } from './topic-group.js';
 import { topicsSummary } from './topics-summary.js';
@@ -21,9 +23,10 @@ export async function subjectScreen({ pid, cid, sid, tab }) {
   const subject = getSubject(sid);
   if (!course || !subject) return notFoundView();
 
-  const [profile, topics, releasedRows, studiedRows, sessions] = await Promise.all([
+  const [profile, topics, mixes, releasedRows, studiedRows, sessions] = await Promise.all([
     getProfile(pid),
     loadTopics(cid, sid),
+    loadMixes(cid, sid),
     listReleased(pid, { subjectId: sid }),
     listStudied(pid, { subjectId: sid }).catch(() => []),
     listSessions(pid, { subjectId: sid }).catch(() => []),
@@ -48,7 +51,11 @@ export async function subjectScreen({ pid, cid, sid, tab }) {
       topics.length === 0 ? h('p', { class: 'note note--empty' }, t.noTopics) : null,
       topicsSummary({ tab: activeTab, subject, topics, progress, t }),
       groupTopics(topics).map(({ unit, items }) =>
-        topicGroup({ unit, subject, cards: items.map(({ topic, index }) => topicCard({ profile, course, subject, tab: activeTab, topic, index, t, progress })) })),
+        topicGroup({
+          unit, subject,
+          cards: items.map(({ topic, index }) => topicCard({ profile, course, subject, tab: activeTab, topic, index, t, progress })),
+          extra: activeTab === 'practice' ? mixes.filter((mix) => (mix.unit || null) === unit).map((mix) => mixCard({ profile, course, subject, mix, t })) : [],
+        })),
     ),
   );
 }

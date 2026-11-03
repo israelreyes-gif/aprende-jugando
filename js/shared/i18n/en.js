@@ -44,4 +44,7 @@ export const en = {
   gotIt: 'Got it',
   tryAgain: 'Please try again.',
   noExercises: 'This topic has no exercises yet.',
+  mixQuestions: (n) => `${n} questions`,
+  mixEmpty: 'Study and unlock some topics of this unit first. The mix uses the topics you have studied.',
+  mixSaving: 'Saving your result…',
 };

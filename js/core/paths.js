@@ -22,4 +22,5 @@ export const paths = {
   subject: (pid, cid, sid, tab = 'study') => `#/p/${pid}/c/${cid}/s/${sid}/${tab}`,
   study: (pid, cid, sid, tid) => `#/p/${pid}/c/${cid}/s/${sid}/study/${tid}`,
   practice: (pid, cid, sid, tid) => `#/p/${pid}/c/${cid}/s/${sid}/practice/${tid}`,
+  mix: (pid, cid, sid, mid) => `#/p/${pid}/c/${cid}/s/${sid}/mix/${mid}`,
 };

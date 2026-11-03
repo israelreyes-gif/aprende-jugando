@@ -119,6 +119,18 @@ Para inventar un tipo nuevo, regístralo en `js/features/practice/question-types
 
 Todo ejercicio nuevo cuenta en la zona de padres con la regla del 75 %.
 
+## Mix de preguntas
+
+Al final de una unidad (pestaña Ejercicios) hay una tarjeta «Mix» que mezcla preguntas de los temas de esa unidad: solo los **liberados y estudiados** (y nunca las lecturas, que llevan `inMix: false`). Puntúa como los ejercicios normales (+1/−1 por pregunta y ±5 de bonus **una sola vez** por mix) y guarda **una sesión `kind: 'mix'` por tema**, así cuenta en las estadísticas y en la regla del 75 % de cada tema. No se puede retomar a medias.
+
+Se declara en el índice de la asignatura, sin tocar nada más:
+
+```js
+export const mixes = [{ id: 'unit-1', unit: UNIT_1, emoji: '🎲', title: 'Mix · Unit 1', size: 36 }];
+```
+
+Sin `unit`, mezcla todos los temas de la asignatura. Ahora existe el de la Unit 1 de Inglés.
+
 ## Actualizar la app en los móviles
 
 Cada versión de la app es un **paquete cerrado**: el service worker la descarga entera a una copia aparte, copiando de la anterior lo que no ha cambiado, y solo la usa cuando está completa. Si falta un archivo, una descarga se corta o el servidor aún sirve un archivo viejo, la descarta y sigue con la versión que tenía. Nunca se mezclan archivos de dos versiones.
