@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'd66d1785ee85';
+const BUILD = 'f2193744801a';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -105,7 +105,7 @@ const FILES = {
   './js/content/1-primaria/ingles/to-be/index.js': 'aae73edb9e58',
   './js/content/1-primaria/ingles/to-be/study.js': '0b20cb624333',
   './js/content/4-primaria/ingles/could/exercises.js': '3da1169bdefb',
-  './js/content/4-primaria/ingles/could/gen/build-sentence.js': 'b47247547c2a',
+  './js/content/4-primaria/ingles/could/gen/build-sentence.js': 'd18877a53b35',
   './js/content/4-primaria/ingles/could/gen/change-form.js': '59ec92744a15',
   './js/content/4-primaria/ingles/could/gen/choose-activity.js': '481c96c214da',
   './js/content/4-primaria/ingles/could/gen/choose-could.js': '0af68bbbeee4',
@@ -199,7 +199,7 @@ const FILES = {
   './js/content/4-primaria/ingles/vocabulary/sections.js': '3a0c4a95e2dc',
   './js/content/4-primaria/ingles/vocabulary/study.js': '90d5df1907f5',
   './js/content/4-primaria/ingles/was-were/exercises.js': '7b3e0a78b17e',
-  './js/content/4-primaria/ingles/was-were/gen/build-sentence.js': '4fd276524ba5',
+  './js/content/4-primaria/ingles/was-were/gen/build-sentence.js': 'd75e13f632f1',
   './js/content/4-primaria/ingles/was-were/gen/change-form.js': '42850c6d3f8b',
   './js/content/4-primaria/ingles/was-were/gen/choose-be.js': '02257249ff9b',
   './js/content/4-primaria/ingles/was-were/gen/choose-subject.js': '0cdcc36f33af',
