@@ -37,7 +37,7 @@ export async function request(method, path, { query, body, owner } = {}) {
     }
     throw error;
   }
-  if (method !== 'GET') clearMemoryCache(); // tras escribir, las copias en memoria ya no valen
+  if (method !== 'GET') clearMemoryCache(!path.startsWith('profiles')); // tras escribir, las copias en memoria ya no valen
   return response.json();
 }
 

@@ -1,6 +1,8 @@
 import { authRequest } from '../core/api/auth-request.js';
 import { PARENT_OWNER, clearSession, getSession, setSession } from '../core/api/session-store.js';
 import { clearReadCache } from '../core/api/cache-store.js';
+import { PROFILES_KEY, currentEpoch, getEntry, setEntry, FRESH_MS } from '../core/api/memory-cache.js';
+import { emitDataEvent } from '../core/api/data-events.js';
 import { flushOutbox } from '../core/api/outbox.js';
 
 const PROFILES_CACHE = 'aj.profilesCache';
@@ -13,10 +15,11 @@ const readCache = () => {
   }
 };
 
-/** Perfiles para la pantalla de inicio (sin entrar): nombre, color, si tiene código y si lo pide siempre. Sin conexión, la última copia. */
-export async function fetchProfiles() {
+async function fetchProfilesFromServer() {
+  const epoch = currentEpoch();
   try {
     const profiles = await authRequest('GET', 'profiles');
+    if (epoch === currentEpoch()) setEntry(PROFILES_KEY, profiles);
     try {
       localStorage.setItem(PROFILES_CACHE, JSON.stringify(profiles));
     } catch {
@@ -30,6 +33,26 @@ export async function fetchProfiles() {
     }
     throw err;
   }
+}
+
+/**
+ * Perfiles para la pantalla de inicio (sin entrar): nombre, color, si tiene código y si lo pide siempre.
+ * Si ya se vieron (o hay copia en el dispositivo al abrir la app) se devuelven al instante y se refrescan detrás.
+ * Sin conexión, la última copia.
+ */
+export async function fetchProfiles() {
+  let hit = getEntry(PROFILES_KEY);
+  if (!hit && currentEpoch() === 0) {
+    const onDevice = readCache();
+    if (onDevice.length) hit = { data: onDevice, at: 0 };
+  }
+  if (!hit) return fetchProfilesFromServer();
+  if (Date.now() - hit.at > FRESH_MS) {
+    fetchProfilesFromServer()
+      .then((data) => JSON.stringify(data) !== JSON.stringify(hit.data) && emitDataEvent('changed'))
+      .catch(() => {});
+  }
+  return hit.data;
 }
 
 /** ¿Este perfil pide el código cada vez que se abre su tarjeta? (según la última lista leída) */

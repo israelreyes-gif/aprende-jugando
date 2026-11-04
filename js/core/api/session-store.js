@@ -18,7 +18,7 @@ export function getSession(owner) {
 }
 
 export function setSession(owner, token) {
-  clearMemoryCache();
+  clearMemoryCache(true);
   try {
     storeFor(owner).setItem(PREFIX + owner, token);
   } catch {
@@ -27,7 +27,7 @@ export function setSession(owner, token) {
 }
 
 export function clearSession(owner) {
-  clearMemoryCache();
+  clearMemoryCache(true);
   try {
     storeFor(owner).removeItem(PREFIX + owner);
     localStorage.removeItem(PREFIX + PARENT_OWNER); // restos de versiones anteriores

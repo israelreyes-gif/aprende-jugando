@@ -54,6 +54,23 @@ location.hash = '#/p/alex'; clearMemoryCache();
 localStorage.setItem('aj.cache:sessions?x=1', JSON.stringify([{ viejo: true }]));
 console.log(`\n${ok} comprobaciones OK`);
 
+// Lista de perfiles (volver al inicio): sobrevive a guardar ejercicios y a cambiar de sesión, pero no a escribir en perfiles
+{
+  const real = globalThis.fetch; let profileGets = 0; let profiles = [{ id: 'a', name: 'Alex' }];
+  globalThis.fetch = async (url, init = {}) => {
+    if (String(url).includes('/auth/profiles')) { profileGets++; return { ok: true, json: async () => profiles }; }
+    return real(url, init);
+  };
+  const { fetchProfiles } = await import(`${R}/data/auth.repo.js`);
+  clearMemoryCache(); localStorage.removeItem('aj.profilesCache');
+  await fetchProfiles(); await fetchProfiles(); assert.equal(profileGets, 1); pass('perfiles: la segunda vez sale al instante, sin petición');
+  await api.insert('practice_sessions', { id: 's1' }); await fetchProfiles(); assert.equal(profileGets, 1); pass('perfiles: guardar un ejercicio no obliga a pedirlos otra vez');
+  const { setSession } = await import(`${R}/core/api/session-store.js`); setSession('alex', 't'); await fetchProfiles(); assert.equal(profileGets, 1); pass('perfiles: entrar o salir no obliga a pedirlos otra vez');
+  profiles = [{ id: 'a', name: 'Alexandro' }]; await api.update('profiles', { id: 'a' }, { name: 'Alexandro' });
+  assert.deepEqual(await fetchProfiles(), [{ id: 'a', name: 'Alexandro' }]); assert.equal(profileGets, 2); pass('perfiles: al editar un perfil se piden de nuevo');
+  globalThis.fetch = real;
+}
+
 // Router: una pantalla "live" se repinta en silencio al llegar datos nuevos; una que no lo es, no.
 {
   const { route, start } = await import(`${R}/core/router.js`);

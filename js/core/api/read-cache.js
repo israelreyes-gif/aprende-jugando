@@ -59,7 +59,7 @@ function revalidate(path, query, memKey, cacheKey, shown) {
     })
     .catch((err) => {
       if (err.code === 'auth') {
-        clearMemoryCache();
+        clearMemoryCache(true);
         emitDataEvent('auth');
       }
     });

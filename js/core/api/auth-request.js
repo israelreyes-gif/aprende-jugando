@@ -1,5 +1,6 @@
 import { getConnection } from './connection.js';
 import { fetchWithTimeout } from './fetch-timeout.js';
+import { clearMemoryCache } from './memory-cache.js';
 
 /** Una petición a /auth/* del Worker (con la clave de la app). Lanza un Error con .status, .left y .retryIn si algo falla. */
 export async function authRequest(method, action, { body, token } = {}) {
@@ -20,5 +21,6 @@ export async function authRequest(method, action, { body, token } = {}) {
   if (!response.ok) {
     throw Object.assign(new Error(data?.error || `Error ${response.status}`), { status: response.status, left: data?.left, retryIn: data?.retry_in });
   }
+  if (method !== 'GET') clearMemoryCache(); // poner o quitar un código cambia la lista de perfiles y los datos en memoria
   return data;
 }
