@@ -1,6 +1,8 @@
 // Sesiones abiertas en este dispositivo: una por perfil y otra para los padres ("parent").
 // Solo se guarda el identificador que da el Worker. Las de los perfiles duran 7 días sin usarse;
 // la de padres solo vive mientras la app esté abierta (memoria temporal) y caduca a los 30 minutos sin usarse.
+import { clearMemoryCache } from './memory-cache.js';
+
 const PREFIX = 'aj.session.';
 
 export const PARENT_OWNER = 'parent';
@@ -16,6 +18,7 @@ export function getSession(owner) {
 }
 
 export function setSession(owner, token) {
+  clearMemoryCache();
   try {
     storeFor(owner).setItem(PREFIX + owner, token);
   } catch {
@@ -24,6 +27,7 @@ export function setSession(owner, token) {
 }
 
 export function clearSession(owner) {
+  clearMemoryCache();
   try {
     storeFor(owner).removeItem(PREFIX + owner);
     localStorage.removeItem(PREFIX + PARENT_OWNER); // restos de versiones anteriores

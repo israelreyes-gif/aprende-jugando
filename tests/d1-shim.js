@@ -3,7 +3,17 @@ import fs from 'node:fs';
 
 /** Imita la API de D1 (prepare/bind/all/first/run/batch) sobre SQLite real. */
 export function makeD1(schemaPath) {
-  const sqlite = new DatabaseSync(':memory:');
+  // Las pruebas cambian la base «por detrás» de la app: se avisa a la caché en memoria (ver core/api/memory-cache.js).
+  const hooks = (globalThis.__AJ_TEST_HOOKS ||= { clear: new Set() });
+  const raw = new DatabaseSync(':memory:');
+  const forget = () => hooks.clear.forEach((fn) => fn());
+  const sqlite = {
+    exec: (sql) => { forget(); return raw.exec(sql); },
+    prepare: (sql) => {
+      const st = raw.prepare(sql);
+      return { all: (...a) => st.all(...a), get: (...a) => st.get(...a), run: (...a) => { forget(); return st.run(...a); } };
+    },
+  };
   sqlite.exec('PRAGMA foreign_keys = ON;');
   sqlite.exec(fs.readFileSync(schemaPath, 'utf8'));
 

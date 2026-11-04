@@ -3,6 +3,7 @@ import { buildQuery } from './query.js';
 import { fetchWithTimeout } from './fetch-timeout.js';
 import { clearSession } from './session-store.js';
 import { pickSession } from './session-token.js';
+import { clearMemoryCache } from './memory-cache.js';
 
 export const SESSION_ERROR = 'Sesión no válida';
 
@@ -36,6 +37,7 @@ export async function request(method, path, { query, body, owner } = {}) {
     }
     throw error;
   }
+  if (method !== 'GET') clearMemoryCache(); // tras escribir, las copias en memoria ya no valen
   return response.json();
 }
 

@@ -1,6 +1,8 @@
 import { loadingView } from '../shared/loading-view.js';
 import { errorView } from '../shared/error-view.js';
 import { compile, findRoute } from './route-match.js';
+import { onDataEvent } from './api/data-events.js';
+import { keepOpenState } from './keep-open-state.js';
 
 const routes = [];
 let rootEl = null;
@@ -8,9 +10,12 @@ let guard = null;
 let onAuthError = null;
 let renderToken = 0;
 
-/** Registra una ruta. El manejador recibe los parámetros y devuelve (o promete) un nodo DOM. */
-export function route(pattern, handler) {
-  routes.push({ ...compile(pattern), handler });
+/**
+ * Registra una ruta. El manejador recibe los parámetros y devuelve (o promete) un nodo DOM.
+ * live: true -> si, tras pintar una copia guardada, llegan datos nuevos, la pantalla se repinta sola (solo pantallas de consulta).
+ */
+export function route(pattern, handler, { live = false } = {}) {
+  routes.push({ ...compile(pattern), handler, live });
 }
 
 export function currentPath() {
@@ -36,6 +41,7 @@ export function start(root, options = {}) {
   guard = options.guard || null;
   onAuthError = options.onAuthError || null;
   window.addEventListener('hashchange', render);
+  onDataEvent(onData);
   return render();
 }
 
@@ -69,5 +75,29 @@ async function render() {
     }
     console.error(err);
     rootEl.replaceChildren(errorView(err, reload));
+  }
+}
+
+const typing = () => rootEl.contains(document.activeElement) && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+
+/** Datos nuevos tras pintar una copia guardada: repinta en silencio (sin spinner, sin saltar arriba, sin cerrar los desplegables). */
+async function onData(reason) {
+  const path = currentPath();
+  if (reason === 'auth') {
+    const redirect = guard ? guard(path) : null;
+    if (redirect && redirect !== `#${path}`) go(redirect, { replace: true });
+    return;
+  }
+  const match = findRoute(routes, path);
+  if (!match || !match.live || typing()) return;
+  const token = renderToken;
+  try {
+    const view = await match.handler(match.params);
+    if (token !== renderToken || typing()) return;
+    const restore = keepOpenState(rootEl);
+    rootEl.replaceChildren(view);
+    restore();
+  } catch {
+    /* si falla, se deja la pantalla que ya se ve */
   }
 }

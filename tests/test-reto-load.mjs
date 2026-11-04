@@ -6,7 +6,9 @@ const R = new URL('../js', import.meta.url).pathname;
 let rows = []; let studied = null; // studied = null → todos los liberados están estudiados
 globalThis.fetch = async (url) => ({ ok: true, json: async () => (String(url).includes('study_progress') ? (studied ?? rows) : rows) });
 const { setConnection } = await import(`${R}/core/api.js`); setConnection('https://p.example/aprende-jugando', 'k');
-const { loadRetoTopics } = await import(`${R}/features/reto/load-reto-topics.js`);
+const { loadRetoTopics: loadRaw } = await import(`${R}/features/reto/load-reto-topics.js`);
+// Esta prueba cambia los datos del falso servidor sin pasar por la app: se olvidan las copias en memoria antes de cada carga
+const loadRetoTopics = (...a) => { globalThis.__AJ_TEST_HOOKS.clear.forEach((fn) => fn()); return loadRaw(...a); };
 const { loadTopics } = await import(`${R}/content/registry.js`);
 const row = (subject_id, topic_id, course_id = '4-primaria') => ({ profile_id: 'p1', course_id, subject_id, topic_id });
 const mates = (await loadTopics('4-primaria', 'mates')).filter((t) => t.available).map((t) => t.id);

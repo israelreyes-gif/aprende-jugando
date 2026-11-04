@@ -24,25 +24,25 @@ import { levelsScreen } from './features/points/levels.screen.js';
 
 export function registerRoutes() {
   route('/setup', setupScreen);
-  route('/', profilesScreen);
+  route('/', profilesScreen, { live: true });
   route('/new-profile', newProfileScreen);
   route('/login/:owner', loginScreen);
   route('/login/:owner/:then', loginScreen);
 
-  route('/parents', parentsScreen);
+  route('/parents', parentsScreen, { live: true });
   route('/parents/code', changeParentCodeScreen);
-  route('/parents/:pid', childStatsScreen);
-  route('/parents/:pid/stats/:cid/:sid', subjectStatsScreen);
-  route('/parents/:pid/release/:cid', releaseSubjectsScreen);
-  route('/parents/:pid/release/:cid/:sid', releaseTopicsScreen);
+  route('/parents/:pid', childStatsScreen, { live: true });
+  route('/parents/:pid/stats/:cid/:sid', subjectStatsScreen, { live: true });
+  route('/parents/:pid/release/:cid', releaseSubjectsScreen, { live: true });
+  route('/parents/:pid/release/:cid/:sid', releaseTopicsScreen, { live: true });
 
   route('/p/:pid/edit', editProfileScreen);
   route('/p/:pid/code', changeCodeScreen);
-  route('/p/:pid', coursesScreen);
-  route('/p/:pid/levels', levelsScreen);
-  route('/p/:pid/c/:cid', courseScreen);
+  route('/p/:pid', coursesScreen, { live: true });
+  route('/p/:pid/levels', levelsScreen, { live: true });
+  route('/p/:pid/c/:cid', courseScreen, { live: true });
   route('/p/:pid/c/:cid/reto', retoScreen);
-  route('/p/:pid/c/:cid/s/:sid/:tab', subjectScreen);
+  route('/p/:pid/c/:cid/s/:sid/:tab', subjectScreen, { live: true });
   route('/p/:pid/c/:cid/s/:sid/study/:tid', studyScreen);
   route('/p/:pid/c/:cid/s/:sid/practice/:tid', practiceScreen);
   route('/p/:pid/c/:cid/s/:sid/mix/:mid', mixScreen);

@@ -23,7 +23,7 @@ export function findRoute(routes, path) {
     r.keys.forEach((key, i) => {
       params[key] = decodeURIComponent(m[i + 1]);
     });
-    return { handler: r.handler, params };
+    return { handler: r.handler, live: r.live, params };
   }
   return null;
 }
