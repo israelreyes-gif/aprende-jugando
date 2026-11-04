@@ -26,12 +26,12 @@ import { spainDay } from './streak/date-keys.js';
 /** Reto de hoy: 10 preguntas mezcladas de los temas liberados y estudiados. Se puede dejar a medias y retomar. */
 export async function retoScreen({ pid, cid }) {
   const course = getCourse(cid);
-  const profile = await getProfile(pid);
-  if (!profile || !course || !course.available) return notFoundView();
+  if (!course || !course.available) return notFoundView();
+  const today = spainDay();
+  const [profile, topics, existing] = await Promise.all([getProfile(pid), loadRetoTopics(pid, cid), getReto(pid, today)]);
+  if (!profile) return notFoundView();
 
   const back = paths.course(pid, cid);
-  const today = spainDay();
-  const [topics, existing] = await Promise.all([loadRetoTopics(pid, cid), getReto(pid, today)]);
 
   const body = h('div', { class: 'screen__body practice' });
   const view = h('main', { class: 'screen' }, appHeader({ title: 'Reto de hoy', sub: profile.name, back, profile }), body);

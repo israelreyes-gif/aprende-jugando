@@ -8,12 +8,18 @@ import { listStudied } from '../../data/study.repo.js';
  * Devuelve [{ subjectId, topicId, title, exercises }].
  */
 export async function loadRetoTopics(profileId, courseId) {
-  const [releasedRows, studiedRows] = await Promise.all([listReleased(profileId), listStudied(profileId)]);
+  // Todo lo que va a la red se pide a la vez: liberados, estudiados y la lista de temas de cada asignatura
+  const subjects = subjectsOf(getCourse(courseId));
+  const [releasedRows, studiedRows, topicLists] = await Promise.all([
+    listReleased(profileId),
+    listStudied(profileId),
+    Promise.all(subjects.map((subject) => loadTopics(courseId, subject.id))),
+  ]);
   const inCourse = (rows, subjectId, topicId) => rows.some((row) => row.course_id === courseId && row.subject_id === subjectId && row.topic_id === topicId);
 
   const bySubject = await Promise.all(
-    subjectsOf(getCourse(courseId)).map(async (subject) => {
-      const topics = (await loadTopics(courseId, subject.id)).filter(
+    subjects.map(async (subject, i) => {
+      const topics = topicLists[i].filter(
         (topic) => topic.available && inCourse(releasedRows, subject.id, topic.id) && inCourse(studiedRows, subject.id, topic.id),
       );
       const loaded = await Promise.all(topics.map(async (topic) => ({ subjectId: subject.id, topicId: topic.id, title: topic.title, exercises: (await topic.load()).exercises || [] })));
