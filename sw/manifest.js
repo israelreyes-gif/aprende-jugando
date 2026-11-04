@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '3239e63c90fc';
+const BUILD = 'db32b575fc43';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -372,6 +372,7 @@ const FILES = {
   './js/data/reto/list-reto-days.js': 'ae950cd87c7c',
   './js/data/reto/reto-row.js': '0091762bcaa5',
   './js/data/reto/save-answers.js': 'a8e8f54eb2b8',
+  './js/data/reto/start-reto-retry.js': '22bde9e20a26',
   './js/data/reto/start-reto.js': '42195396a6e6',
   './js/data/settings.repo.js': 'feae7d71f55b',
   './js/data/study.repo.js': '0c2653ff49e1',
@@ -515,7 +516,7 @@ const FILES = {
   './js/features/push/parent-alerts/parent-messages.js': 'e3f178668104',
   './js/features/push/push-support.js': 'a4134f8cfae7',
   './js/features/push/vapid-key.js': 'f9791582919e',
-  './js/features/reto/answers-saver.js': 'ec5b34652bea',
+  './js/features/reto/answers-saver.js': '5f8fb8e1afa2',
   './js/features/reto/load-reto-topics.js': '6a8309bd2027',
   './js/features/reto/load-streak.js': '5cf0996c0067',
   './js/features/reto/plan/item-supplier.js': '9e1dc92cc083',
@@ -527,7 +528,7 @@ const FILES = {
   './js/features/reto/reto-result-view.js': 'f8fde7e18432',
   './js/features/reto/reto-size.js': '8a72bcb368b0',
   './js/features/reto/reto-status.js': '33c86c702ce5',
-  './js/features/reto/reto.screen.js': 'bcded9ad8d44',
+  './js/features/reto/reto.screen.js': 'e3f3f2290df1',
   './js/features/reto/streak-badge.js': 'e693052ce45c',
   './js/features/reto/streak/compute-streak.js': 'b8ec67d77a32',
   './js/features/reto/streak/date-keys.js': '9e10c71a0ca9',

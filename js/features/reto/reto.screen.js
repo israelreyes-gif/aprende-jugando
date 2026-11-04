@@ -3,7 +3,7 @@ import { paths } from '../../core/paths.js';
 import { getCourse } from '../../content/registry.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { getReto } from '../../data/reto/get-reto.js';
-import { startReto } from '../../data/reto/start-reto.js';
+import { startRetoWithRetry } from '../../data/reto/start-reto-retry.js';
 import { finishReto } from '../../data/reto/finish-reto.js';
 import { appHeader } from '../../shared/app-header.js';
 import { notify } from '../../shared/modal.js';
@@ -53,7 +53,20 @@ export async function retoScreen({ pid, cid }) {
     return view;
   }
 
-  const reto = existing || (await startReto({ profileId: pid, courseId: cid, day: today, plan: planReto(topics) }));
+  // Sin reto de hoy: se juega ya con el plan local y el reto se crea en el servidor detrás (con reintentos).
+  // Si la creación falla del todo, el aviso sale al guardar o al terminar, donde ya se puede reintentar.
+  const localPlan = existing ? null : planReto(topics);
+  let creating = null;
+  const ready = () => {
+    if (existing) return Promise.resolve(existing);
+    creating ||= startRetoWithRetry({ profileId: pid, courseId: cid, day: today, plan: localPlan }).catch((err) => {
+      creating = null;
+      throw err;
+    });
+    return creating;
+  };
+  const reto = existing || { id: null, plan: localPlan, answers: [], finished: false };
+  if (!existing) ready().catch(() => {});
   if (reto.finished) {
     await showResult(reto.answers);
     return view;
@@ -65,13 +78,13 @@ export async function retoScreen({ pid, cid }) {
     return view;
   }
 
-  const saver = answersSaver(reto.id, () => notify({ kind: 'error', title: 'No se pudo guardar', message: 'Revisa la conexión. Sigue con el reto: se guardará después.' }));
+  const saver = answersSaver(() => ready().then((r) => r.id), () => notify({ kind: 'error', title: 'No se pudo guardar', message: 'Revisa la conexión. Sigue con el reto: se guardará después.' }));
 
   async function finish(answers) {
     body.replaceChildren(h('p', { class: 'lead', role: 'status' }, 'Guardando el resultado…'));
     try {
       await saver.flush();
-      await finishReto({ ...reto, answers });
+      await finishReto({ ...reto, ...(await ready()), answers });
     } catch (err) {
       console.error(err);
       body.replaceChildren(
