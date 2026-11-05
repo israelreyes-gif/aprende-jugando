@@ -1,5 +1,6 @@
 import { HttpError } from './http.js';
 import { PARENT } from './auth-rules.js';
+import { assertReplaceAllowed } from './auth-replace.js';
 
 const FORBIDDEN = () => new HttpError(403, 'Operación no permitida');
 
@@ -9,7 +10,7 @@ const PROFILE_RULES = {
   profiles: { read: true, edit: true, by: 'id', cols: ['name', 'avatar_color', 'gender', 'ask_always'] },
   practice_sessions: { read: true, create: true, by: 'profile_id' },
   study_progress: { read: true, create: true, by: 'profile_id' },
-  reto_diario: { read: true, create: true, edit: true, by: 'profile_id' },
+  reto_diario: { read: true, create: true, edit: true, by: 'profile_id', cols: ['answers', 'finished_at'] },
   topic_release: { read: true, by: 'profile_id' },
   push_devices: { read: true, create: true, remove: true, by: 'profile_id', kind: 'child' },
   sync_events: { create: true, by: 'profile_id', nullable: true },
@@ -36,6 +37,7 @@ export async function enforceScope(db, session, method, table, params, id, reque
 
   if (action === 'create') {
     const rows = await bodyRows(request);
+    await assertReplaceAllowed(db, owner, table, params, rows);
     if (rule.viaSession) {
       const ids = [...new Set(rows.map((r) => r.session_id))];
       const found = ids.length
