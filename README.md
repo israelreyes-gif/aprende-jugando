@@ -19,6 +19,23 @@ Esta app es **solo para la familia de Alex** (sus perfiles, sus padres y los fam
 - **Zona de padres**: estadísticas, refuerzo (regla del 75 %), puntos y temas liberados por perfil.
 - **Avisos push**: recordatorios del reto a cada perfil (08:00 y 18:30) y avisos a los padres cuando un perfil termina un reto, un estudio o ejercicios (ver más abajo).
 
+## Aclaraciones y decisiones tomadas (para quien revise el proyecto)
+
+Cosas que **no son un olvido**: se decidieron a propósito. Si una revisión las propone otra vez, ya están valoradas.
+
+- **Códigos cortos (4 a 8 cifras)**: es un candado para niños en una app familiar, no una cuenta bancaria. La defensa es el bloqueo progresivo (1, 5 y 15 min) con aviso por Telegram, el hash PBKDF2 con sal y que las sesiones solo guardan su huella.
+- **Una sola `API_KEY` compartida** (ver «Alcance»): separa la app del resto de internet, no a unas personas de otras; eso lo hacen los códigos y las sesiones.
+- **Sesión de padres de 30 min sin uso y solo mientras la app esté abierta**: más cómodo que pedir el código en cada pantalla y más seguro que dejarla siete días.
+- **Reglas de puntos duplicadas** en la app (`js/features/points/`) y en el Worker (`worker/stats-*.js`): el Worker se despliega aparte y no puede importar de `js/`. `tests/test-stats-points.mjs` falla si dejan de coincidir. Si el Worker no tiene la ruta, la app calcula los puntos en el móvil.
+- **El Worker es «genérico»** (CRUD por tabla con permisos en `worker/permissions.js` y `worker/auth-scope.js`) salvo `/api/stats/points`, `/auth/*` y `/push/*`. No se plantea convertirlo en una API con una ruta por caso de uso.
+- **Estadísticas de un hijo en Padres**: bajan las sesiones completas (hasta 2000) y calculan en el móvil. Con el uso actual tarda unos 0,8 s la primera vez; se valoró una ruta propia en el Worker y se **descartó**.
+- **Sin caché de la sesión en el Worker**: ahorraría 10–30 ms por petición y complica cerrar sesiones al instante; no compensa.
+- **Copias en memoria** (ver «Velocidad»): se borran con cualquier escritura o cambio de sesión; la zona de padres nunca se pinta con copias del dispositivo. Preferimos una espera corta a enseñar datos viejos.
+- **Mixes de preguntas**: solo entran temas liberados y estudiados, y nunca las lecturas (`inMix: false`).
+- **Contenido**: el de Sociales, Lengua y Sciences de 4.º sale de los dictados y fotos del colegio; no se inventa. Mientras no esté, esas asignaturas aún no tienen temas con contenido.
+- **Sin build ni Node**: ES modules directos, para poder mantenerlo todo desde el navegador (GitHub y el panel de Cloudflare).
+- **Tests**: `node tests/run-all.mjs` los pasa todos; las pruebas que cambian la base «por detrás» de la app usan el gancho `__AJ_TEST_HOOKS`.
+
 ## Estructura
 
 ```
