@@ -9,6 +9,7 @@
  * Rutas (cabecera X-Api-Key obligatoria):
  *   GET /api  ·  GET /api/:tabla  ·  GET /api/:tabla/:id
  *   POST /api/:tabla  ·  PATCH /api/:tabla/:id  ·  DELETE /api/:tabla/:id
+ *   GET /api/stats/points?profile_id=eq.<id>  (puntos de un perfil ya calculados; reglas en stats-*.js)
  *   POST /push/send  (avisos push; necesita VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY y VAPID_SUBJECT)
  * Cron (wrangler.jsonc): recordatorios del reto a las 08:00 y a las 18:30, hora de Madrid, y el resumen semanal por Telegram el domingo a las 20:00.
  * Si el Worker falla por su lado (error 5xx) o un recordatorio no sale, avisa a los móviles de padres (error-alert.js).
@@ -24,6 +25,7 @@ import { alertSyncFailures } from './sync-alert.js';
 import { purgeWeekly } from './purge-sync.js';
 import { assertAllowed, visibleTables } from './permissions.js';
 import { handleAuth } from './auth-routes.js';
+import { handleStatsPoints } from './stats-points.js';
 import { findSession } from './auth-sessions.js';
 import { enforceScope } from './auth-scope.js';
 
@@ -65,6 +67,7 @@ export default {
       const session = await findSession(env.DB, request.headers.get('X-Session') || '');
       if (!session) throw new HttpError(401, 'Sesión no válida');
       if (parts[0] === 'push') return await handlePush(request, env, parts, cors, session);
+      if (parts[0] === 'api' && parts[1] === 'stats' && parts[2] === 'points') return await handleStatsPoints(request, env, parts, cors, session);
       if (parts[0] !== 'api' || parts.length > 3) throw new HttpError(404, 'Ruta no encontrada');
 
       const schema = await loadSchema(env.DB);

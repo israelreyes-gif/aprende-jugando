@@ -290,3 +290,7 @@ La app está pensada para uso familiar privado. Qué datos maneja y dónde:
 ## Velocidad: pintar al instante y refrescar detrás
 
 Las lecturas (`core/api/read-cache.js`) guardan una copia en memoria. Si una pantalla ya se vio, se pinta al momento con esa copia y, si tiene más de 5 s, se pide una nueva en segundo plano; si los datos han cambiado, las pantallas de consulta (rutas con `{ live: true }` en `routes.js`) se repintan solas sin spinner, sin saltar arriba y sin cerrar los desplegables. Reglas de seguridad: cualquier escritura o cambio de sesión borra todas las copias; la zona de padres no se pinta nunca con copias del dispositivo; las pantallas de ejercicios, estudio, mix y reto no se repintan solas; y si al refrescar la sesión ya no vale, se vuelve a la pantalla de entrada. Las pruebas que cambian la base «por detrás» usan el gancho `__AJ_TEST_HOOKS`.
+
+## Puntos calculados por el Worker
+
+`loadPoints` (`js/features/points/load-points.js`) pide `GET /api/stats/points?profile_id=eq.<id>` y el Worker (`worker/stats-points.js`) devuelve los puntos ya calculados, en vez de que el móvil baje hasta 2000 sesiones. Un perfil solo puede pedir los suyos; los padres, los de cualquiera. Las reglas están **duplicadas** en `worker/stats-rules.js` y `worker/stats-summarize.js` (copia de `js/features/points/`): si se cambia una regla de puntos, hay que cambiarla en los dos sitios; `tests/test-stats-points.mjs` falla si no coinciden. Si el Worker no tiene la ruta (aún sin desplegar) o falla, la app calcula los puntos en el móvil como antes.

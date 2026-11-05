@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'db32b575fc43';
+const BUILD = '0c3514d7866b';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -331,7 +331,7 @@ const FILES = {
   './js/content/subjects.js': 'd6767e487a52',
   './js/content/topic-title.js': '7ce1e3ad15bf',
   './js/content/topics.js': '68a38ddf50ad',
-  './js/core/api.js': '94f6643b87da',
+  './js/core/api.js': '7f3cf3466534',
   './js/core/api/auth-request.js': 'd761b3a2f63d',
   './js/core/api/cache-store.js': 'c484ad81d9ea',
   './js/core/api/connection.js': '2d605383159e',
@@ -475,7 +475,7 @@ const FILES = {
   './js/features/points/format-points.js': 'db90c288505d',
   './js/features/points/levels.js': '2863faccd340',
   './js/features/points/levels.screen.js': 'c9084e19ed45',
-  './js/features/points/load-points.js': '58c0289aa8de',
+  './js/features/points/load-points.js': '20256fe6a592',
   './js/features/points/period-points.js': '2525c8baf795',
   './js/features/points/points-outcome.js': 'ca88a2d9f4c6',
   './js/features/points/rules.js': 'b3e40ca7f715',

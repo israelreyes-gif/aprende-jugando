@@ -21,6 +21,9 @@ export const api = {
     }
   },
 
+  /** Puntos de un perfil calculados por el Worker (ver worker/stats-points.js). */
+  points: (profileId) => cachedGet('stats', 'stats/points', { where: { profile_id: profileId } }),
+
   /** Inserta una fila o una lista de filas. conflict: 'ignore' | 'replace' */
   insert: (table, rows, { conflict } = {}) => insertRows(table, rows, conflict),
 
