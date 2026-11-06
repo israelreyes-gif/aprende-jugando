@@ -1,5 +1,5 @@
 import { hashCode, sha256Hex } from './auth-crypto.js';
-import { clearFails, getCredential, registerFail } from './auth-credentials.js';
+import { clearFails, getCredential, reserveAttempt, settleFail } from './auth-credentials.js';
 import { remainingLock } from './auth-lock.js';
 import { alertParents } from './error-alert.js';
 import { PARENT } from './auth-rules.js';
@@ -19,11 +19,16 @@ async function nameOf(db, owner) {
 async function guarded(env, owner, credential, matches, now) {
   const wait = remainingLock(credential.locked_until, now);
   if (wait > 0) return { ok: false, status: 423, error: 'Acceso bloqueado un momento', retry_in: wait };
+  const reserved = await reserveAttempt(env.DB, credential.owner, now);
+  if (!reserved) {
+    const current = await getCredential(env.DB, credential.owner);
+    return { ok: false, status: 423, error: 'Acceso bloqueado un momento', retry_in: remainingLock(current?.locked_until, now) || 1 };
+  }
   if (await matches(credential)) {
-    if (credential.fails > 0 || credential.level > 0 || credential.locked_until) await clearFails(env.DB, credential.owner);
+    await clearFails(env.DB, credential.owner);
     return { ok: true };
   }
-  const result = await registerFail(env.DB, credential, now);
+  const result = await settleFail(env.DB, credential.owner, reserved, now);
   if (result.locked) {
     await alertParents(env, { title: 'Acceso bloqueado', where: await nameOf(env.DB, owner), detail: `5 fallos seguidos · bloqueado ${Math.round(result.seconds / 60)} min` });
     return { ok: false, status: 423, error: 'Acceso bloqueado un momento', retry_in: result.seconds };

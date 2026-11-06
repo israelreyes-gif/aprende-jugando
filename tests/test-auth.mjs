@@ -164,4 +164,15 @@ assert.equal((await call('GET', '/api/profiles/alex', { session: t })).status, 4
 sql("DELETE FROM profiles WHERE id = 'alex'");
 assert.equal(one("SELECT COUNT(*) AS n FROM credentials WHERE owner = 'alex'").n + one("SELECT COUNT(*) AS n FROM sessions WHERE owner = 'alex'").n, 0); ok('al borrar un perfil se borran su código y sus sesiones');
 
+// Intentos en paralelo: solo se miran tantos códigos como intentos quedan en la ronda
+sql("INSERT INTO profiles (id, name, avatar_color) VALUES ('rapido', 'Rápido', '#00f')");
+await call('POST', '/auth/setup', { body: { owner: 'rapido', code: '2468' } });
+sql("UPDATE credentials SET fails = 0, level = 0, locked_until = NULL WHERE owner = 'rapido'");
+const burst = await Promise.all(Array.from({ length: 40 }, (_, i) => call('POST', '/auth/login', { body: { owner: 'rapido', code: String(1000 + i) } })));
+assert.equal(burst.filter((x) => x.status === 401).length, 4, 'solo 4 fallos con aviso de intentos restantes');
+assert.ok(burst.every((x) => x.status === 401 || x.status === 423), 'el resto, bloqueados');
+assert.equal(burst.filter((x) => x.status === 200).length, 0);
+assert.ok(one("SELECT locked_until FROM credentials WHERE owner = 'rapido'").locked_until, 'queda bloqueado');
+assert.equal(one("SELECT level FROM credentials WHERE owner = 'rapido'").level, 1); ok('40 intentos a la vez: solo cuentan 5 y el bloqueo es de un nivel');
+
 console.log(`\n${passed} comprobaciones de acceso OK`);
