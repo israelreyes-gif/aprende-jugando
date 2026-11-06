@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '0c3514d7866b';
+const BUILD = '1e55aa6de54c';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -333,7 +333,7 @@ const FILES = {
   './js/content/topics.js': '68a38ddf50ad',
   './js/core/api.js': '7f3cf3466534',
   './js/core/api/auth-request.js': 'd761b3a2f63d',
-  './js/core/api/cache-store.js': 'c484ad81d9ea',
+  './js/core/api/cache-store.js': '9f8b24baf9de',
   './js/core/api/connection.js': '2d605383159e',
   './js/core/api/data-events.js': 'a6921429e0da',
   './js/core/api/fetch-timeout.js': 'dd1f57f7ffb0',
@@ -342,7 +342,7 @@ const FILES = {
   './js/core/api/outbox.js': '887c37abd8b5',
   './js/core/api/owner.js': 'e3c17bfdfa6f',
   './js/core/api/query.js': '29e0ca8a0e5c',
-  './js/core/api/read-cache.js': '89eb71a8bc92',
+  './js/core/api/read-cache.js': 'a08d09a61fb7',
   './js/core/api/request.js': 'b364ac78e727',
   './js/core/api/retry.js': '87d87a74be1b',
   './js/core/api/session-store.js': 'f4202af58854',
@@ -554,7 +554,7 @@ const FILES = {
   './js/features/subjects/topic-state.js': '3f339a087327',
   './js/features/subjects/topic-tile.js': '9b8086717537',
   './js/features/subjects/topics-summary.js': '4561a8f68377',
-  './js/main.js': '44289cec4fb7',
+  './js/main.js': '74f48e150bf1',
   './js/no-zoom.js': '05f17cc44237',
   './js/register-sw.js': '1647a5bd996f',
   './js/routes.js': '8dc161675fe4',

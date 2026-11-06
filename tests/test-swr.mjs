@@ -54,6 +54,33 @@ location.hash = '#/p/alex'; clearMemoryCache();
 localStorage.setItem('aj.cache:sessions?x=1', JSON.stringify([{ viejo: true }]));
 console.log(`\n${ok} comprobaciones OK`);
 
+// Seguridad: la zona de padres no se guarda en el dispositivo y un error de sesión nunca se tapa con una copia
+{
+  const { migrateReadCache } = await import(`${R}/core/api/cache-store.js`);
+  const keys = () => Object.keys(localStorage).filter((k) => k.startsWith('aj.cache:'));
+  clearMemoryCache(); keys().forEach((k) => localStorage.removeItem(k));
+  sessionStorage.setItem('aj.session.parent', 'tok'); location.hash = '#/parents'; server.rows = [{ secreto: 'todos los hijos' }];
+  await api.list('practice_sessions', { where: { profile_id: 'alex' } });
+  assert.deepEqual(keys(), []); pass('las lecturas de la zona de padres no se guardan en el dispositivo');
+  // sesión de padres caducada en el servidor: error, no datos
+  clearMemoryCache(); authFail = true; let err = null;
+  try { await api.list('practice_sessions', { where: { profile_id: 'alex' } }); } catch (e) { err = e; }
+  assert.equal(err?.code, 'auth'); authFail = false; pass('con la sesión de padres caducada sale el error de sesión, no una copia');
+  // lo mismo con un perfil que sí tiene copia en el dispositivo
+  sessionStorage.removeItem('aj.session.parent'); location.hash = '#/p/alex'; localStorage.setItem('aj.session.alex', 'tok-alex');
+  clearMemoryCache(); server.rows = [{ id: 'p1' }]; await api.list('practice_sessions', { where: { profile_id: 'alex' } });
+  assert.equal(keys().length, 1); clearMemoryCache(); authFail = true; err = null;
+  try { await api.list('practice_sessions', { where: { profile_id: 'alex' } }); } catch (e) { err = e; }
+  assert.equal(err?.code, 'auth'); authFail = false; pass('con la sesión de un perfil caducada tampoco se enseña una copia');
+  // sin conexión sí se usa la copia (perfil)
+  clearMemoryCache(); const f = globalThis.fetch; globalThis.fetch = async () => { throw new TypeError('Failed to fetch'); };
+  assert.deepEqual(await api.list('practice_sessions', { where: { profile_id: 'alex' } }), [{ id: 'p1' }]); globalThis.fetch = f; pass('sin conexión, un perfil sigue viendo su última copia');
+  // migración: se borran las copias antiguas (que podían incluir datos de padres)
+  localStorage.setItem('aj.cache:viejo', '[1]'); localStorage.removeItem('aj.cache-version'); migrateReadCache();
+  assert.deepEqual(keys(), []); assert.equal(localStorage.getItem('aj.cache-version'), '2'); localStorage.setItem('aj.cache:nuevo', '[1]'); migrateReadCache(); assert.equal(keys().length, 1); pass('la migración borra las copias antiguas una sola vez');
+  localStorage.removeItem('aj.session.alex'); localStorage.removeItem('aj.cache:nuevo');
+}
+
 // Lista de perfiles (volver al inicio): sobrevive a guardar ejercicios y a cambiar de sesión, pero no a escribir en perfiles
 {
   const real = globalThis.fetch; let profileGets = 0; let profiles = [{ id: 'a', name: 'Alex' }];

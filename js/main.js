@@ -1,5 +1,6 @@
 import { start } from './core/router.js';
 import { flushOutbox, isConfigured } from './core/api.js';
+import { migrateReadCache } from './core/api/cache-store.js';
 import { paths } from './core/paths.js';
 import { registerRoutes } from './routes.js';
 import { registerServiceWorker } from './register-sw.js';
@@ -8,6 +9,7 @@ import { watchUpdates } from './update/watch-updates.js';
 import { authGuard, authRedirect } from './features/auth/auth-guard.js';
 
 disableZoomGestures();
+migrateReadCache();
 registerRoutes();
 
 // Sin conexión con el Worker configurada, todo lleva a la pantalla de conexión
