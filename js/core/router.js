@@ -81,10 +81,10 @@ async function render() {
 const typing = () => rootEl.contains(document.activeElement) && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
 
 /** Datos nuevos tras pintar una copia guardada: repinta en silencio (sin spinner, sin saltar arriba, sin cerrar los desplegables). */
-async function onData(reason) {
+async function onData(reason, detail) {
   const path = currentPath();
   if (reason === 'auth') {
-    const redirect = guard ? guard(path) : null;
+    const redirect = onAuthError ? onAuthError(detail, path) : guard ? guard(path) : null;
     if (redirect && redirect !== `#${path}`) go(redirect, { replace: true });
     return;
   }

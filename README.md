@@ -25,7 +25,7 @@ Cosas que **no son un olvido**: se decidieron a propósito. Si una revisión las
 
 - **Códigos cortos (4 a 8 cifras)**: es un candado para niños en una app familiar, no una cuenta bancaria. La defensa es el bloqueo progresivo (1, 5 y 15 min) con aviso por Telegram, el hash PBKDF2 con sal y que las sesiones solo guardan su huella.
 - **Una sola `API_KEY` compartida** (ver «Alcance»): separa la app del resto de internet, no a unas personas de otras; eso lo hacen los códigos y las sesiones.
-- **Sesión de padres de 30 min sin uso y solo mientras la app esté abierta**: más cómodo que pedir el código en cada pantalla y más seguro que dejarla siete días.
+- **Sesión de padres de 30 min sin uso y solo mientras la app esté abierta**: más cómodo que pedir el código en cada pantalla y más seguro que dejarla siete días. Al cumplirse los 30 minutos, si estás en la zona de padres aparece un aviso «Sesión caducada» sobre la pantalla; al aceptarlo o tocar fuera se va a la página del código y, tras introducirlo, vuelves donde estabas.
 - **Reglas de puntos duplicadas** en la app (`js/features/points/`) y en el Worker (`worker/stats-*.js`): el Worker se despliega aparte y no puede importar de `js/`. `tests/test-stats-points.mjs` falla si dejan de coincidir. Si el Worker no tiene la ruta, la app calcula los puntos en el móvil.
 - **El Worker es «genérico»** (CRUD por tabla con permisos en `worker/permissions.js` y `worker/auth-scope.js`) salvo `/api/stats/points`, `/auth/*` y `/push/*`. No se plantea convertirlo en una API con una ruta por caso de uso.
 - **Estadísticas de un hijo en Padres**: bajan las sesiones completas (hasta 2000) y calculan en el móvil. Con el uso actual tarda unos 0,8 s la primera vez; se valoró una ruta propia en el Worker y se **descartó**.

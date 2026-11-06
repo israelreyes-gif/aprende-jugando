@@ -2,6 +2,7 @@
 // Solo se guarda el identificador que da el Worker. Las de los perfiles duran 7 días sin usarse;
 // la de padres solo vive mientras la app esté abierta (memoria temporal) y caduca a los 30 minutos sin usarse.
 import { clearMemoryCache } from './memory-cache.js';
+import { touchParentActivity } from './activity.js';
 
 const PREFIX = 'aj.session.';
 
@@ -19,6 +20,7 @@ export function getSession(owner) {
 
 export function setSession(owner, token) {
   clearMemoryCache(true);
+  if (owner === PARENT_OWNER) touchParentActivity();
   try {
     storeFor(owner).setItem(PREFIX + owner, token);
   } catch {

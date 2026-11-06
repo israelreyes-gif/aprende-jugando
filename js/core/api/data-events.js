@@ -6,7 +6,7 @@ export function onDataEvent(fn) {
   return () => listeners.delete(fn);
 }
 
-/** reason: 'changed' (hay datos nuevos) | 'auth' (la sesión ya no vale). */
-export function emitDataEvent(reason) {
-  listeners.forEach((fn) => fn(reason));
+/** reason: 'changed' (hay datos nuevos) | 'auth' (la sesión ya no vale; detail = el error). */
+export function emitDataEvent(reason, detail) {
+  listeners.forEach((fn) => fn(reason, detail));
 }

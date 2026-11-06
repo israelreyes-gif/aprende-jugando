@@ -1,9 +1,10 @@
 import { getConnection } from './connection.js';
 import { buildQuery } from './query.js';
 import { fetchWithTimeout } from './fetch-timeout.js';
-import { clearSession } from './session-store.js';
+import { PARENT_OWNER, clearSession } from './session-store.js';
 import { pickSession } from './session-token.js';
 import { clearMemoryCache } from './memory-cache.js';
+import { touchParentActivity } from './activity.js';
 
 export const SESSION_ERROR = 'Sesión no válida';
 
@@ -33,10 +34,11 @@ export async function request(method, path, { query, body, owner } = {}) {
     const error = Object.assign(new Error(detail || `Error ${response.status}`), { status: response.status });
     if (response.status === 401 && detail === SESSION_ERROR) {
       if (session.token) clearSession(session.owner);
-      Object.assign(error, { code: 'auth', owner: session.owner });
+      Object.assign(error, { code: 'auth', owner: session.owner, expired: Boolean(session.token) });
     }
     throw error;
   }
+  if (session.owner === PARENT_OWNER) touchParentActivity();
   if (method !== 'GET') clearMemoryCache(!path.startsWith('profiles')); // tras escribir, las copias en memoria ya no valen
   return response.json();
 }

@@ -2,8 +2,9 @@ import { PARENT_OWNER, hasSession } from '../../core/api/session-store.js';
 import { asksAlways } from '../../data/auth.repo.js';
 import { isEditOk, isEntered } from './flags.js';
 import { rememberNext } from './next-page.js';
+import { announceExpiry } from './session-expired.js';
 
-function toLogin(path, owner, edit = false) {
+export function toLogin(path, owner, edit = false) {
   rememberNext(path);
   return `#/login/${encodeURIComponent(owner)}${edit ? '/edit' : ''}`;
 }
@@ -28,8 +29,14 @@ export function authGuard(path) {
   return null;
 }
 
-/** Cuando el Worker dice que la sesión ya no vale: a pedir el código de ese perfil (o el de padres). */
+/**
+ * Cuando el Worker dice que la sesión ya no vale: a pedir el código de ese perfil (o el de padres).
+ * Si había una sesión abierta (caducó), antes se avisa con una ventana sobre la pantalla actual.
+ */
 export function authRedirect(err, path) {
   const owner = err.owner || PARENT_OWNER;
-  return toLogin(path, owner, owner !== PARENT_OWNER && path.endsWith('/edit'));
+  const login = toLogin(path, owner, owner !== PARENT_OWNER && path.endsWith('/edit'));
+  if (!err.expired) return login;
+  announceExpiry(owner, login);
+  return `#${path}`; // se queda en la pantalla actual hasta que se acepte el aviso
 }
