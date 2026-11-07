@@ -18,3 +18,6 @@ export const topics = [
   { id: 'genitive', emoji: '🏷️', minutes: 5, load: () => import('./genitive/index.js') },
   { id: 'question-words', emoji: '❓', minutes: 5, load: () => import('./question-words/index.js') },
 ];
+
+/** Mix de preguntas de toda la asignatura (1.º no tiene unidades): `size` preguntas de los temas estudiados. */
+export const mixes = [{ id: 'ingles', emoji: '🎲', title: 'Mix · English', size: 36 }];

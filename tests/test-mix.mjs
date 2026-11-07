@@ -107,5 +107,7 @@ await visit('#/parents/alex/stats/' + C + '/ingles'); assert.ok(/time|Time/i.tes
   const u2 = (await mixTopics(C, 'ingles', ing[1])).map((x) => x.id); assert.deepEqual(u2, ['food-drink', 'who-which-where', 'irregular-verbs', 'past-when', 'food-groups']); ok('Unit 2 de Inglés: 5 temas y sin la lectura');
   const mm = await loadMixes(C, 'mates'); assert.equal(mm.length, 1); assert.equal(mm[0].size, 36); assert.equal(mm[0].unit, undefined);
   const mt = await mixTopics(C, 'mates', mm[0]); assert.ok(mt.length >= 1); ok('Mates: un mix sin unidad (todos los temas de la asignatura)');
+  const m1 = await loadMixes('1-primaria', 'ingles'); assert.equal(m1.length, 1); assert.equal(m1[0].size, 36); assert.equal(m1[0].unit, undefined);
+  const t1 = await mixTopics('1-primaria', 'ingles', m1[0]); assert.ok(t1.length >= 10 && t1.every((x) => x.inMix !== false)); ok('English de 1.º: un mix de 36 sin unidad con todos los temas disponibles');
 }
 console.log(`\n${n} comprobaciones OK`);
