@@ -59,6 +59,26 @@ assert.deepEqual(Object.keys(f).sort(), ['detail', 'id', 'outcome', 'profile_id'
 mode = 'rejected'; await assert.rejects(queueInsert('study_progress', { id: 'd' }, { profileId: 'p1' })); await tick();
 assert.equal(events().at(-1).outcome, 'failed'); ok('rechazo inmediato: también se anota');
 
+// ---- Una sesión caducada solo aparca las escrituras de su perfil
+{
+  localStorage.setItem('aj.outbox', '[]');
+  mode = 'offline';
+  await queueInsert('practice_sessions', { id: 'x1' }, { profileId: 'caducado' });
+  await queueInsert('practice_sessions', { id: 'y1' }, { profileId: 'vivo' });
+  await queueInsert('study_progress', { id: 'x2' }, { profileId: 'caducado' });
+  const saved = [];
+  globalThis.fetch = async (url, init) => {
+    const u = String(url);
+    if (u.includes('/api/sync_events')) return new Response('[]', { status: 201 });
+    if ((init.body || '').includes('"id":"x')) return new Response(JSON.stringify({ error: 'Sesión no válida' }), { status: 401 });
+    saved.push(JSON.parse(init.body).id || JSON.parse(init.body)[0]?.id);
+    return new Response('{}', { status: 201 });
+  };
+  await tick(); await flushOutbox(); await tick();
+  assert.deepEqual(readOutbox().map((i) => i.rows.id), ['x1', 'x2']); assert.equal(saved.length, 1);
+  ok('con la sesión de un perfil caducada, las escrituras de otro perfil se guardan y las suyas se conservan en orden');
+}
+
 // ---- Resumen semanal de Telegram: siempre la línea de sincronización
 const base = { name: 'Alex', gender: 'chico', courseId: null, streak: 0, retoDays: 0, weekDays: 7, newTopics: 0, studied: 0, released: 0, reinforce: [] };
 const syncLineOf = (sync) => formatProfile({ ...base, sync }).split('\n').at(-1);

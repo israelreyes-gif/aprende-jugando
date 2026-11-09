@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '3c6bbdabc60b';
+const BUILD = 'a95bc0d77981';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -340,7 +340,7 @@ const FILES = {
   './js/core/api/fetch-timeout.js': 'dd1f57f7ffb0',
   './js/core/api/memory-cache.js': 'b49917a72d1f',
   './js/core/api/outbox-store.js': '8342427caf45',
-  './js/core/api/outbox.js': '887c37abd8b5',
+  './js/core/api/outbox.js': '05eea389788a',
   './js/core/api/owner.js': 'e3c17bfdfa6f',
   './js/core/api/query.js': '29e0ca8a0e5c',
   './js/core/api/read-cache.js': '8538c20fceca',
