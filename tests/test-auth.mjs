@@ -87,7 +87,8 @@ const alex2 = (await call('POST', '/auth/login', { body: { owner: 'alex', code: 
 // Aislamiento entre perfiles
 await call('POST', '/auth/setup', { session: P0, body: { owner: 'mama', code: '8888' } });
 const mama = (await call('POST', '/auth/login', { body: { owner: 'mama', code: '8888' } })).data.token;
-const s = (id, profile) => ({ id, profile_id: profile, course_id: 'c', subject_id: 's', topic_id: 't', total: 8, correct: 7, finished_at: '2026-01-01T00:00:00Z' });
+sql("INSERT INTO topic_release (id, profile_id, course_id, subject_id, topic_id) VALUES ('r-a', 'alex', 'c', 's', 't'), ('r-m', 'mama', 'c', 's', 't')");
+const s = (id, profile) => ({ id, profile_id: profile, course_id: 'c', subject_id: 's', topic_id: 't', total: 8, correct: 7, finished_at: new Date().toISOString() });
 assert.equal((await call('POST', '/api/practice_sessions', { session: alex2, body: s('s1', 'alex') })).status, 201);
 assert.equal((await call('POST', '/api/practice_sessions', { session: alex2, body: s('s2', 'mama') })).status, 403); ok('un perfil guarda lo suyo y no puede escribir en otro');
 assert.equal((await call('POST', '/api/practice_sessions', { session: mama, body: s('s3', 'mama') })).status, 201);

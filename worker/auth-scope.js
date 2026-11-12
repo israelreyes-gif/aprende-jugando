@@ -1,6 +1,7 @@
 import { HttpError } from './http.js';
 import { PARENT } from './auth-rules.js';
 import { assertReplaceAllowed } from './auth-replace.js';
+import { assertPlausible } from './auth-validate.js';
 
 const FORBIDDEN = () => new HttpError(403, 'Operación no permitida');
 
@@ -44,12 +45,14 @@ export async function enforceScope(db, session, method, table, params, id, reque
         ? (await db.prepare(`SELECT COUNT(*) AS n FROM practice_sessions WHERE profile_id = ? AND id IN (${ids.map(() => '?').join(',')})`).bind(owner, ...ids).first()).n
         : 0;
       if (rows.length === 0 || found !== ids.length) throw FORBIDDEN();
+      await assertPlausible(db, owner, table, rows);
       return;
     }
     for (const row of rows) {
       const mine = row[rule.by] === owner || (rule.nullable && (row[rule.by] === null || row[rule.by] === undefined));
       if (!mine || (rule.kind && row.kind !== rule.kind)) throw FORBIDDEN();
     }
+    await assertPlausible(db, owner, table, rows);
     return;
   }
 
