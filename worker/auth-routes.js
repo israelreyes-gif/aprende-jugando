@@ -3,6 +3,7 @@ import { hashCode, randomHex } from './auth-crypto.js';
 import { checkCode, checkLegacyPin, LEGACY } from './auth-check.js';
 import { deleteCredential, getCredential, saveCredential } from './auth-credentials.js';
 import { PARENT, assertValidCode } from './auth-rules.js';
+import { summarizePointsJson } from './stats-summarize.js';
 import { createSession, deleteOwnerSessions, deleteSession, findSession } from './auth-sessions.js';
 
 const fail = (result, cors) => json({ error: result.error, ...(result.retry_in ? { retry_in: result.retry_in } : {}), ...(result.left !== undefined ? { left: result.left } : {}) }, result.status, cors);
@@ -33,7 +34,19 @@ export async function handleAuth(request, env, parts, cors) {
               EXISTS (SELECT 1 FROM credentials c WHERE c.owner = p.id) AS has_code
        FROM profiles p ORDER BY p.created_at ASC`,
     ).all();
-    return json(results.map((r) => ({ ...r, has_code: Boolean(r.has_code) })), 200, cors);
+    const [sessions, studied] = await Promise.all([
+      db.prepare('SELECT profile_id, id, kind, correct, total, finished_at FROM practice_sessions').all(),
+      db.prepare('SELECT profile_id, completed_at FROM study_progress').all(),
+    ]);
+    const by = (rows) => rows.reduce((m, r) => m.set(r.profile_id, [...(m.get(r.profile_id) || []), r]), new Map());
+    const sessionsOf = by(sessions.results);
+    const studiedOf = by(studied.results);
+    // points_total: solo el total (para el nivel de la tarjeta del inicio, sin necesitar sesión en este dispositivo)
+    return json(results.map((r) => ({
+      ...r,
+      has_code: Boolean(r.has_code),
+      points_total: summarizePointsJson({ sessions: sessionsOf.get(r.id) || [], studied: studiedOf.get(r.id) || [] }).total,
+    })), 200, cors);
   }
   if (request.method === 'GET' && action === 'parent') {
     const credential = await getCredential(db, PARENT);

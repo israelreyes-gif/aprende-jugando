@@ -164,6 +164,15 @@ assert.equal((await call('GET', '/api/profiles/alex', { session: t })).status, 4
 sql("DELETE FROM profiles WHERE id = 'alex'");
 assert.equal(one("SELECT COUNT(*) AS n FROM credentials WHERE owner = 'alex'").n + one("SELECT COUNT(*) AS n FROM sessions WHERE owner = 'alex'").n, 0); ok('al borrar un perfil se borran su código y sus sesiones');
 
+// La lista de perfiles trae el total de puntos (para el nivel del inicio) sin necesitar sesión
+sql("INSERT INTO practice_sessions (id, profile_id, course_id, subject_id, topic_id, kind, correct, total, finished_at) VALUES ('ps1', 'mama', 'c', 's', 't', 'exercise', 8, 10, '2026-11-01T10:00:00Z')");
+{
+  const l = await call('GET', '/auth/profiles');
+  const mama = l.data.find((p) => p.id === 'mama');
+  assert.ok(mama.points_total > 0, 'total por perfil'); assert.ok(l.data.every((p) => Number.isFinite(p.points_total)));
+  ok('la lista de perfiles incluye los puntos totales de cada uno (sin sesión)');
+}
+
 // Intentos en paralelo: solo se miran tantos códigos como intentos quedan en la ronda
 sql("INSERT INTO profiles (id, name, avatar_color) VALUES ('rapido', 'Rápido', '#00f')");
 await call('POST', '/auth/setup', { body: { owner: 'rapido', code: '2468' } });
