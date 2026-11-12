@@ -30,15 +30,20 @@ const submit = async () => { q('form').dispatchEvent(new window.Event('submit', 
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
 await import('../js/main.js'); await settle();
 
-// 1. Perfil sin código: Alex lo crea él mismo (dos veces) al intentar entrar
+// 1. Perfil sin código: no lo crea el niño; la pantalla manda a un padre. El código lo pone un padre.
 await visit('#/p/alex');
-assert.equal(location.hash, '#/login/alex'); assert.match(text(), /Todavía no tienes código/); ok('perfil sin código: se le pide crear uno');
-type('login-new', '12'); type('login-repeat', '12'); await submit();
-assert.match(q('.field__error').textContent, /entre 4 y 8/); ok('código demasiado corto rechazado');
-type('login-new', '4821'); type('login-repeat', '4822'); await submit();
-assert.match(q('.field__error').textContent, /no coinciden/); ok('los dos códigos tienen que coincidir');
-type('login-repeat', '4821'); await submit();
-assert.equal(location.hash, '#/p/alex'); assert.ok(getSession('alex')); ok('crea el código y entra a su tarjeta');
+assert.equal(location.hash, '#/login/alex'); assert.match(text(), /Todavía no tienes código/); assert.match(text(), /Pídele a un padre/); assert.equal(document.getElementById('login-new'), null); assert.equal(document.getElementById('login-code'), null);
+assert.ok([...app().querySelectorAll('a')].some((a) => /Entrar como padre/.test(a.textContent))); ok('perfil sin código: no puede crearlo; se le dice que se lo ponga un padre');
+{
+  const { createSession } = await import('../worker/auth-sessions.js');
+  const pt = await createSession(db, 'parent');
+  const put = (owner, code, session) => worker.fetch(new Request('https://w.example/auth/setup', { method: 'POST', headers: { 'X-Api-Key': 'k', 'Content-Type': 'application/json', ...(session ? { 'X-Session': session } : {}) }, body: JSON.stringify({ owner, code }) }), env);
+  assert.equal((await put('alex', '4821')).status, 403);
+  assert.equal((await put('alex', '4821', pt)).status, 201); ok('el código se pone con la sesión de padres (sin ella, 403)');
+}
+resetFlags(); await visit('#/'); await visit('#/p/alex');
+type('login-code', '4821'); await submit();
+assert.equal(location.hash, '#/p/alex'); assert.ok(getSession('alex')); ok('con el código que le puso un padre, entra a su tarjeta');
 assert.equal(db.sqlite.prepare("SELECT COUNT(*) c FROM credentials WHERE owner='alex'").get().c, 1);
 assert.ok(!JSON.stringify(db.sqlite.prepare('SELECT * FROM credentials').all()).includes('4821')); ok('el código se guarda con hash, nunca en claro');
 
@@ -77,7 +82,8 @@ type('login-new', '739201'); type('login-repeat', '739201'); await submit();
 assert.equal(location.hash, '#/parents'); assert.match(text(), /Elige un perfil/); ok('crea el código de padres y entra');
 await visit('#/p/lucia'); assert.equal(location.hash, '#/p/lucia'); ok('con sesión de padres se abre cualquier perfil sin pedir nada');
 await visit('#/p/lucia/edit'); assert.equal(location.hash, '#/p/lucia/edit'); ok('y también su edición');
-await visit('#/parents/alex'); assert.match(text(), /Restablecer su código/); ok('padres: botón para restablecer el código de un perfil');
+await visit('#/parents/alex'); assert.match(text(), /Poner código nuevo/); assert.doesNotMatch(text(), /Restablecer/); ok('padres: botón para poner un código nuevo a un perfil');
+await visit('#/parents/alex/code'); type('set-new', '2468'); type('set-repeat', '2468'); await submit(); const okBtn = [...document.querySelectorAll('button')].find((b) => b.textContent === 'Entendido'); assert.ok(okBtn, 'aviso de código guardado'); okBtn.click(); await sleep(300); await settle(); assert.equal(location.hash, '#/parents/alex'); ok('padres: ponen el código nuevo de Alex'); clearSession('alex'); clearSession('parent'); resetFlags(); await visit('#/p/alex'); type('login-code', '2468'); await submit(); assert.equal(location.hash, '#/p/alex'); ok('Alex entra con el código nuevo');
 
 // 6b. Atajo "Entrar como padre" desde la tarjeta de un perfil
 clearSession('parent'); resetFlags();

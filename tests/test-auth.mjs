@@ -28,14 +28,21 @@ assert.ok(!JSON.stringify(list.data).includes('hash')); ok('los perfiles sin có
 assert.equal((await call('GET', '/auth/profiles')).status, 200);
 assert.equal((await worker.fetch(new Request('https://w.example/auth/profiles'), env)).status, 401); ok('las rutas /auth también exigen la clave de la app');
 
-// Crear código
-for (const bad of ['abc', '123', '123456789', '12 34', '', null]) assert.equal((await call('POST', '/auth/setup', { body: { owner: 'alex', code: bad } })).status, 400, String(bad));
+// Cuenta de padres provisional (sin PIN antiguo): con su sesión se ponen los códigos de los perfiles
+const P0 = (await call('POST', '/auth/setup', { body: { owner: 'parent', code: '999999' } })).data.token;
+assert.ok(P0.length >= 32);
+
+// Crear código: solo con la sesión de padres
+assert.equal((await call('POST', '/auth/setup', { body: { owner: 'alex', code: '4321' } })).status, 403); ok('sin sesión no se puede poner el primer código de un perfil');
+assert.equal(one("SELECT COUNT(*) AS n FROM credentials WHERE owner = 'alex'").n, 0);
+for (const bad of ['abc', '123', '123456789', '12 34', '', null]) assert.equal((await call('POST', '/auth/setup', { session: P0, body: { owner: 'alex', code: bad } })).status, 400, String(bad));
 ok('un código de menos de 4, más de 8 o con letras se rechaza');
-assert.equal((await call('POST', '/auth/setup', { body: { owner: 'fantasma', code: '1234' } })).status, 404); ok('no se crea código para un perfil que no existe');
-const setup = await call('POST', '/auth/setup', { body: { owner: 'alex', code: '4321' } });
-assert.equal(setup.status, 201); assert.ok(setup.data.token.length >= 32);
-const alexToken = setup.data.token;
-assert.equal((await call('POST', '/auth/setup', { body: { owner: 'alex', code: '9999' } })).status, 409); ok('crear el código: queda entrado, y no se puede crear otra vez encima');
+assert.equal((await call('POST', '/auth/setup', { session: P0, body: { owner: 'fantasma', code: '1234' } })).status, 404); ok('no se crea código para un perfil que no existe');
+const setup = await call('POST', '/auth/setup', { session: P0, body: { owner: 'alex', code: '4321' } });
+assert.equal(setup.status, 201); assert.equal(setup.data.token, undefined);
+const alexToken = (await call('POST', '/auth/login', { body: { owner: 'alex', code: '4321' } })).data.token;
+assert.equal((await call('POST', '/auth/setup', { session: P0, body: { owner: 'alex', code: '9999' } })).status, 409); ok('los padres ponen el código; no se puede crear otra vez encima');
+assert.equal((await call('POST', '/auth/setup', { session: alexToken, body: { owner: 'mama', code: '8888' } })).status, 403); ok('un perfil no puede poner el código de otro');
 const cred = one("SELECT * FROM credentials WHERE owner = 'alex'");
 assert.ok(!JSON.stringify(cred).includes('4321')); assert.equal(cred.hash.length, 64); ok('el código no se guarda: solo sal y huella');
 assert.equal(one('SELECT COUNT(*) AS n FROM sessions WHERE token_hash = ?', alexToken).n, 0); ok('la sesión tampoco se guarda tal cual, solo su huella');
@@ -78,7 +85,8 @@ assert.equal(one('SELECT COUNT(*) AS n FROM sessions WHERE token_hash = ?', toke
 const alex2 = (await call('POST', '/auth/login', { body: { owner: 'alex', code: '4321' } })).data.token;
 
 // Aislamiento entre perfiles
-const mama = (await call('POST', '/auth/setup', { body: { owner: 'mama', code: '8888' } })).data.token;
+await call('POST', '/auth/setup', { session: P0, body: { owner: 'mama', code: '8888' } });
+const mama = (await call('POST', '/auth/login', { body: { owner: 'mama', code: '8888' } })).data.token;
 const s = (id, profile) => ({ id, profile_id: profile, course_id: 'c', subject_id: 's', topic_id: 't', total: 8, correct: 7, finished_at: '2026-01-01T00:00:00Z' });
 assert.equal((await call('POST', '/api/practice_sessions', { session: alex2, body: s('s1', 'alex') })).status, 201);
 assert.equal((await call('POST', '/api/practice_sessions', { session: alex2, body: s('s2', 'mama') })).status, 403); ok('un perfil guarda lo suyo y no puede escribir en otro');
@@ -103,7 +111,8 @@ assert.equal((await call('PATCH', '/api/profiles?id=eq.mama', { session: alex2, 
 const pushBody = (target) => ({ target, title: 't', body: 'b' });
 assert.equal((await call('POST', '/push/send', { session: alex2, body: pushBody({ profile_id: 'mama' }) })).status, 403); ok('un perfil no puede mandar avisos a otro perfil');
 
-// Cuenta de padres: se crea una vez con el PIN antiguo
+// Cuenta de padres: se crea una vez con el PIN antiguo (se quita la provisional de arriba)
+sql("DELETE FROM credentials WHERE owner = 'parent'"); sql("DELETE FROM sessions WHERE owner = 'parent'");
 const legacySalt = 'abcd'; const legacyHash = shaOf(`${legacySalt}:2468`);
 sql("INSERT INTO settings (key, value) VALUES ('parent_pin', ?)", `${legacySalt}:${legacyHash}`);
 r = await call('GET', '/auth/parent'); assert.deepEqual(r.data, { has_code: false, legacy: true });
@@ -139,10 +148,12 @@ const parent2 = (await call('POST', '/auth/setup', { body: { owner: 'parent', co
 r = await call('GET', '/api/practice_sessions', { session: parent2 }); assert.equal(r.data.length, 2); ok('con la sesión de padres se ve todo');
 assert.equal((await call('GET', '/api/settings', { session: parent2 })).status, 200);
 assert.equal((await call('POST', '/api/profiles', { session: parent2, body: { id: 'nuevo', name: 'Nuevo', avatar_color: '#00f' } })).status, 201); ok('los padres crean perfiles');
-assert.equal((await call('POST', '/auth/reset', { session: alex2, body: { owner: 'mama' } })).status, 403); ok('un perfil no puede restablecer códigos');
-assert.equal((await call('POST', '/auth/reset', { session: parent2, body: { owner: 'mama' } })).status, 200);
+assert.equal((await call('POST', '/auth/reset', { session: parent2, body: { owner: 'mama' } })).status, 404); ok('ya no existe "restablecer": el código se pone nuevo, no se quita');
+assert.equal((await call('POST', '/auth/change', { session: alex2, body: { owner: 'mama', code: '1357' } })).status, 403);
+assert.equal((await call('POST', '/auth/change', { session: parent2, body: { owner: 'mama', code: '1357' } })).status, 200);
 assert.equal((await call('GET', '/api/profiles/mama', { session: mama })).status, 401);
-assert.equal((await call('GET', '/auth/profiles')).data.find((p) => p.id === 'mama').has_code, false); ok('los padres restablecen el código de un perfil: se cierran sus sesiones y vuelve a pedir uno nuevo');
+assert.equal((await call('GET', '/auth/profiles')).data.find((p) => p.id === 'mama').has_code, true);
+assert.equal((await call('POST', '/auth/login', { body: { owner: 'mama', code: '1357' } })).status, 200); ok('los padres ponen un código nuevo a un perfil sin saber el actual: se cierran sus sesiones y entra con el nuevo');
 
 // Cambiar el código
 assert.equal((await call('POST', '/auth/change', { session: alex2, body: { owner: 'alex', current: '0000', code: '5555' } })).status, 401);
@@ -175,7 +186,7 @@ sql("INSERT INTO practice_sessions (id, profile_id, course_id, subject_id, topic
 
 // Intentos en paralelo: solo se miran tantos códigos como intentos quedan en la ronda
 sql("INSERT INTO profiles (id, name, avatar_color) VALUES ('rapido', 'Rápido', '#00f')");
-await call('POST', '/auth/setup', { body: { owner: 'rapido', code: '2468' } });
+await call('POST', '/auth/setup', { session: parent2, body: { owner: 'rapido', code: '2468' } });
 sql("UPDATE credentials SET fails = 0, level = 0, locked_until = NULL WHERE owner = 'rapido'");
 const burst = await Promise.all(Array.from({ length: 40 }, (_, i) => call('POST', '/auth/login', { body: { owner: 'rapido', code: String(1000 + i) } })));
 assert.equal(burst.filter((x) => x.status === 401).length, 4, 'solo 4 fallos con aviso de intentos restantes');

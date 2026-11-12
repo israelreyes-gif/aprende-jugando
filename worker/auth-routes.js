@@ -73,6 +73,8 @@ export async function handleAuth(request, env, parts, cors) {
 
   if (action === 'setup') {
     await assertOwner(db, owner);
+    // El código de un perfil solo lo pone un padre (con su sesión). El de los padres se crea sin sesión solo la primera vez.
+    if (owner !== PARENT && (await sessionOf(db, request))?.owner !== PARENT) throw new HttpError(403, 'Operación no permitida');
     if (await getCredential(db, owner)) throw new HttpError(409, 'Ya tiene código');
     if (owner === PARENT) {
       const legacyRow = await db.prepare("SELECT 1 AS x FROM settings WHERE key = 'parent_pin'").first();
@@ -86,6 +88,7 @@ export async function handleAuth(request, env, parts, cors) {
       await db.prepare("DELETE FROM settings WHERE key = 'parent_pin'").run();
       await deleteCredential(db, LEGACY);
     }
+    if (owner !== PARENT) return json({ ok: true }, 201, cors);
     return json({ token: await createSession(db, owner) }, 201, cors);
   }
 
@@ -103,15 +106,6 @@ export async function handleAuth(request, env, parts, cors) {
     await setCode(db, owner, body.code);
     await deleteOwnerSessions(db, owner);
     return json({ token: await createSession(db, owner) }, 200, cors);
-  }
-
-  if (action === 'reset') {
-    if (session.owner !== PARENT) throw new HttpError(403, 'Operación no permitida');
-    await assertOwner(db, owner);
-    if (owner === PARENT) throw new HttpError(400, 'El código de padres no se restablece desde la app');
-    await deleteCredential(db, owner);
-    await deleteOwnerSessions(db, owner);
-    return json({ ok: true }, 200, cors);
   }
 
   throw new HttpError(404, 'Ruta no encontrada');

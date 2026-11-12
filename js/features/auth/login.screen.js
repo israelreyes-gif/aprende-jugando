@@ -6,6 +6,7 @@ import { createCode, fetchParentStatus, login } from '../../data/auth.repo.js';
 import { listProfiles } from '../../data/profiles.repo.js';
 import { icon } from '../../shared/icons.js';
 import { notFoundView } from '../../shared/not-found-view.js';
+import { appHeader } from '../../shared/app-header.js';
 import { codeInput } from './code-input.js';
 import { codeView } from './code-view.js';
 import { markEditOk, markEntered } from './flags.js';
@@ -62,7 +63,13 @@ function createView({ owner, edit, title, sub, withPin = false }) {
   });
 }
 
-/** Pantalla de entrada: pide el código, o ayuda a crearlo la primera vez. Sirve para un perfil o para los padres. */
+/** Un perfil sin código no se abre solo: lo pone un padre (Padres → perfil → Poner código nuevo). */
+function noCodeView(profile) {
+  return h('main', { class: 'screen' }, appHeader({ title: profile.name, sub: 'Todavía no tienes código', back: paths.home(), shield: true }),
+    h('div', { class: 'screen__body' }, h('p', { class: 'note' }, 'Pídele a un padre que te ponga un código para entrar.'), asParentLink()));
+}
+
+/** Pantalla de entrada: pide el código (el de los padres se crea aquí la primera vez; el de un perfil lo pone un padre). Sirve para un perfil o para los padres. */
 export async function loginScreen({ owner, then }) {
   const edit = then === 'edit';
   if (owner === PARENT_OWNER) {
@@ -73,5 +80,5 @@ export async function loginScreen({ owner, then }) {
   const profile = (await listProfiles()).find((p) => p.id === owner);
   if (!profile) return notFoundView();
   if (profile.has_code) return enterView({ owner, edit, title: profile.name, sub: edit ? 'Escribe tu código para editar tu perfil' : 'Escribe tu código para entrar' });
-  return createView({ owner, edit, title: profile.name, sub: 'Todavía no tienes código: crea uno' });
+  return noCodeView(profile);
 }

@@ -58,7 +58,7 @@ js/
   features/     una carpeta por funcionalidad, con sus pantallas y su lógica
     setup/        conectar el dispositivo con el Worker
     profiles/     selección, alta y edición de perfiles (chico/chica, porcentaje del perfil), banner de inicio
-    auth/         códigos de acceso (entrar, crear, cambiar, restablecer)
+    auth/         códigos de acceso (entrar, poner y cambiar)
     parents/      lista de perfiles, estadísticas, refuerzo y liberación de temas
     courses/      cursos de primaria: el actual en grande, los superados y los próximos (solo 4.º abierto)
     subjects/     asignaturas de un curso y pestañas Estudio / Ejercicios
@@ -108,7 +108,7 @@ Comprobación: abrir `URL-DEL-WORKER/api` en el navegador debe responder `Clave 
 
 ### 4. Primer uso en cada dispositivo
 Al abrir la app pide la **dirección del Worker** y la **clave**. Se guardan solo en ese dispositivo.
-Después, al entrar en **Zona de padres** se crea el código de padres la primera vez (el usuario `padres` va implícito, no se escribe; la primera vez se pide el PIN de siempre, que luego se borra). Cada perfil crea el suyo al entrar si aún no lo tiene.
+Después, al entrar en **Zona de padres** se crea el código de padres la primera vez (el usuario `padres` va implícito, no se escribe; la primera vez se pide el PIN de siempre, que luego se borra). El código de cada perfil lo pone un padre, en Zona de padres, al crear el perfil (obligatorio) o más tarde con «Poner código nuevo»; un perfil sin código no se abre solo.
 
 Instalar como app: menú del navegador → *Añadir a pantalla de inicio*.
 En iPhone, los avisos push solo funcionan con la app instalada así (iOS 16.4 o superior).
@@ -276,10 +276,11 @@ Operadores de filtro: `eq neq gt gte lt lte like in is`.
 - La clave privada de los avisos (`VAPID_PRIVATE_KEY`) vive solo como secreto del Worker; nunca se sube al repositorio.
 - **Códigos de acceso**: cada perfil entra con un código numérico de 4 a 8 cifras; los padres, usuario `padres` y 6 a 8 cifras. Se guardan con PBKDF2-SHA256 (100 000 vueltas) y sal propia.
 - **Sesiones**: al acertar el código el Worker da un identificador que el móvil guarda y envía en `X-Session`. Se renueva con el uso. La de un perfil caduca a los 7 días sin usarse; la de padres, a los 30 minutos, y además solo vive mientras la app esté abierta (memoria temporal del móvil): cerrar la app la libera. El Worker solo guarda su huella.
-- **Cada perfil solo ve lo suyo**: el Worker añade el filtro del perfil dueño de la sesión a cada petición. Con sesión de padres se ve todo.
-- **Bloqueo**: 5 fallos seguidos bloquean 1 min, luego 5 y 15 (máximo) y avisan por Telegram.
+- **Cada perfil solo ve y escribe lo suyo** con sesión de perfil: el Worker añade el filtro del perfil dueño de la sesión a cada petición y no deja crear ni borrar perfiles. Con sesión de padres se ve todo. Esto separa a las personas de la casa; no es una barrera frente a quien tenga la clave de la app y el código de un perfil (ver «Alcance»).
+- **Quién pone los códigos**: el primer código de un perfil solo se acepta con la sesión de padres (`/auth/setup`); el de los padres se crea sin sesión solo la primera vez (con el PIN antiguo si lo hay). El niño cambia el suyo sabiendo el actual; los padres pueden ponerle uno nuevo sin saberlo (cierra sus sesiones).
+- **Bloqueo**: 5 fallos seguidos bloquean 1 min, luego 5 y 15 (máximo) y avisan por Telegram. El intento se reserva en una sola orden de la base de datos antes de mirar el código, así que las peticiones en paralelo no se saltan el límite. Ojo: el bloqueo es por código (perfil o padres), no por origen, así que cinco fallos ajenos pueden dejar bloqueado un minuto el acceso legítimo.
 - **Editar un perfil** pide siempre el código del perfil (la sesión de padres lo salta). En el perfil se puede activar «Pedir el código siempre al abrir la tarjeta».
-- Los padres restablecen el código de un perfil desde sus estadísticas. Si se olvida el código de padres: en la consola de D1, `DELETE FROM credentials WHERE owner = 'parent';` y se crea uno nuevo.
+- Si un niño olvida su código, los padres le ponen uno nuevo desde sus estadísticas («Poner código nuevo»). Si se olvida el código de padres: en la consola de D1, `DELETE FROM credentials WHERE owner = 'parent';` y se crea uno nuevo.
 - Los códigos no entran en las copias de seguridad ni en la caché del dispositivo.
 
 ## Pruebas automáticas

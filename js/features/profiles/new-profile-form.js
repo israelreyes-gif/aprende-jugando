@@ -6,10 +6,10 @@ import { profileForm } from './profile-form.js';
 
 /**
  * Formulario para crear un perfil. Llama a onCreated() cuando el perfil se ha guardado.
- * El código es opcional: si se deja vacío, el niño lo crea la primera vez que entre.
+ * El código de entrada es obligatorio: lo pone el padre aquí y se lo dice al niño.
  */
 export function newProfileForm({ onCreated }) {
-  const codeFields = newCodeFields({ owner: 'new', prefix: 'new-profile', optional: true, label: 'Código de entrada (opcional)' });
+  const codeFields = newCodeFields({ owner: 'new', prefix: 'new-profile', label: 'Código de entrada' });
   return profileForm({
     initial: { name: '', color: AVATAR_COLORS[3].hex, gender: null },
     askCourse: true,
@@ -20,7 +20,7 @@ export function newProfileForm({ onCreated }) {
       const { code, error } = codeFields.read();
       if (error) throw Object.assign(new Error(error), { userMessage: error });
       const profile = await createProfile({ name, color, gender, courseId });
-      if (code) await createCode(profile.id, code, { remember: false });
+      await createCode(profile.id, code, { remember: false });
       onCreated();
     },
   });

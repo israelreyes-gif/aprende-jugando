@@ -9,7 +9,8 @@ export default {
   ...worker,
   async fetch(request, env, ctx) {
     const { pathname } = new URL(request.url);
-    if (env?.DB && !pathname.startsWith('/auth') && (!request.headers.get('X-Session') || request.headers.get('X-Session') === 'test')) {
+    const asParent = ['/auth/setup', '/auth/change'].includes(pathname) ? request.headers.get('X-Session') === 'test' : !pathname.startsWith('/auth') && (!request.headers.get('X-Session') || request.headers.get('X-Session') === 'test');
+    if (env?.DB && asParent) {
       let token = tokens.get(env.DB);
       if (!token) { token = await createSession(env.DB, 'parent'); tokens.set(env.DB, token); }
       const headers = new Headers(request.headers);

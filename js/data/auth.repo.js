@@ -70,8 +70,9 @@ export async function login(owner, code) {
 
 /** Crea el código de un perfil (primera vez) o de los padres (con el PIN antiguo, si lo hay) y entra (remember: false = no dejar la sesión abierta aquí). */
 export async function createCode(owner, code, { pin, remember = true } = {}) {
-  const { token } = await authRequest('POST', 'setup', { body: { owner, code, ...(pin ? { pin } : {}) } });
-  if (!remember) return;
+  const token0 = owner === PARENT_OWNER ? undefined : getSession(PARENT_OWNER); // el código de un perfil lo pone un padre con su sesión
+  const { token } = await authRequest('POST', 'setup', { body: { owner, code, ...(pin ? { pin } : {}) }, token: token0 });
+  if (!remember || !token) return;
   setSession(owner, token);
   flushOutbox();
 }
@@ -83,8 +84,8 @@ export async function changeCode(owner, current, code) {
   if (getSession(owner)) setSession(owner, token);
 }
 
-/** Quita el código de un perfil (solo padres): volverá a pedir uno nuevo. */
-export const resetCode = (owner) => authRequest('POST', 'reset', { body: { owner }, token: getSession(PARENT_OWNER) });
+/** Pone un código nuevo a un perfil (solo padres, sin saber el actual). Cierra las sesiones que ese perfil tuviera abiertas. */
+export const setProfileCode = (owner, code) => authRequest('POST', 'change', { body: { owner, code }, token: getSession(PARENT_OWNER) });
 
 /** Cierra la sesión de este dispositivo (la de un perfil o la de padres) y olvida lo leído. */
 export async function logout(owner) {
