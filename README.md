@@ -164,6 +164,8 @@ Cada versión de la app es un **paquete cerrado**: el service worker la descarga
 | `profiles` | perfiles (nombre, color del icono y `gender`: `chico` o `chica`) |
 | `settings` | ajustes de la app |
 | `credentials` | código de acceso de cada perfil y de los padres (`owner`): sal y hash, intentos fallidos y bloqueo; nunca en claro |
+| `passkeys` | Face ID de la zona de padres: solo la clave pública de cada móvil, su nombre y fechas (la cara no sale del iPhone) |
+| `passkey_challenges` | retos de un solo uso para registrar o entrar con Face ID (caducan a los 5 minutos) |
 | `sessions` | sesiones abiertas (solo la huella SHA-256 del identificador); caducan a los 7 días sin usarse (30 minutos las de padres) |
 | `practice_sessions` | una fila por sesión de ejercicios o de reto (perfil, tema, total, aciertos, fecha, `kind`) |
 | `answers` | una fila por respuesta dentro de una sesión |
@@ -280,6 +282,7 @@ Operadores de filtro: `eq neq gt gte lt lte like in is`.
 - **Quién pone los códigos**: el primer código de un perfil solo se acepta con la sesión de padres (`/auth/setup`); el de los padres se crea sin sesión solo la primera vez (con el PIN antiguo si lo hay). El niño cambia el suyo sabiendo el actual; los padres pueden ponerle uno nuevo sin saberlo (cierra sus sesiones).
 - **Datos que un perfil puede guardar**: el Worker rechaza sesiones de más de 40 preguntas, aciertos mayores que preguntas, tipos de sesión inventados, fechas futuras o de hace más de 60 días, y temas estudiados o practicados que no estén liberados para ese perfil (`worker/auth-validate.js`). Así no se inflan los puntos con peticiones a mano. Los padres no pasan por estas reglas.
 - **Bloqueo**: 5 fallos seguidos bloquean 1 min, luego 5 y 15 (máximo) y avisan por Telegram. El intento se reserva en una sola orden de la base de datos antes de mirar el código, así que las peticiones en paralelo no se saltan el límite. Ojo: el bloqueo es por código (perfil o padres), no por origen, así que cinco fallos ajenos pueden dejar bloqueado un minuto el acceso legítimo.
+- **Face ID (passkeys) en la zona de padres**: se activa desde Padres → Face ID, una vez por móvil y con el código ya dentro. El Worker (`worker/passkey-*.js`) guarda solo la clave pública y comprueba la firma (ES256, WebCrypto): reto de un solo uso de 5 minutos, origen y dominio exactos (`ALLOWED_ORIGIN`), usuario presente y verificado. Entrar con Face ID no pasa por el contador de fallos del código, así que sirve aunque el código esté bloqueado por un desconocido; el código sigue siendo el respaldo y el único modo de activar un móvil nuevo. La passkey queda atada al dominio: si cambia, hay que registrarla otra vez. Hace falta crear a mano las tablas `passkeys` y `passkey_challenges` en D1 (SQL en `tests/fixtures/schema.sql`).
 - **Editar un perfil** pide siempre el código del perfil (la sesión de padres lo salta). En el perfil se puede activar «Pedir el código siempre al abrir la tarjeta».
 - Si un niño olvida su código, los padres le ponen uno nuevo desde sus estadísticas («Poner código nuevo»). Si se olvida el código de padres: en la consola de D1, `DELETE FROM credentials WHERE owner = 'parent';` y se crea uno nuevo.
 - Los códigos no entran en las copias de seguridad ni en la caché del dispositivo.

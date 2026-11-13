@@ -4,6 +4,7 @@ import { checkCode, checkLegacyPin, LEGACY } from './auth-check.js';
 import { deleteCredential, getCredential, saveCredential } from './auth-credentials.js';
 import { PARENT, assertValidCode } from './auth-rules.js';
 import { summarizePointsJson } from './stats-summarize.js';
+import { handlePasskey } from './passkey-routes.js';
 import { createSession, deleteOwnerSessions, deleteSession, findSession } from './auth-sessions.js';
 
 const fail = (result, cors) => json({ error: result.error, ...(result.retry_in ? { retry_in: result.retry_in } : {}), ...(result.left !== undefined ? { left: result.left } : {}) }, result.status, cors);
@@ -62,6 +63,7 @@ export async function handleAuth(request, env, parts, cors) {
   }
 
   const body = await readJson(request);
+  if (action.startsWith('passkey-')) return handlePasskey(request, env, action, body, cors);
   const owner = body.owner;
 
   if (action === 'login') {

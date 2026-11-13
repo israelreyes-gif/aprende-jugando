@@ -11,6 +11,7 @@ import { codeInput } from './code-input.js';
 import { codeView } from './code-view.js';
 import { markEditOk, markEntered } from './flags.js';
 import { newCodeFields } from './new-code-fields.js';
+import { faceIdButton } from './face-id-button.js';
 import { takeNext } from './next-page.js';
 
 /** Atajo para los padres: lleva al acceso de padres y, al acertar, vuelve a la pantalla que se quería abrir. */
@@ -30,7 +31,7 @@ function enterView({ owner, edit, title, sub }) {
   return codeView({
     title, sub, back: paths.home(), buttonLabel: 'Entrar',
     fields: [{ label: owner === PARENT_OWNER ? 'Código de padres' : 'Tu código', node: code }],
-    extra: owner === PARENT_OWNER ? null : asParentLink(),
+    extra: owner === PARENT_OWNER ? faceIdButton({ onDone: () => done(owner, edit) }) : asParentLink(),
     onSubmit: async () => {
       try {
         await login(owner, code.value);

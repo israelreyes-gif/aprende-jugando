@@ -10,6 +10,7 @@ import { parentsScreen } from './features/parents/parents.screen.js';
 import { loginScreen } from './features/auth/login.screen.js';
 import { mixScreen } from './features/mix/mix.screen.js';
 import { changeCodeScreen, changeParentCodeScreen } from './features/auth/change-code.screen.js';
+import { faceIdScreen } from './features/auth/face-id.screen.js';
 import { setProfileCodeScreen } from './features/auth/set-profile-code.screen.js';
 import { childStatsScreen } from './features/parents/child-stats.screen.js';
 import { subjectStatsScreen } from './features/parents/subject-stats.screen.js';
@@ -32,6 +33,7 @@ export function registerRoutes() {
 
   route('/parents', parentsScreen, { live: true });
   route('/parents/code', changeParentCodeScreen);
+  route('/parents/face-id', faceIdScreen);
   route('/parents/:pid/code', setProfileCodeScreen);
   route('/parents/:pid', childStatsScreen, { live: true });
   route('/parents/:pid/stats/:cid/:sid', subjectStatsScreen, { live: true });

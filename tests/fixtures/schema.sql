@@ -191,3 +191,18 @@ BEGIN
   DELETE FROM credentials WHERE owner = OLD.id;
   DELETE FROM sessions WHERE owner = OLD.id;
 END;
+
+-- Face ID (passkeys) de la zona de padres: solo la clave pública de cada móvil; la cara nunca sale del iPhone.
+CREATE TABLE IF NOT EXISTS passkeys (
+  id           TEXT PRIMARY KEY,
+  public_key   TEXT NOT NULL,
+  label        TEXT NOT NULL,
+  created_at   TEXT NOT NULL,
+  last_used_at TEXT
+);
+-- Retos de un solo uso (caducan a los 5 minutos).
+CREATE TABLE IF NOT EXISTS passkey_challenges (
+  challenge  TEXT PRIMARY KEY,
+  kind       TEXT NOT NULL,
+  created_at INTEGER NOT NULL
+);

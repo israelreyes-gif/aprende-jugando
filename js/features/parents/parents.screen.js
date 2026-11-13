@@ -37,6 +37,7 @@ async function renderParents() {
       due ? null : backup,
       restoreCard(),
       h('div', { class: 'spacer' }),
+      h('a', { class: 'btn btn--outline btn--block', href: paths.faceId() }, 'Face ID'),
       h('a', { class: 'btn btn--outline btn--block', href: paths.parentsCode() }, 'Cambiar código'),
       logoutButton(PARENT_OWNER, 'Cerrar sesión de padres'),
     ),
