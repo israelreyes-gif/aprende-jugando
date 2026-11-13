@@ -6,7 +6,7 @@ import { passkeysSupported, setLocalPasskey } from '../../core/webauthn/support.
 import { deletePasskey, listPasskeys, registerPasskey } from '../../data/passkey.repo.js';
 import { reload } from '../../core/router.js';
 
-const when = (iso) => (iso ? new Date(iso).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }) : 'nunca');
+const when = (iso) => (iso ? new Date(iso).toLocaleDateString('es-ES') : 'nunca');
 
 /** Zona de padres → Face ID: activarlo en este móvil y quitar móviles. El código sigue valiendo siempre. */
 export async function faceIdScreen() {
@@ -33,14 +33,20 @@ export async function faceIdScreen() {
   });
 
   const row = (device) => {
-    const remove = h('button', { class: 'btn btn--outline', type: 'button' }, 'Quitar');
+    const remove = h('button', { class: 'btn btn--outline faceid-device__remove', type: 'button' }, 'Quitar');
     remove.addEventListener('click', async () => {
       if (!(await confirmDialog({ title: `¿Quitar «${device.label}»?`, message: 'Ese móvil ya no podrá entrar con Face ID. Con el código sí.', confirm: 'Quitar', danger: true }))) return;
       await deletePasskey(device.id);
       if (devices.length === 1) setLocalPasskey(false);
       reload();
     });
-    return h('div', { class: 'card' }, h('div', { class: 'stack' }, h('strong', {}, device.label), h('p', { class: 'lead' }, `Activado el ${when(device.created_at)}`), h('p', { class: 'lead' }, `Último uso: ${when(device.last_used_at)}`), remove));
+    return h('div', { class: 'card row-card faceid-device' },
+      h('span', { class: 'tile tile--sm', 'aria-hidden': 'true' }, '📱'),
+      h('div', { class: 'row-card__text' },
+        h('span', { class: 'faceid-device__name' }, device.label),
+        h('span', { class: 'faceid-device__meta' }, `Activado: ${when(device.created_at)}`),
+        h('span', { class: 'faceid-device__meta' }, `Último uso: ${when(device.last_used_at)}`)),
+      remove);
   };
 
   // Con algún móvil ya activado, el formulario queda oculto hasta pulsar «Añadir otro móvil» (o volver a activar este).

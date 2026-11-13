@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'c643cced657b';
+const BUILD = '075e168685fb';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -17,6 +17,7 @@ const FILES = {
   './css/components/exercise-order.css': '210ce95d9dfe',
   './css/components/exercise-tap.css': '837ee19ad1cb',
   './css/components/exercise-words.css': '18b0059c7a0c',
+  './css/components/faceid.css': '7ac1a085233b',
   './css/components/fold.css': '8a2f593b5029',
   './css/components/forms.css': 'b6c75441f91c',
   './css/components/header.css': '577017e0112f',
@@ -40,7 +41,7 @@ const FILES = {
   './icons/mochila-halloween.svg': 'ffd9bb0588d8',
   './icons/mochila-navidad.svg': '2abb40651667',
   './icons/mochila.svg': '71b56d2379bd',
-  './index.html': '7c96d0469ea3',
+  './index.html': '720eee08e6e1',
   './js/config.js': '8cb1a6ab4b83',
   './js/content/1-primaria/ingles/adjectives/exercises.js': '54d8d68296ce',
   './js/content/1-primaria/ingles/adjectives/index.js': 'aae73edb9e58',
@@ -412,7 +413,7 @@ const FILES = {
   './js/features/auth/code-rules.js': '2da0a1bd94dc',
   './js/features/auth/code-view.js': 'ce66e05e2f3c',
   './js/features/auth/face-id-button.js': '632082b3dad5',
-  './js/features/auth/face-id.screen.js': '43648f1c422d',
+  './js/features/auth/face-id.screen.js': '51e4fd7f4231',
   './js/features/auth/flags.js': 'f1ccff03e8e9',
   './js/features/auth/login.screen.js': '47278c8ef2d0',
   './js/features/auth/logout-button.js': 'c4ffb0de347d',

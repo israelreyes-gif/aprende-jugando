@@ -1,0 +1,6 @@
+/* Pantalla Face ID: un móvil registrado */
+.faceid-device { padding: 14px 16px; align-items: center; gap: 14px; }
+.faceid-device .row-card__text { gap: 2px; }
+.faceid-device__name { font-family: var(--font-display); font-weight: 500; font-size: 20px; line-height: 1.15; overflow-wrap: anywhere; }
+.faceid-device__meta { font-size: 14px; font-weight: 700; color: var(--muted); }
+.faceid-device__remove { flex: none; min-height: 44px; padding: 0 16px; font-size: 15px; }
