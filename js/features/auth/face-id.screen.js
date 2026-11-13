@@ -2,7 +2,7 @@ import { h } from '../../core/dom.js';
 import { paths } from '../../core/paths.js';
 import { appHeader } from '../../shared/app-header.js';
 import { confirmDialog, notify } from '../../shared/modal.js';
-import { hasLocalPasskey, passkeysSupported, setLocalPasskey } from '../../core/webauthn/support.js';
+import { passkeysSupported, setLocalPasskey } from '../../core/webauthn/support.js';
 import { deletePasskey, listPasskeys, registerPasskey } from '../../data/passkey.repo.js';
 import { reload } from '../../core/router.js';
 
@@ -17,7 +17,7 @@ export async function faceIdScreen() {
   const devices = await listPasskeys();
   const error = h('p', { class: 'field__error', role: 'alert' });
   const label = h('input', { class: 'input', id: 'faceid-label', type: 'text', maxlength: '60', value: 'Mi iPhone', 'aria-label': 'Nombre de este móvil' });
-  const enable = h('button', { class: 'btn btn--primary btn--block', type: 'button' }, hasLocalPasskey() ? 'Volver a activarlo en este móvil' : 'Activar Face ID en este móvil');
+  const enable = h('button', { class: 'btn btn--primary btn--block', type: 'button' }, 'Activar Face ID en este móvil');
 
   enable.addEventListener('click', async () => {
     error.textContent = '';
@@ -40,12 +40,21 @@ export async function faceIdScreen() {
       if (devices.length === 1) setLocalPasskey(false);
       reload();
     });
-    return h('div', { class: 'card' }, h('strong', {}, device.label), h('p', { class: 'lead' }, `Activado el ${when(device.created_at)} · último uso: ${when(device.last_used_at)}`), remove);
+    return h('div', { class: 'card' }, h('div', { class: 'stack' }, h('strong', {}, device.label), h('p', { class: 'lead' }, `Activado el ${when(device.created_at)}`), h('p', { class: 'lead' }, `Último uso: ${when(device.last_used_at)}`), remove));
   };
+
+  // Con algún móvil ya activado, el formulario queda oculto hasta pulsar «Añadir otro móvil» (o volver a activar este).
+  const form = h('div', { class: 'stack' }, label, enable);
+  const another = h('button', { class: 'btn btn--outline btn--block', type: 'button' }, 'Añadir otro móvil');
+  const hasDevices = devices.length > 0;
+  if (hasDevices) {
+    form.hidden = true;
+    another.addEventListener('click', () => { form.hidden = false; another.hidden = true; label.focus(); });
+  }
 
   return h('main', { class: 'screen' }, header,
     h('div', { class: 'screen__body' },
       h('p', { class: 'lead' }, 'Tu cara nunca sale del iPhone: la app solo guarda una clave que no sirve sin Face ID.'),
-      h('div', { class: 'stack' }, devices.length ? devices.map(row) : h('p', { class: 'lead' }, 'Todavía no hay ningún móvil con Face ID.')),
-      label, enable, error));
+      h('div', { class: 'stack' }, hasDevices ? devices.map(row) : h('p', { class: 'lead' }, 'Todavía no hay ningún móvil con Face ID.')),
+      hasDevices ? another : null, form, error));
 }

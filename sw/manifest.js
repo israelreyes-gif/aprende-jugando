@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'ef8855cd5c23';
+const BUILD = 'c643cced657b';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -26,7 +26,7 @@ const FILES = {
   './css/components/switch.css': '9917193d3e93',
   './css/components/sync-card.css': '1d00738b3308',
   './css/components/tabs.css': 'ee24de7137d1',
-  './css/components/utilities.css': '641933208d60',
+  './css/components/utilities.css': '0b2430c937de',
   './css/screens/home.css': '471c3093c187',
   './css/screens/points.css': '7836a1ca0921',
   './css/screens/practice.css': '0e29504d7213',
@@ -412,7 +412,7 @@ const FILES = {
   './js/features/auth/code-rules.js': '2da0a1bd94dc',
   './js/features/auth/code-view.js': 'ce66e05e2f3c',
   './js/features/auth/face-id-button.js': '632082b3dad5',
-  './js/features/auth/face-id.screen.js': 'cf1e20379624',
+  './js/features/auth/face-id.screen.js': '43648f1c422d',
   './js/features/auth/flags.js': 'f1ccff03e8e9',
   './js/features/auth/login.screen.js': '47278c8ef2d0',
   './js/features/auth/logout-button.js': 'c4ffb0de347d',

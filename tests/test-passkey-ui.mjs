@@ -64,7 +64,9 @@ assert.equal(db.sqlite.prepare('SELECT COUNT(*) c FROM passkeys').get().c, 0); a
 cancel = false; document.getElementById('faceid-label').value = 'iPhone de Israel';
 button(/Activar Face ID/).click(); await sleep(300);
 assert.ok(button(/Entendido/)); button(/Entendido/).click(); await sleep(300); await settle();
-assert.equal(db.sqlite.prepare('SELECT label FROM passkeys').get().label, 'iPhone de Israel'); assert.match(text(), /iPhone de Israel/); ok('activar Face ID: queda registrado y aparece en la lista');
+assert.equal(db.sqlite.prepare('SELECT label FROM passkeys').get().label, 'iPhone de Israel'); assert.match(text(), /iPhone de Israel/);
+assert.ok(q('form, .stack[hidden]') || [...app().querySelectorAll('[hidden]')].length > 0); assert.ok(button(/Añadir otro móvil/)); assert.match(text(), /Último uso: nunca/); ok('activar Face ID: queda registrado, aparece en la lista y el formulario se oculta tras «Añadir otro móvil»');
+button(/Añadir otro móvil/).click(); assert.equal(document.getElementById('faceid-label').closest('[hidden]'), null); ok('«Añadir otro móvil» enseña de nuevo el formulario');
 
 clearSession('parent'); resetFlags();
 await visit('#/login/parent');
