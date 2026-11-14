@@ -1,4 +1,4 @@
-import { HttpError } from './http.js';
+import { HttpError, MAX_BODY_BYTES } from './http.js';
 import { PARENT } from './auth-rules.js';
 import { assertReplaceAllowed } from './auth-replace.js';
 import { assertPlausible } from './auth-validate.js';
@@ -21,7 +21,10 @@ const PROFILE_RULES = {
 const ACTION = { GET: 'read', POST: 'create', PATCH: 'edit', DELETE: 'remove' };
 
 async function bodyRows(request) {
-  const body = await request.clone().json().catch(() => null);
+  const text = await request.clone().text().catch(() => '');
+  if (text.length > MAX_BODY_BYTES) throw new HttpError(413, 'Petición demasiado grande');
+  let body = null;
+  try { body = JSON.parse(text); } catch { /* cuerpo no válido: sin filas */ }
   return Array.isArray(body) ? body : body ? [body] : [];
 }
 
@@ -64,6 +67,7 @@ export async function enforceScope(db, session, method, table, params, id, reque
   if (action === 'edit' && rule.cols) {
     const [body] = await bodyRows(request);
     if (!body || Object.keys(body).some((k) => !rule.cols.includes(k))) throw FORBIDDEN();
+    if (table.name === 'reto_diario' && String(body.answers ?? '').length > 60_000) throw new HttpError(400, 'Respuestas demasiado largas');
   }
 }
 

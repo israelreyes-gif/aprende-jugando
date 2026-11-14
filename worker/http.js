@@ -5,9 +5,24 @@ export class HttpError extends Error {
   }
 }
 
+export const MAX_BODY_BYTES = 1_000_000; // una copia de seguridad restaurada va en tandas de 500 filas, muy por debajo
+
+/** Rechaza antes de leerlo un cuerpo anunciado como demasiado grande. */
+export function assertBodySize(request) {
+  const length = Number(request.headers.get('Content-Length') || 0);
+  if (length > MAX_BODY_BYTES) throw new HttpError(413, 'Petición demasiado grande');
+}
+
 export async function readJson(request) {
+  let text;
   try {
-    return await request.json();
+    text = await request.text();
+  } catch {
+    throw new HttpError(400, 'El cuerpo no es un JSON válido');
+  }
+  if (text.length > MAX_BODY_BYTES) throw new HttpError(413, 'Petición demasiado grande');
+  try {
+    return JSON.parse(text);
   } catch {
     throw new HttpError(400, 'El cuerpo no es un JSON válido');
   }

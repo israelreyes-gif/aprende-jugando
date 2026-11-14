@@ -14,7 +14,7 @@
  * Cron (wrangler.jsonc): recordatorios del reto a las 08:00 y a las 18:30, hora de Madrid, y el resumen semanal por Telegram el domingo a las 20:00.
  * Si el Worker falla por su lado (error 5xx) o un recordatorio no sale, avisa a los móviles de padres (error-alert.js).
  */
-import { HttpError, corsHeaders, errorResponse, json, safeEqual } from './http.js';
+import { HttpError, assertBodySize, corsHeaders, errorResponse, json, safeEqual } from './http.js';
 import { loadSchema } from './schema.js';
 import { handleDelete, handleGet, handlePatch, handlePost } from './handlers.js';
 import { handlePush } from './push-handle-push.js';
@@ -61,6 +61,7 @@ export default {
         throw new HttpError(401, 'Clave de API incorrecta');
       }
 
+      assertBodySize(request);
       const url = new URL(request.url);
       const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
       if (parts[0] === 'auth') return await handleAuth(request, env, parts, cors);

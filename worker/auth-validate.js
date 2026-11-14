@@ -8,6 +8,15 @@ const MAX_ID = 120;
 const PAST_DAYS = 60; // una escritura guardada sin conexión puede llegar con retraso, pero no de hace meses
 const FUTURE_MS = 24 * 60 * 60 * 1000;
 
+// Topes para que una sesión de perfil no sature la base de datos (muy por encima del uso real).
+export const MAX_ROWS_PER_REQUEST = 50;
+export const MAX_SESSIONS_PER_DAY = 300;
+export const MAX_ANSWERS_PER_SESSION = 60;
+export const MAX_SYNC_EVENTS_PER_DAY = 500;
+export const MAX_DEVICES = 10;
+const MAX_TEXT = 500;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 const bad = (message) => new HttpError(400, message);
 
 function checkDate(value) {
@@ -28,8 +37,41 @@ async function assertReleased(db, owner, row) {
   if (!found) throw new HttpError(403, 'Operación no permitida');
 }
 
+const sinceDay = () => new Date(Date.now() - DAY_MS).toISOString();
+const limit = (message) => new HttpError(400, message);
+const count = async (db, sql, ...args) => (await db.prepare(sql).bind(...args).first()).n;
+
+/** Topes de cantidad por tabla. Pasar un tope devuelve 400 (no se reintenta: lo normal es no llegar nunca). */
+async function assertWithinLimits(db, owner, table, rows) {
+  if (rows.length > MAX_ROWS_PER_REQUEST) throw limit(`Máximo ${MAX_ROWS_PER_REQUEST} filas por petición`);
+  if (table.name === 'practice_sessions') {
+    const today = await count(db, 'SELECT COUNT(*) AS n FROM practice_sessions WHERE profile_id = ? AND finished_at >= ?', owner, sinceDay());
+    if (today + rows.length > MAX_SESSIONS_PER_DAY) throw limit('Límite diario de sesiones alcanzado');
+  } else if (table.name === 'answers') {
+    const incoming = new Map();
+    for (const row of rows) incoming.set(row.session_id, (incoming.get(row.session_id) || 0) + 1);
+    for (const [sessionId, extra] of incoming) {
+      const saved = await count(db, 'SELECT COUNT(*) AS n FROM answers WHERE session_id = ?', sessionId);
+      if (saved + extra > MAX_ANSWERS_PER_SESSION) throw limit('Demasiadas respuestas en la sesión');
+    }
+    for (const row of rows) {
+      checkText(row.id, 'id'); checkText(row.question_id, 'question_id');
+      if (row.given != null && String(row.given).length > MAX_TEXT) throw bad('Respuesta demasiado larga');
+    }
+  } else if (table.name === 'sync_events') {
+    const today = await count(db, 'SELECT COUNT(*) AS n FROM sync_events WHERE profile_id IS ? AND created_at >= ?', owner, sinceDay());
+    if (today + rows.length > MAX_SYNC_EVENTS_PER_DAY) throw limit('Límite diario alcanzado');
+    for (const row of rows) for (const key of ['what', 'detail']) if (row[key] != null && String(row[key]).length > MAX_TEXT) throw bad('Texto demasiado largo');
+  } else if (table.name === 'push_devices') {
+    const ids = rows.map((row) => String(row.id));
+    const others = await count(db, `SELECT COUNT(*) AS n FROM push_devices WHERE profile_id = ? AND id NOT IN (${ids.map(() => '?').join(',')})`, owner, ...ids);
+    if (others + ids.length > MAX_DEVICES) throw limit('Demasiados dispositivos');
+  }
+}
+
 /** Valida lo que una sesión de perfil quiere crear en estas tablas (lanza 400/403; si no, no hace nada). */
 export async function assertPlausible(db, owner, table, rows) {
+  await assertWithinLimits(db, owner, table, rows);
   if (table.name === 'practice_sessions') {
     for (const row of rows) {
       checkText(row.id, 'id');

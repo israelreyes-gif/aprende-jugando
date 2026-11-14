@@ -63,6 +63,26 @@ assert.equal(await post('study_progress', { id: 'e1', ...own, topic_id: 'inventa
 assert.equal(await post('study_progress', { id: 'e2', ...own, completed_at: fresh() }), 201); ok('marcar como estudiado un tema liberado sigue funcionando');
 assert.equal(await post('study_progress', { id: 'e3', ...own, completed_at: '2099-01-01T00:00:00Z' }), 400);
 
+// Límites de cantidad (que no se sature la base de datos)
+const many = (k, base) => Array.from({ length: k }, (_, i) => base(i));
+assert.equal(await post('answers', many(41, (i) => ({ id: `big${i}`, session_id: 'a-ok', question_id: 'q', is_correct: 1 }))), 400); ok('más de 40 respuestas de golpe se rechazan');
+assert.equal(await post('study_progress', many(51, (i) => ({ id: `m${i}`, ...own, topic_id: `t${i}`, completed_at: fresh() }))), 400); ok('más de 50 filas en una petición se rechazan');
+assert.equal(await call('POST', '/api/practice_sessions', alex, { id: 'z', pad: 'x'.repeat(1_100_000) }), 413); ok('un cuerpo de más de 1 MB se rechaza (413)');
+for (let i = 0; i < 60; i += 1) run("INSERT INTO answers (id,session_id,question_id,is_correct) VALUES (?, 'a-ok', 'q', 1)", `pre${i}`);
+assert.equal(await post('answers', [{ id: 'extra', session_id: 'a-ok', question_id: 'q', is_correct: 1 }]), 400); ok('una sesión no admite más de 60 respuestas en total');
+assert.equal(await post('answers', [{ id: 'largo', session_id: 'x-no', question_id: 'q', is_correct: 1, given: 'x'.repeat(600) }]) >= 400, true);
+run("DELETE FROM answers WHERE id LIKE 'pre%'");
+assert.equal(await post('answers', [{ id: 'g1', session_id: 'a-ok', question_id: 'q', is_correct: 1, given: 'x'.repeat(600) }]), 400); ok('una respuesta con texto larguísimo se rechaza');
+assert.equal(await post('answers', [{ id: 'g2', session_id: 'a-ok', question_id: 'q', is_correct: 1, given: 'bien' }]), 201);
+const have = get("SELECT COUNT(*) c FROM push_devices WHERE profile_id='alex'").c;
+for (let i = 0; i < 10 - have; i += 1) run("INSERT INTO push_devices (id,kind,profile_id,endpoint,p256dh,auth) VALUES (?, 'child', 'alex', 'https://e/1', 'p', 'a')", `cap${i}`);
+assert.equal(await call('POST', '/api/push_devices?conflict=replace', alex, dev('child-alex-once')), 400); ok('no más de 10 móviles con avisos por perfil');
+assert.equal(await call('POST', '/api/push_devices?conflict=replace', alex, dev('cap0')), 201); ok('volver a registrar un móvil que ya estaba sigue valiendo');
+const before = get("SELECT COUNT(*) c FROM practice_sessions WHERE profile_id='alex'").c;
+for (let i = before; i < 300; i += 1) run("INSERT INTO practice_sessions (id,profile_id,course_id,subject_id,topic_id,total,correct,finished_at) VALUES (?, 'alex','c','mates','t',8,8,?)", `bulk${i}`, fresh());
+assert.equal(await post('practice_sessions', sess({})), 400); ok('más de 300 sesiones en un día se rechazan');
+assert.equal(await call('PATCH', '/api/reto_diario/ar', alex, { answers: 'x'.repeat(70000) }), 400); ok('respuestas de reto gigantes se rechazan');
+
 // Los padres siguen pudiendo todo
 const parent = await createSession(db, 'parent');
 assert.equal(await call('POST', '/api/settings?conflict=replace', parent, { key: 'k', value: 'v' }), 201); ok('los padres siguen pudiendo usar replace');
