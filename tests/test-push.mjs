@@ -52,7 +52,7 @@ assert.equal(decrypt(Buffer.from(enc), ua.getPrivateKey().toString('base64url'),
 // VAPID
 const kp = await subtle.generateKey({ name: 'ECDSA', namedCurve: 'P-256' }, true, ['sign', 'verify']);
 const vPub = toBase64Url(new Uint8Array(await subtle.exportKey('raw', kp.publicKey))); const vPriv = (await subtle.exportKey('jwk', kp.privateKey)).d;
-const env0 = { VAPID_PUBLIC_KEY: vPub, VAPID_PRIVATE_KEY: vPriv, VAPID_SUBJECT: 'https://yo.github.io/app/' };
+const env0 = { VAPID_PUBLIC_KEY: vPub, VAPID_PRIVATE_KEY: vPriv, PUSH_ALLOWED_HOSTS: 'e,x,push.example,push,localhost,127.0.0.1,w.example', VAPID_SUBJECT: 'https://yo.github.io/app/' };
 const auth = await vapidAuthorization('https://fcm.googleapis.com/fcm/send/abc', env0, 1_700_000_000_000);
 const m = auth.match(/^vapid t=([\w-]+)\.([\w-]+)\.([\w-]+), k=([\w-]+)$/); assert.ok(m, 'formato'); assert.equal(m[4], vPub);
 assert.deepEqual(JSON.parse(Buffer.from(m[2], 'base64url')), { aud: 'https://fcm.googleapis.com', exp: 1_700_000_000 + 43200, sub: 'https://yo.github.io/app/' });

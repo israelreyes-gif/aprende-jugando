@@ -5,7 +5,7 @@ import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 const { chromium } = createRequire(import.meta.url)('playwright');
 const API = 'http://localhost:8793', B = 'http://localhost:8761/';
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
+const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k', PUSH_ALLOWED_HOSTS: 'e,x,push.example,push,localhost,127.0.0.1,w.example' };
 db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color,gender) VALUES ('alex','Alex','#8EDBC0','chico'),('lucia','Lucía','#FFB3CC','chica')`);
 db.sqlite.exec(`INSERT INTO settings (key,value) VALUES ('parent_pin','SECRETO-HASH')`);
 db.sqlite.prepare(`INSERT INTO practice_sessions (id,profile_id,course_id,subject_id,topic_id,total,correct,duration_s,finished_at,kind) VALUES ('s1','alex','4-primaria','mates','tablas',8,6,60,?, 'practice')`).run(new Date().toISOString());

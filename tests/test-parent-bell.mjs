@@ -27,7 +27,7 @@ function decrypt(body) {
 
 // API de prueba (el Worker real) + servicio de avisos de mentira en el mismo servidor
 const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
-const env = { DB: db, API_KEY: 'k', VAPID_PUBLIC_KEY: vPub, VAPID_PRIVATE_KEY: vPriv, VAPID_SUBJECT: 'https://yo.github.io/app/' };
+const env = { DB: db, API_KEY: 'k', VAPID_PUBLIC_KEY: vPub, VAPID_PRIVATE_KEY: vPriv, PUSH_ALLOWED_HOSTS: 'e,x,push.example,push,localhost,127.0.0.1,w.example', VAPID_SUBJECT: 'https://yo.github.io/app/' };
 db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color) VALUES ('alex','Alex','#FFC53D'),('lucia','Lucía','#8EDBC0')`);
 const received = []; let pushStatus = 201;
 const server = http.createServer(async (req, res) => {

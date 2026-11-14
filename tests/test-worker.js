@@ -3,7 +3,7 @@ import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 
 const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
-const env = { DB: db, API_KEY: 'secreto', ALLOWED_ORIGIN: 'https://yo.github.io' };
+const env = { DB: db, API_KEY: 'secreto', PUSH_ALLOWED_HOSTS: 'e,x,push.example,push,localhost,127.0.0.1,w.example', ALLOWED_ORIGIN: 'https://yo.github.io' };
 
 async function call(method, path, { body, key = 'secreto', origin } = {}) {
   const headers = {};

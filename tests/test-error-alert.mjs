@@ -16,7 +16,7 @@ function decrypt(body, uaPrivB64, uaPubB64, authB64) {
 }
 const kp = await webcrypto.subtle.generateKey({ name: 'ECDSA', namedCurve: 'P-256' }, true, ['sign', 'verify']);
 const vPub = toBase64Url(new Uint8Array(await webcrypto.subtle.exportKey('raw', kp.publicKey))); const vPriv = (await webcrypto.subtle.exportKey('jwk', kp.privateKey)).d;
-const vapid = { VAPID_PUBLIC_KEY: vPub, VAPID_PRIVATE_KEY: vPriv, VAPID_SUBJECT: 'https://yo.github.io/app/' };
+const vapid = { VAPID_PUBLIC_KEY: vPub, VAPID_PRIVATE_KEY: vPriv, PUSH_ALLOWED_HOSTS: 'e,x,push.example,push,localhost,127.0.0.1,w.example', VAPID_SUBJECT: 'https://yo.github.io/app/' };
 const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
 db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color) VALUES ('p1','Alex','#fff')`);
 const keys = {}; const ins = db.sqlite.prepare('INSERT INTO push_devices (id,kind,profile_id,endpoint,p256dh,auth) VALUES (?,?,?,?,?,?)');

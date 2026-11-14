@@ -43,7 +43,7 @@ assert.equal(reminderMessage({ ...base, slot: 'evening', streak: 0 }).title, '¡
 // 4) El cron completo con una base de datos de prueba y un servicio de avisos de mentira
 const kp = await webcrypto.subtle.generateKey({ name: 'ECDSA', namedCurve: 'P-256' }, true, ['sign', 'verify']);
 const b64 = (buf) => Buffer.from(buf).toString('base64url');
-const env = { VAPID_PUBLIC_KEY: b64(await webcrypto.subtle.exportKey('raw', kp.publicKey)), VAPID_PRIVATE_KEY: (await webcrypto.subtle.exportKey('jwk', kp.privateKey)).d, VAPID_SUBJECT: 'https://yo.github.io/app/' };
+const env = { VAPID_PUBLIC_KEY: b64(await webcrypto.subtle.exportKey('raw', kp.publicKey)), VAPID_PRIVATE_KEY: (await webcrypto.subtle.exportKey('jwk', kp.privateKey)).d, PUSH_ALLOWED_HOSTS: 'e,x,push.example,push,localhost,127.0.0.1,w.example', VAPID_SUBJECT: 'https://yo.github.io/app/' };
 const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); env.DB = db; const sql = db.sqlite;
 sql.exec(`INSERT INTO profiles (id,name,avatar_color) VALUES ('alex','Alex','#FFC53D'),('lucia','Lucía','#8EDBC0'),('mateo','Mateo','#FFA8C5'),('sara','Sara','#A8C5FF'),('nadie','Nadie','#FFA8C5')`);
 // alex, lucia y sara: tema liberado Y estudiado. mateo: nada. leo: liberado pero sin estudiar

@@ -6,7 +6,7 @@ import worker from './parent-worker.js';
 import { makeD1 } from './d1-shim.js';
 const { chromium } = createRequire(import.meta.url)('playwright');
 const API = 'http://localhost:8794', B = 'http://localhost:8761/';
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
+const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k', PUSH_ALLOWED_HOSTS: 'e,x,push.example,push,localhost,127.0.0.1,w.example' };
 const sq = db.sqlite; const count = (t, w = '1') => sq.prepare(`SELECT COUNT(*) c FROM ${t} WHERE ${w}`).get().c;
 sq.exec(`INSERT INTO profiles (id,name,avatar_color,gender) VALUES ('alex','Alex','#8EDBC0','chico'),('lucia','Lucía','#FFB3CC','chica')`);
 sq.exec(`INSERT INTO settings (key,value) VALUES ('parent_pin','SECRETO-HASH')`);
