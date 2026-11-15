@@ -99,7 +99,10 @@ const post = async (rows) => { const pending = []; const res = await worker.fetc
 assert.equal((await post([{ id: 'e1', profile_id: 'p1', outcome: 'late', what: 'practice_sessions' }])).status, 201); assert.equal(telegram.length, 0); ok('un guardado con retraso se registra sin avisar');
 assert.equal((await post([{ id: 'e2', profile_id: 'p1', outcome: 'failed', what: 'practice_sessions', detail: 'error 400' }])).status, 201);
 assert.equal(telegram.length, 1); assert.match(telegram[0].text, /No se pudo guardar/); assert.match(telegram[0].text, /Alex/); assert.match(telegram[0].text, /practice_sessions/); ok('un guardado fallido avisa a Telegram con el nombre del perfil');
+telegram.length = 0;
+assert.equal((await post([{ id: 'e4', profile_id: 'p1', outcome: 'failed', what: 'ESTAFA http://malo.example', detail: 'llama al 600000000' }])).status, 201);
+assert.equal(telegram.length, 1); assert.ok(!/malo|600000000|ESTAFA/.test(telegram[0].text), 'el texto de la app no llega a Telegram'); assert.match(telegram[0].text, /otra tabla/); ok('el texto que escribe la app no se copia a Telegram');
 assert.equal((await post([{ id: 'e3', profile_id: null, outcome: 'otra-cosa', what: 'x' }])).status, 400); ok('un resultado no permitido se rechaza');
-assert.equal(db.sqlite.prepare('SELECT COUNT(*) AS n FROM sync_events').get().n, 2); ok('quedan guardados los 2 eventos válidos');
+assert.equal(db.sqlite.prepare('SELECT COUNT(*) AS n FROM sync_events').get().n, 3); ok('quedan guardados los 3 eventos válidos');
 
 console.log(`${n} comprobaciones de sincronización correctas`);

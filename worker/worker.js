@@ -37,7 +37,7 @@ export default {
       runReminders(env, event.scheduledTime).then(async (summary) => {
         console.log('Recordatorios', JSON.stringify(summary));
         if (summary.error || summary.failed > 0) {
-          await alertParents(env, { where: 'Recordatorios', detail: summary.error || `${summary.failed} perfil(es) sin avisar` });
+          await alertParents(env, { where: 'Recordatorios', detail: summary.error ? 'No se pudieron preparar' : `${summary.failed} perfil(es) sin avisar` });
         }
       }),
     );
@@ -46,7 +46,7 @@ export default {
         .then((summary) => summary.report && console.log('Resumen semanal', JSON.stringify(summary)))
         .catch(async (err) => {
           console.error('Resumen semanal fallido', err);
-          await alertParents(env, { where: 'Resumen semanal', detail: String(err?.message || err) });
+          await alertParents(env, { where: 'Resumen semanal', detail: 'No se pudo preparar el resumen' });
         }),
     );
   },
@@ -108,8 +108,10 @@ export default {
       const { pathname } = new URL(request.url);
       // Error del servidor (5xx): se avisa a los padres. No se avisa de los fallos del propio envío de avisos.
       if (response.status >= 500 && !pathname.startsWith('/push')) {
-        const detail = String(err?.message || err);
-        ctx?.waitUntil(alertParents(env, { where: `${request.method} ${pathname}`, detail }));
+        // A Telegram y a los móviles solo va un texto genérico (sin SQL ni ids); el detalle queda en el registro del Worker.
+        console.error('Error del Worker', request.method, pathname, String(err?.message || err));
+        const where = `${request.method} /${pathname.split('/').filter(Boolean).slice(0, 2).join('/')}`;
+        ctx?.waitUntil(alertParents(env, { where, detail: `Error ${response.status}` }));
       }
       return response;
     }

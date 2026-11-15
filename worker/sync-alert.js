@@ -1,4 +1,5 @@
 import { alertParents } from './error-alert.js';
+import { PERMISSIONS } from './permissions.js';
 
 /**
  * Cuando la app anota un guardado que no se pudo hacer ("failed"), avisa a los padres.
@@ -13,7 +14,9 @@ export async function alertSyncFailures(env, rows) {
         const profile = await env.DB.prepare('SELECT name FROM profiles WHERE id = ?').bind(String(row.profile_id)).first();
         if (profile?.name) name = profile.name;
       }
-      await alertParents(env, { title: 'No se pudo guardar', where: `${name} · ${String(row.what || '').slice(0, 40)}`, detail: String(row.detail || 'sin detalle').slice(0, 80) });
+      // Solo texto nuestro: la app puede escribir lo que quiera en what/detail, así que no se copia a Telegram.
+      const what = Object.hasOwn(PERMISSIONS, String(row.what)) ? String(row.what) : 'otra tabla';
+      await alertParents(env, { title: 'No se pudo guardar', where: `${name} · ${what}`, detail: 'el guardado falló' });
     }
   } catch (err) {
     console.error('No se pudo avisar del guardado fallido', String(err?.message || err));

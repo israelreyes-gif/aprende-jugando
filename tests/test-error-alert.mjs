@@ -33,7 +33,7 @@ let env = { DB: breaking(/profiles/i), API_KEY: 'k', ...vapid };
 // loadSchema debe seguir funcionando: usa PRAGMA/sqlite_master, no 'profiles'; la tabla falla al pedirla
 let res = await run(get('/api/profiles'), env);
 assert.equal(res.status, 500); assert.deepEqual(sent.map((s) => s.url).sort(), ['https://push.example/m1', 'https://push.example/m2']); ok('un 500 avisa a los 2 móviles de padres y no al del niño');
-const msg = readFor('m1'); assert.equal(msg.title, 'Error en el servidor'); assert.match(msg.body, /^GET \/api\/profiles · .*simulada/); assert.equal(msg.url, '#/parents'); assert.equal(msg.tag, 'error-GET /api/profiles'); ok('el aviso dice dónde falló y por qué, y abre la zona de padres: ' + JSON.stringify(msg.body));
+const msg = readFor('m1'); assert.equal(msg.title, 'Error en el servidor'); assert.equal(msg.body, 'GET /api/profiles · Error 500'); assert.ok(!JSON.stringify(msg).includes('simulada'), 'el texto interno no sale'); assert.equal(msg.url, '#/parents'); assert.equal(msg.tag, 'error-GET /api/profiles'); ok('el aviso dice dónde falló y por qué, y abre la zona de padres: ' + JSON.stringify(msg.body));
 assert.ok(!JSON.stringify(msg).includes('"k"') && !JSON.stringify(msg).includes(vPriv)); ok('el aviso no lleva claves');
 
 // 2) Errores del que llama (4xx) no avisan
