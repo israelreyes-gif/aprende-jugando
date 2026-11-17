@@ -12,6 +12,7 @@ import { serveApp } from './serve-app.mjs';
 import { manifestText } from '../tools/manifest-text.js';
 
 const repo = new URL('../', import.meta.url).pathname;
+process.env.REAL_REPO = repo; // las pruebas del contenido real (Sciences) leen del repo, no de la copia con temas de prueba
 const work = fs.mkdtempSync(path.join(os.tmpdir(), 'aprende-tests-'));
 const skip = (src) => !/[\\/](\.git|node_modules|shots)([\\/]|$)/.test(src);
 fs.cpSync(repo, work, { recursive: true, filter: skip });

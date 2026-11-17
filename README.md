@@ -136,6 +136,8 @@ Para inventar un tipo nuevo, regístralo en `js/features/practice/question-types
 
 Todo ejercicio nuevo cuenta en la zona de padres con la regla del 75 %.
 
+Sciences (4º): un tema por carpeta en `js/content/4-primaria/sciences/` (`cells-tissues-organs`, …), con la lección y las preguntas en inglés; el título del tema va en `topic_titles` (ver arriba). `tests/test-sciences.mjs` comprueba que cada tema carga y que sus preguntas son válidas.
+
 ## Mix de preguntas
 
 Al final de una unidad (pestaña Ejercicios) hay una tarjeta «Mix» que mezcla preguntas de los temas de esa unidad: solo los **liberados y estudiados** (y nunca las lecturas, que llevan `inMix: false`). Puntúa como los ejercicios normales (+1/−1 por pregunta y ±5 de bonus **una sola vez** por mix) y guarda **una sesión `kind: 'mix'` por tema**, así cuenta en las estadísticas y en la regla del 75 % de cada tema. No se puede retomar a medias.

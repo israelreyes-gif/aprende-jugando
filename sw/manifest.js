@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '075e168685fb';
+const BUILD = 'b5df6c2580d1';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -324,7 +324,10 @@ const FILES = {
   './js/content/4-primaria/mates/vocabulario/gen/vertices-figura.js': '254248bff712',
   './js/content/4-primaria/mates/vocabulario/index.js': 'aae73edb9e58',
   './js/content/4-primaria/mates/vocabulario/study.js': 'a18c527c404d',
-  './js/content/4-primaria/sciences/index.js': '38fdc20b422b',
+  './js/content/4-primaria/sciences/cells-tissues-organs/exercises.js': 'bf8078e56ec5',
+  './js/content/4-primaria/sciences/cells-tissues-organs/index.js': 'aae73edb9e58',
+  './js/content/4-primaria/sciences/cells-tissues-organs/study.js': '17c72e51a24f',
+  './js/content/4-primaria/sciences/index.js': '583ab5a372ff',
   './js/content/4-primaria/sociales/index.js': '95e0433810c6',
   './js/content/courses.js': '2e4725a6b44f',
   './js/content/mixes.js': '75ebb1dd9196',
