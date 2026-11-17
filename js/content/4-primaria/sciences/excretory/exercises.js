@@ -1,0 +1,37 @@
+import { choiceQ } from '../../../../exercises/make/choice.js';
+import { orderQ } from '../../../../exercises/make/order.js';
+import { textQ } from '../../../../exercises/make/text.js';
+
+export const exercises = [
+  { id: 'exc-job', ...choiceQ('What does the excretory system do?', 'It removes the waste substances from the body', ['It makes us breathe', 'It moves our bones', 'It pumps the blood'], 'The excretory system helps to remove the waste substances from all the processes of the body.') },
+  { id: 'exc-waste1', ...choiceQ('Which one is a waste substance?', 'urine', ['oxygen', 'nutrients', 'food'], 'Urine, faeces, sweat and carbon dioxide are waste substances.') },
+  { id: 'exc-waste2', ...choiceQ('Which gas is a waste substance that we breathe out?', 'carbon dioxide', ['oxygen', 'nutrients', 'plasma'], 'Carbon dioxide is a waste substance that we release when we breathe out.') },
+  { id: 'exc-waste3', ...choiceQ('Which one is NOT a waste substance?', 'oxygen', ['faeces', 'sweat', 'urine'], 'Oxygen is not waste: the body needs it.') },
+  { id: 'exc-made', ...choiceQ('The excretory system is made up of the urinary system and...', 'the sweat glands', ['the lungs', 'the heart', 'the bones'], 'The excretory system is made up of the urinary system and the sweat glands.') },
+  { id: 'exc-circ', ...choiceQ('Which system picks up the waste substances from all the parts of our body?', 'the circulatory system', ['the digestive system', 'the respiratory system', 'the locomotor system'], 'The circulatory system picks up the waste substances.') },
+  { id: 'exc-dig', ...choiceQ('Which system removes faeces?', 'the digestive system', ['the circulatory system', 'the respiratory system', 'the urinary system'], 'The digestive system removes faeces in the digestion process.') },
+  { id: 'exc-resp', ...choiceQ('Which system releases carbon dioxide?', 'the respiratory system', ['the digestive system', 'the urinary system', 'the locomotor system'], 'The respiratory system releases carbon dioxide.') },
+  { id: 'uri-job', ...choiceQ("What is the urinary system's function?", 'to filter blood and create urine', ['to break food down', 'to make blood', 'to produce sweat'], 'The urinary system filters blood and creates urine as a waste by-product.') },
+  { id: 'uri-order', ...orderQ('Put the parts of the urinary system in order, as the urine travels:', ['kidneys', 'ureters', 'bladder', 'urethra'], 'kidneys → ureters → bladder → urethra.') },
+  { id: 'kid-job', ...choiceQ('Which organs clean the blood and make the urine?', 'the kidneys', ['the lungs', 'the bladder', 'the stomach'], 'The kidneys clean the blood and make the urine.') },
+  { id: 'kid-shape', ...choiceQ('What is the shape of the kidneys?', 'bean-shaped', ['heart-shaped', 'balloon-shaped', 'round like a ball'], 'The kidneys are dark red and bean-shaped.') },
+  { id: 'kid-number', ...choiceQ('How many kidneys do we have?', 'two', ['one', 'three', 'four'], 'We have two kidneys.') },
+  { id: 'kid-water', ...choiceQ('How much of the urine is water?', '95%', ['5%', '25%', '50%'], 'Urine is made with toxins and excess water (95%).') },
+  { id: 'ure-job', ...choiceQ('Which tubes carry the urine from the kidneys to the bladder?', 'the ureters', ['the urethra', 'the bronchi', 'the veins'], 'The two ureters carry the urine away from the kidneys to the bladder.') },
+  { id: 'blad-job', ...choiceQ('Which organ is a muscular balloon-shaped organ that fills with urine?', 'the bladder', ['the kidney', 'the stomach', 'the heart'], 'The bladder expands as it fills with urine.') },
+  { id: 'blad-message', ...choiceQ('When the bladder is full, it sends a message to...', 'the brain', ['the heart', 'the lungs', 'the kidneys'], 'It sends a message to the brain that it is full.') },
+  { id: 'ureth-job', ...choiceQ('Which tube carries urine from the bladder out of the body?', 'the urethra', ['the ureters', 'the trachea', 'the oesophagus'], 'The urethra carries urine from the bladder out of the body.') },
+  { id: 'tf-two', ...choiceQ('True or false? In the urinary system we have two kidneys, two ureters, two bladders and two urethrae.', 'False', ['True'], 'False: we have two kidneys and two ureters, but only one bladder and one urethra.') },
+  { id: 'tf-shape', ...choiceQ('True or false? The shape of the kidneys is like that of the heart.', 'False', ['True'], 'False: the kidneys are bean-shaped.') },
+  { id: 'tf-tubes', ...choiceQ('True or false? The ureters and the urethra are tubes.', 'True', ['False'], 'True: they are tubes that carry urine.') },
+  { id: 'tf-stored', ...choiceQ('True or false? The urine is stored in the kidneys.', 'False', ['True'], 'False: the urine is stored in the bladder.') },
+  { id: 'tf-bag', ...choiceQ('True or false? The bladder is a bag that expands.', 'True', ['False'], 'True: the bladder expands as it fills with urine.') },
+  { id: 'sweat-where', ...choiceQ('Where are sweat glands found?', 'throughout the skin', ['inside the kidneys', 'in the lungs', 'in the stomach'], 'Sweat glands are found throughout the skin, also in the soles of the feet and the palms of the hands.') },
+  { id: 'sweat-open', ...choiceQ('The duct of a sweat gland opens onto the skin surface through...', 'a pore', ['a valve', 'a bronchus', 'a vein'], 'The duct opens onto the skin surface through a pore.') },
+  { id: 'sweat-activate', ...choiceQ('What activates the sweat glands?', 'exercise or a hot environment', ['sleeping in the dark', 'drinking milk', 'reading a book'], 'Exercise or exposure to a hot environment raises temperatures and increases the sweat rate.') },
+  { id: 'text-kidney', ...textQ('Write the word: the ______ clean the blood and make the urine.', ['kidneys'], 'The kidneys clean the blood and make the urine.') },
+  { id: 'text-bladder', ...textQ('Write the word: the urine is stored in the ______.', ['bladder'], 'The urine is stored in the bladder.') },
+  { id: 'es-kidney', ...choiceQ('¿Qué significa "kidneys"?', 'riñones', ['vejiga', 'uréteres', 'uretra'], 'Kidneys = riñones.') },
+  { id: 'es-bladder', ...choiceQ('¿Qué significa "bladder"?', 'vejiga', ['riñón', 'uréter', 'uretra'], 'Bladder = vejiga.') },
+  { id: 'es-sweat', ...choiceQ('¿Qué significa "sweat"?', 'sudor', ['orina', 'sangre', 'saliva'], 'Sweat = sudor.') },
+];

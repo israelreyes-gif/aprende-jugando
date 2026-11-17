@@ -1,0 +1,31 @@
+import { choiceQ } from '../../../../exercises/make/choice.js';
+import { textQ } from '../../../../exercises/make/text.js';
+
+export const exercises = [
+  { id: 'sen-what', ...choiceQ('What are the senses?', 'sensors that take in information from around us', ['parts of the heart', 'kinds of bones', 'waste substances'], 'The senses take in information around us so that we perceive the world and interact.') },
+  { id: 'sen-how-many', ...choiceQ('How many primary senses do we have?', 'five', ['three', 'four', 'six'], 'Sight, hearing, smell, taste and touch.') },
+  { id: 'sen-which', ...choiceQ('Which one is NOT one of the five senses?', 'digestion', ['sight', 'hearing', 'touch'], 'The five senses are sight, hearing, smell, taste and touch.') },
+  { id: 'sight-job', ...choiceQ('Which sense allows us to see colours and shapes?', 'sight', ['hearing', 'smell', 'taste'], 'Sight allows us to see colours, shapes and everything around us.') },
+  { id: 'hear-job', ...choiceQ('Which sense enables us to hear sounds?', 'hearing', ['sight', 'touch', 'smell'], 'Hearing enables us to hear the sounds around us.') },
+  { id: 'smell-job', ...choiceQ('Which sense allows us to detect different smells?', 'smell', ['taste', 'sight', 'hearing'], 'Smell allows us to detect different smells.') },
+  { id: 'taste-job', ...choiceQ('Which sense enables us to savour different foods?', 'taste', ['smell', 'touch', 'sight'], 'Taste enables us to savour different foods.') },
+  { id: 'touch-job', ...choiceQ('Which sense makes us able to feel textures and temperatures?', 'touch', ['taste', 'hearing', 'sight'], 'Touch makes us able to feel textures and temperatures.') },
+  { id: 'org-sight', ...choiceQ('Which organ do we use for sight?', 'the eyes', ['the ears', 'the nose', 'the tongue'], 'We use our eyes to see.') },
+  { id: 'org-hear', ...choiceQ('Which organ do we use for hearing?', 'the ears', ['the eyes', 'the nose', 'the skin'], 'We use our ears to hear.') },
+  { id: 'org-smell', ...choiceQ('Which organ do we use for smell?', 'the nose', ['the tongue', 'the eyes', 'the ears'], 'We use our nose to smell.') },
+  { id: 'org-taste', ...choiceQ('Which organ do we use for taste?', 'the tongue', ['the nose', 'the skin', 'the eyes'], 'We use our tongue to taste.') },
+  { id: 'org-touch', ...choiceQ('Which organ do we use for touch?', 'the skin', ['the tongue', 'the ears', 'the nose'], 'We use our skin (for example our hands) to touch.') },
+  { id: 'ex-food', ...choiceQ('I use my ______ to smell the food.', 'nose', ['eyes', 'ears', 'tongue'], 'I use my nose to smell the food.') },
+  { id: 'ex-lemon', ...choiceQ('I use my ______ to taste a lemon.', 'tongue', ['nose', 'ears', 'hands'], 'I use my tongue to taste a lemon.') },
+  { id: 'ex-music', ...choiceQ('I use my ______ to hear the music.', 'ears', ['eyes', 'nose', 'tongue'], 'I use my ears to hear the music.') },
+  { id: 'ex-light', ...choiceQ('I use my ______ to see the traffic light.', 'eyes', ['ears', 'nose', 'tongue'], 'I use my eyes to see the traffic light.') },
+  { id: 'ex-touch', ...choiceQ('I use my ______ to touch a cold glass.', 'hand (skin)', ['eyes', 'ears', 'nose'], 'I use my hand (my skin) to touch and feel the temperature.') },
+  { id: 'text-nose', ...textQ('Write the word: I use my ______ to smell.', ['nose'], 'I use my nose to smell.') },
+  { id: 'text-ears', ...textQ('Write the word: I use my ______ to hear.', ['ears'], 'I use my ears to hear.') },
+  { id: 'text-eyes', ...textQ('Write the word: I use my ______ to see.', ['eyes'], 'I use my eyes to see.') },
+  { id: 'es-sight', ...choiceQ('¿Qué significa "sight"?', 'vista', ['oído', 'olfato', 'gusto'], 'Sight = vista.') },
+  { id: 'es-hearing', ...choiceQ('¿Qué significa "hearing"?', 'oído', ['vista', 'tacto', 'gusto'], 'Hearing = oído.') },
+  { id: 'es-smell', ...choiceQ('¿Qué significa "smell"?', 'olfato', ['gusto', 'tacto', 'vista'], 'Smell = olfato.') },
+  { id: 'es-taste', ...choiceQ('¿Qué significa "taste"?', 'gusto', ['olfato', 'tacto', 'oído'], 'Taste = gusto.') },
+  { id: 'es-touch', ...choiceQ('¿Qué significa "touch"?', 'tacto', ['gusto', 'olfato', 'vista'], 'Touch = tacto.') },
+];

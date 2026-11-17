@@ -1,0 +1,36 @@
+import { choiceQ } from '../../../../exercises/make/choice.js';
+import { orderQ } from '../../../../exercises/make/order.js';
+import { textQ } from '../../../../exercises/make/text.js';
+
+export const exercises = [
+  { id: 'resp-job', ...choiceQ('What is the respiratory system responsible for?', 'the breathing function', ['moving the bones', 'pumping the blood', 'breaking food down'], 'The respiratory system is responsible for the breathing function.') },
+  { id: 'resp-releases', ...choiceQ('Which gas does the respiratory system release?', 'carbon dioxide', ['oxygen', 'water', 'nutrients'], 'It takes in air and releases carbon dioxide.') },
+  { id: 'resp-stages', ...choiceQ('How many stages does breathing have?', 'three', ['two', 'four', 'five'], 'Inhalation, gas exchange and exhalation.') },
+  { id: 'resp-stages-order', ...orderQ('Put the stages of breathing in order:', ['inhalation', 'gas exchange', 'exhalation'], 'Inhalation → gas exchange → exhalation.') },
+  { id: 'resp-elements', ...choiceQ('The respiratory system is made up of the respiratory tract and...', 'the lungs', ['the heart', 'the stomach', 'the bones'], 'The two elements are the respiratory tract and the lungs.') },
+  { id: 'inhal', ...choiceQ('What do we do with the inhalation process?', 'we breathe in air charged with oxygen', ['we breathe out carbon dioxide', 'we swallow food', 'we pump blood'], 'Inhalation = we breathe in air charged with oxygen.') },
+  { id: 'exhal', ...choiceQ('What do we do with the exhalation process?', 'we breathe out carbon dioxide', ['we breathe in oxygen', 'we digest food', 'we make blood'], 'Exhalation = we breathe out carbon dioxide.') },
+  { id: 'inhal-text', ...textQ('Write the word: when we breathe in, it is called ______.', ['inhalation'], 'Breathing in is inhalation.') },
+  { id: 'exhal-text', ...textQ('Write the word: when we breathe out, it is called ______.', ['exhalation'], 'Breathing out is exhalation.') },
+  { id: 'path-order', ...orderQ('Put the way of the air in order:', ['nasal cavity', 'pharynx', 'larynx', 'trachea', 'bronchi', 'lungs'], 'nasal cavity → pharynx → larynx → trachea → bronchi → lungs.') },
+  { id: 'nose-job', ...choiceQ('What happens to the air in the nostrils?', 'it is heated and humidified', ['it is turned into blood', 'it is turned into food', 'it is cut in pieces'], 'In the nostrils the air is heated and humidified.') },
+  { id: 'nose-hairs', ...choiceQ('What do the small hairs in the nose do?', 'they filter the air from dust', ['they smell the food', 'they make sounds', 'they pump air'], 'Small hairs filter the air from dust.') },
+  { id: 'epiglottis', ...choiceQ('What does the epiglottis do?', 'it makes sure food does not go to the lungs', ['it pumps the blood', 'it filters the air from dust', 'it makes the gas exchange'], 'The epiglottis is like a door that opens and closes so that food does not go to the lungs.') },
+  { id: 'epiglottis-shared', ...choiceQ('The epiglottis is shared with which other system?', 'the digestive system', ['the circulatory system', 'the excretory system', 'the locomotor system'], 'It is a membrane shared with the digestive system.') },
+  { id: 'trachea', ...choiceQ('Which tube takes the air down to the bronchi?', 'the trachea', ['the oesophagus', 'the rectum', 'the aorta'], 'The air goes down the trachea.') },
+  { id: 'bronchi', ...choiceQ('What are the two small tubes that connect with the lungs called?', 'bronchi', ['alveoli', 'capillaries', 'valves'], 'Bronchi connect the trachea with our two lungs.') },
+  { id: 'bronchi-text', ...textQ('Write the word: the two small tubes that connect with the lungs are the ______.', ['bronchi'], 'The bronchi connect with our two lungs.') },
+  { id: 'lungs-how-many', ...choiceQ('How many lungs do we have?', 'two', ['one', 'three', 'four'], 'We have two lungs.') },
+  { id: 'alveoli', ...choiceQ('Where does the gas exchange take place?', 'in the alveoli', ['in the larynx', 'in the stomach', 'in the nose'], 'The gas exchange takes place in the alveoli, inside the lungs.') },
+  { id: 'gas-oxy', ...choiceQ('In the gas exchange, oxygen passes from the air to...', 'our blood', ['our stomach', 'our bones', 'our teeth'], 'Oxygen from the air passes to our blood through vessels.') },
+  { id: 'gas-co2', ...choiceQ('In the gas exchange, carbon dioxide returns to...', 'the lungs', ['the stomach', 'the brain', 'the heart'], 'Carbon dioxide returns to the lungs.') },
+  { id: 'diaph-down', ...choiceQ('When we breathe in, the diaphragm...', 'goes down', ['goes up', 'stops', 'breaks'], 'When we breathe in, the diaphragm goes down and the lungs fill with air.') },
+  { id: 'diaph-up', ...choiceQ('When we breathe out, the diaphragm...', 'goes up', ['goes down', 'stops', 'breaks'], 'When we breathe out, the diaphragm goes up.') },
+  { id: 'sm-first', ...choiceQ('What is the first step of the scientific method?', 'ask a question', ['share the results', 'test the hypothesis', 'form a hypothesis'], 'The first step is to ask a question.') },
+  { id: 'sm-order', ...orderQ('Put the steps of the scientific method in order:', ['ask a question', 'gather information', 'form a hypothesis', 'test the hypothesis', 'share the results'], 'Ask a question → gather information → form a hypothesis → test the hypothesis → share the results.') },
+  { id: 'sm-hyp', ...choiceQ('What is a hypothesis?', 'a guess of the answer', ['the results of an experiment', 'a question', 'a kind of tool'], 'Form a hypothesis = guess the answer.') },
+  { id: 'sm-test', ...choiceQ('What do you do to test a hypothesis?', 'an experiment', ['a drawing', 'a song', 'nothing'], 'Test the hypothesis: do an experiment to see if you are right.') },
+  { id: 'es-lungs', ...choiceQ('¿Qué significa "lungs"?', 'pulmones', ['bronquios', 'tráquea', 'corazón'], 'Lungs = pulmones.') },
+  { id: 'es-diaphragm', ...choiceQ('¿Qué significa "diaphragm"?', 'diafragma', ['laringe', 'faringe', 'costilla'], 'Diaphragm = diafragma.') },
+  { id: 'es-trachea', ...choiceQ('¿Qué significa "trachea"?', 'tráquea', ['bronquios', 'laringe', 'esófago'], 'Trachea = tráquea.') },
+];

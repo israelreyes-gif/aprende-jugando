@@ -1,0 +1,31 @@
+import { choiceQ } from '../../../../exercises/make/choice.js';
+import { textQ } from '../../../../exercises/make/text.js';
+
+export const exercises = [
+  { id: 'heart-is', ...choiceQ('What is the heart?', 'a muscle that pumps blood around the body', ['a tube that carries blood', 'a liquid inside the body', 'a kind of blood cell'], 'The heart is a muscle that pumps the blood around the body.') },
+  { id: 'heart-text', ...textQ('Write the word: the heart is a ______ that pumps blood.', ['muscle'], 'The heart is a muscle that pumps blood.') },
+  { id: 'heart-picks-o2', ...choiceQ('Where does blood pick up oxygen?', 'in the lungs', ['in the stomach', 'in the bones', 'in the brain'], 'Blood picks up oxygen from the lungs.') },
+  { id: 'heart-picks-nut', ...choiceQ('Where does blood pick up nutrients?', 'in the small intestine', ['in the lungs', 'in the heart', 'in the skin'], 'Blood picks up nutrients from the small intestine.') },
+  { id: 'systole', ...choiceQ('When the heart contracts, blood flows to the organs. What is this movement called?', 'systole', ['diastole', 'digestion', 'circulation'], 'Systole: the heart contracts and blood flows to the organs.') },
+  { id: 'diastole', ...choiceQ('When the heart expands, blood comes back to the heart. What is this movement called?', 'diastole', ['systole', 'respiration', 'excretion'], 'Diastole: the heart expands and blood comes back from the organs.') },
+  { id: 'systole-text', ...textQ('Write the word: when the heart contracts, it is called ______.', ['systole'], 'Systole = the heart contracts.') },
+  { id: 'chambers-how-many', ...choiceQ('How many chambers does the heart have?', 'four', ['two', 'three', 'six'], 'Two atria and two ventricles: four chambers.') },
+  { id: 'chambers-which', ...choiceQ('Which one is a chamber of the heart?', 'the left ventricle', ['the left artery', 'the right capillary', 'the left lung'], 'The four chambers are the right atrium, the left atrium, the right ventricle and the left ventricle.') },
+  { id: 'chambers-not', ...choiceQ('Which one is NOT a chamber of the heart?', 'the aorta', ['the right atrium', 'the left atrium', 'the right ventricle'], 'The aorta is an artery, not a chamber.') },
+  { id: 'chambers-text', ...textQ('Write the word: the heart has two atria and two ______.', ['ventricles'], 'The heart has two atria and two ventricles.') },
+  { id: 'heart-valves', ...choiceQ('The heart is a complex system of chambers and...', 'valves', ['bones', 'lungs', 'tissues'], 'The heart is a complex system of chambers and valves.') },
+  { id: 'heart-pump', ...choiceQ('The heart works as a...', 'pump', ['filter', 'tube', 'bag'], 'The heart works as a pump.') },
+  { id: 'vessels-are', ...choiceQ('What are blood vessels?', 'tubes where the blood flows', ['chambers of the heart', 'components of blood', 'a kind of cell'], 'Blood flows inside tubes called blood vessels.') },
+  { id: 'vessels-types', ...choiceQ('How many types of blood vessels are there?', 'three', ['two', 'four', 'five'], 'Arteries, veins and capillaries.') },
+  { id: 'artery-job', ...choiceQ('Which blood vessels carry blood from the heart to every part of the body?', 'arteries', ['veins', 'capillaries', 'valves'], 'Arteries carry blood from the heart to the body.') },
+  { id: 'artery-big', ...choiceQ('Which are the biggest blood vessels?', 'arteries', ['veins', 'capillaries', 'platelets'], 'Arteries are the biggest ones.') },
+  { id: 'vein-job', ...choiceQ('Which blood vessels carry blood back to the heart?', 'veins', ['arteries', 'capillaries', 'valves'], 'Veins carry blood back to the heart from the rest of the body.') },
+  { id: 'cap-job', ...choiceQ('Which blood vessels are tiny and connect arteries and veins?', 'capillaries', ['arteries', 'veins', 'ventricles'], 'Capillaries are tiny vessels that connect small veins and arteries.') },
+  { id: 'cap-text', ...textQ('Write the word: ______ are tiny blood vessels.', ['capillaries'], 'Capillaries are tiny blood vessels.') },
+  { id: 'vein-text', ...textQ('Write the word: ______ carry blood back to the heart.', ['veins'], 'Veins carry blood back to the heart.') },
+  { id: 'closed-circuit', ...choiceQ('Together, the blood vessels form a...', 'closed circuit connected through the heart', ['bag of water', 'single tube', 'group of cells'], 'Blood vessels form a closed circuit connected through the heart.') },
+  { id: 'es-artery', ...choiceQ('¿Qué significa "arteries"?', 'arterias', ['venas', 'capilares', 'válvulas'], 'Arteries = arterias.') },
+  { id: 'es-veins', ...choiceQ('¿Qué significa "veins"?', 'venas', ['arterias', 'capilares', 'ventrículos'], 'Veins = venas.') },
+  { id: 'es-atrium', ...choiceQ('¿Qué significa "atrium"?', 'aurícula', ['ventrículo', 'válvula', 'arteria'], 'Atrium = aurícula.') },
+  { id: 'es-ventricle', ...choiceQ('¿Qué significa "ventricle"?', 'ventrículo', ['aurícula', 'válvula', 'vena'], 'Ventricle = ventrículo.') },
+];
