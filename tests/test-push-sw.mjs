@@ -54,4 +54,10 @@ await t('tocar un aviso sin dirección con la app abierta: solo la trae al frent
   const w = makeWorker({ windows: [1] }); await w.run('notificationclick', { notification: { close() {}, data: {} } });
   assert.equal(w.log.focused, 1); assert.equal(w.log.navigated.length, 0); assert.equal(w.opened.length, 0);
 });
+await t('tocar un aviso con una dirección externa: abre la app, nunca esa web', async () => {
+  for (const url of ['https://malo.example/x', '//malo.example', 'javascript:alert(1)', '/otra-app/']) {
+    const w = makeWorker(); await w.run('notificationclick', { notification: { close() {}, data: { url } } });
+    assert.deepEqual(w.opened, ['https://yo.github.io/aprende/'], url);
+  }
+});
 console.log('\n' + ok + ' comprobaciones OK');

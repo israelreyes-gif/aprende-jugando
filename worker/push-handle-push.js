@@ -2,6 +2,7 @@ import { HttpError, json, readJson } from './http.js';
 import { sendToDevices } from './push-send-to.js';
 import { telegramConfigured } from './telegram-send.js';
 import { assertPushTarget } from './auth-scope.js';
+import { cleanPushUrl } from './push-url.js';
 
 const MAX_TITLE = 100;
 const MAX_BODY = 300;
@@ -31,7 +32,8 @@ export async function handlePush(request, env, parts, cors, session) {
   assertPushTarget(session, input.target);
   const message = { title: text(input.title, MAX_TITLE, 'title'), body: text(input.body, MAX_BODY, 'body') };
   if (typeof input.tag === 'string') message.tag = input.tag.slice(0, 60);
-  if (typeof input.url === 'string') message.url = input.url.slice(0, 200);
+  const url = cleanPushUrl(input.url);
+  if (url) message.url = url;
 
   const devices = await findDevices(env.DB, input.target);
   const result = await sendToDevices(env.DB, env, devices, message, { parents: input.target === 'parents' });
