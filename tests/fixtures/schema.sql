@@ -206,3 +206,10 @@ CREATE TABLE IF NOT EXISTS passkey_challenges (
   kind       TEXT NOT NULL,
   created_at INTEGER NOT NULL
 );
+
+-- Enfriamiento de avisos de error: un mismo fallo avisa como mucho una vez cada 15 minutos.
+CREATE TABLE IF NOT EXISTS alert_cooldown (
+  tag       TEXT PRIMARY KEY,
+  last_sent TEXT NOT NULL,
+  skipped   INTEGER NOT NULL DEFAULT 0
+);
