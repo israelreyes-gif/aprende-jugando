@@ -137,6 +137,7 @@ Para inventar un tipo nuevo, regístralo en `js/features/practice/question-types
 Todo ejercicio nuevo cuenta en la zona de padres con la regla del 75 %.
 
 Sciences (4º): un tema por carpeta en `js/content/4-primaria/sciences/` (`cells-tissues-organs`, …), con la lección y las preguntas en inglés; el título del tema va en `topic_titles` (ver arriba). `tests/test-sciences.mjs` comprueba que cada tema carga y que sus preguntas son válidas.
+Sociales (4º): unidad 5 «Conocemos la Prehistoria», en español, un tema por carpeta en `js/content/4-primaria/sociales/` (`prehistoria-paleolitico`, `neolitico`, `edad-metales`, `arte-prehistoria`, `cuevas-animales`). Las actividades abiertas del libro (redactar, debatir, imaginar) y las de mirar láminas no se pueden corregir solas y se dejaron fuera. `tests/test-sociales.mjs` comprueba lo mismo que el de Sciences.
 
 ## Mix de preguntas
 
@@ -300,7 +301,7 @@ Operadores de filtro: `eq neq gt gte lt lte like in is`.
 Las pruebas viven en `tests/` y las ejecuta GitHub solo en cada subida a `main` (`.github/workflows/tests.yml`; el resultado sale en la pestaña **Actions**).
 Para lanzarlas a mano hace falta Node 22 o superior: dentro de `tests/`, `npm install`, `npx playwright install chromium` y `npm test`
 (o `npm test -- ui` para solo las que llevan «ui» en el nombre).
-Corren sobre una copia temporal de la app con temas de prueba (`tests/fixtures/content/`), porque Sociales, Lengua y Sciences aún no tienen temas reales:
+Corren sobre una copia temporal de la app con temas de prueba (`tests/fixtures/content/`), porque Lengua aún no tiene temas reales y Sociales y Sciences se sustituyen por los de prueba al correr la suite (sus temas reales se comprueban con `test-sociales.mjs` y `test-sciences.mjs`):
 cuando los tengan, esos temas de prueba se pueden ir sustituyendo.
 
 ## Privacidad

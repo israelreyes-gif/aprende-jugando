@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '2b6c9688024f';
+const BUILD = '707273158545';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -352,7 +352,22 @@ const FILES = {
   './js/content/4-primaria/sciences/senses/exercises.js': '7f5b700748af',
   './js/content/4-primaria/sciences/senses/index.js': 'aae73edb9e58',
   './js/content/4-primaria/sciences/senses/study.js': '081f681d7a0b',
-  './js/content/4-primaria/sociales/index.js': '95e0433810c6',
+  './js/content/4-primaria/sociales/arte-prehistoria/exercises.js': '7c9a368e593d',
+  './js/content/4-primaria/sociales/arte-prehistoria/index.js': 'aae73edb9e58',
+  './js/content/4-primaria/sociales/arte-prehistoria/study.js': 'a5bd17067ad9',
+  './js/content/4-primaria/sociales/cuevas-animales/exercises.js': '08322eb9ef9a',
+  './js/content/4-primaria/sociales/cuevas-animales/index.js': 'aae73edb9e58',
+  './js/content/4-primaria/sociales/cuevas-animales/study.js': '320a478a5470',
+  './js/content/4-primaria/sociales/edad-metales/exercises.js': '9f751d644931',
+  './js/content/4-primaria/sociales/edad-metales/index.js': 'aae73edb9e58',
+  './js/content/4-primaria/sociales/edad-metales/study.js': 'd200e803f541',
+  './js/content/4-primaria/sociales/index.js': '05d9cc9c18f8',
+  './js/content/4-primaria/sociales/neolitico/exercises.js': '5c89dbe9cc85',
+  './js/content/4-primaria/sociales/neolitico/index.js': 'aae73edb9e58',
+  './js/content/4-primaria/sociales/neolitico/study.js': 'da1a68dc95ec',
+  './js/content/4-primaria/sociales/prehistoria-paleolitico/exercises.js': 'd18f50976048',
+  './js/content/4-primaria/sociales/prehistoria-paleolitico/index.js': 'aae73edb9e58',
+  './js/content/4-primaria/sociales/prehistoria-paleolitico/study.js': 'a1a4373ea94b',
   './js/content/courses.js': '2e4725a6b44f',
   './js/content/mixes.js': '75ebb1dd9196',
   './js/content/registry.js': 'ca5f630bb278',

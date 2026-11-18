@@ -1,0 +1,35 @@
+import { choiceQ } from '../../../../exercises/make/choice.js';
+import { orderQ } from '../../../../exercises/make/order.js';
+import { textQ } from '../../../../exercises/make/text.js';
+
+export const exercises = [
+  { id: 'met-hace', ...choiceQ('¿Hace cuántos años descubrieron los metales las personas, según el libro?', 'hace unos 7.000 años', ['hace unos 5.000 años', 'hace unos 10.000 años', 'hace unos 5 millones de años'], 'Hace unos 7.000 años, las personas descubrieron los metales.') },
+  { id: 'met-porque', ...choiceQ('¿Por qué se llama Edad de los Metales a este periodo?', 'porque fundían y forjaban metales para fabricar utensilios', ['porque tallaban piedras', 'porque cultivaban la tierra', 'porque pintaban en las cuevas'], 'Empezaron a fundir y forjar los metales para fabricar distintos utensilios.') },
+  { id: 'met-ventaja', ...choiceQ('¿Qué se dieron cuenta de que podían conseguir con los metales?', 'objetos muy resistentes', ['objetos más frágiles', 'objetos de barro', 'objetos de hueso'], 'Con los metales conseguían objetos muy resistentes.') },
+  { id: 'met-fundir', ...choiceQ('¿Qué hacían con los metales para fabricar utensilios?', 'los fundían y los forjaban', ['los cultivaban', 'los tejían', 'los cazaban'], 'Empezaron a fundir y forjar los metales.') },
+  { id: 'met-primero', ...choiceQ('¿Cuál fue el primer metal que utilizaron?', 'el cobre', ['el bronce', 'el hierro', 'el oro'], 'El primer metal que utilizaron fue el cobre.') },
+  { id: 'met-segundo', ...choiceQ('¿Qué metal usaron después del cobre?', 'el bronce', ['el hierro', 'la plata', 'el estaño'], 'Después del cobre, usaron el bronce.') },
+  { id: 'met-ultimo', ...choiceQ('¿Qué metal utilizaron finalmente?', 'el hierro', ['el cobre', 'el bronce', 'el oro'], 'Finalmente utilizaron el hierro.') },
+  { id: 'met-orden', ...orderQ('Ordena los metales en el orden en el que los utilizaron:', ['cobre', 'bronce', 'hierro'], 'Primero el cobre, más tarde el bronce y finalmente el hierro.') },
+  { id: 'met-armas', ...choiceQ('¿Cuáles de estos objetos son armas?', 'espadas y hachas', ['broches y brazaletes', 'azadas y hoces', 'vasijas y ollas'], 'Las espadas y las hachas son armas.') },
+  { id: 'met-adornos', ...choiceQ('¿Cuáles de estos objetos son adornos?', 'broches y brazaletes', ['espadas y hachas', 'azadas y hoces', 'arpones y agujas'], 'Los broches y los brazaletes son adornos.') },
+  { id: 'met-herram', ...choiceQ('¿Cuáles de estos objetos son herramientas de metal?', 'azadas y hoces', ['broches y brazaletes', 'espadas y hachas', 'collares de conchas'], 'Las azadas y las hoces son herramientas.') },
+  { id: 'met-resistentes', ...choiceQ('¿Cómo eran las herramientas de metal, comparadas con las de piedra del Neolítico?', 'más resistentes', ['más frágiles', 'más pesadas y blandas', 'iguales'], 'Eran más resistentes que las que hacían con piedra en el Neolítico.') },
+  { id: 'met-minas', ...choiceQ('Al principio, ¿dónde trabajaban con metales?', 'en las aldeas cercanas a las minas', ['en las cuevas', 'en todas partes', 'en los barcos'], 'Solo trabajaban con metales en las aldeas cercanas a las minas.') },
+  { id: 'met-crecen', ...choiceQ('¿En qué se convirtieron esas aldeas con el tiempo?', 'en poblados y, más tarde, en ciudades', ['en cuevas', 'en tribus nómadas', 'en minas'], 'Fueron creciendo y se convirtieron en poblados y, más tarde, en ciudades.') },
+  { id: 'met-empalizadas', ...choiceQ('¿Cómo estaban protegidas las ciudades de la Edad de los Metales?', 'con empalizadas', ['con muros de adobe', 'con fuego', 'con cuevas'], 'Estaban protegidas por empalizadas.') },
+  { id: 'met-miles', ...choiceQ('¿Cuántas personas podían habitar algunas ciudades?', 'miles de personas', ['unas pocas familias', 'solo diez personas', 'ninguna'], 'Algunas ciudades estaban habitadas por miles de personas.') },
+  { id: 'met-jefe', ...choiceQ('¿Quién gobernaba cada ciudad?', 'un jefe', ['una tribu entera', 'un comerciante', 'un arqueólogo'], 'Cada ciudad estaba gobernada por un jefe.') },
+  { id: 'met-comercio-porque', ...choiceQ('¿Por qué surgió el comercio?', 'porque los metales no abundan en todos los lugares y se intercambiaban', ['porque se inventó la escritura', 'porque se acabaron las minas', 'porque todos tenían los mismos metales'], 'Los metales se intercambiaban entre las zonas ricas en metal y las demás.') },
+  { id: 'met-comerciantes', ...textQ('Escribe el nombre de las personas que se dedicaban al comercio:', ['comerciantes', 'comerciante'], 'Con el comercio aparecieron los comerciantes.') },
+  { id: 'met-ricas', ...choiceQ('¿Qué ciudades se enriquecieron?', 'las situadas en las rutas comerciales', ['las situadas en cuevas', 'las más pequeñas', 'las que no tenían metales ni comercio'], 'Las ciudades situadas en las rutas comerciales se enriquecieron.') },
+  { id: 'met-luchas', ...choiceQ('¿Por qué comenzaron las luchas?', 'para controlar las zonas más ricas', ['para conseguir pieles', 'para cazar mamuts', 'para pintar cuevas'], 'Comenzaron las luchas para controlar las zonas más ricas.') },
+  { id: 'met-guerreros', ...choiceQ('¿Qué personas se especializaron en defender a la población?', 'los guerreros', ['los comerciantes', 'los agricultores', 'los ceramistas'], 'Algunas personas se convirtieron en guerreros.') },
+  { id: 'met-inventos', ...choiceQ('¿Cuál de estos NO es un invento de la Edad de los Metales?', 'el telar', ['el arado', 'la vela', 'la rueda'], 'El telar es del Neolítico.') },
+  { id: 'met-arado-uso', ...choiceQ('¿Qué permitió el arado?', 'labrar más tierra en menos tiempo', ['navegar con el viento', 'moler el grano', 'cocer el barro'], 'El arado se utilizaba con ayuda de animales y permitía labrar más tierra en menos tiempo.') },
+  { id: 'met-arado-ayuda', ...choiceQ('¿Con la ayuda de qué se utilizaba el arado?', 'de animales', ['del viento', 'del fuego', 'de la rueda'], 'Se utilizaba con la ayuda de animales.') },
+  { id: 'met-vela', ...choiceQ('¿Para qué sirvió la vela?', 'para que los barcos aprovecharan la fuerza del viento', ['para labrar la tierra', 'para transportar carros', 'para fundir metales'], 'Facilitó a los barcos aprovechar la fuerza del viento para desplazarse.') },
+  { id: 'met-rueda', ...choiceQ('¿Qué mejoró la rueda?', 'el transporte por tierra', ['la pesca', 'el cultivo de trigo', 'la caza con arpones'], 'Permitió construir carros para trasladar a personas y mercancías pesadas.') },
+  { id: 'met-rueda-torno', ...choiceQ('¿Qué invento facilitó la rueda para hacer piezas de cerámica?', 'el torno', ['el arado', 'la vela', 'el telar'], 'La rueda también facilitó el invento del torno.') },
+  { id: 'met-comercio-inv', ...choiceQ('¿Qué dos inventos favorecieron el comercio, según el libro?', 'la vela y la rueda', ['el arado y el telar', 'la hoz y el molino', 'el fuego y el sílex'], 'La vela mejoró el transporte por mar y la rueda por tierra.') },
+];
