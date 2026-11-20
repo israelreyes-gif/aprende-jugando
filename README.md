@@ -188,7 +188,7 @@ El Worker las descubre solo (hasta 1 minuto después) y no hay que tocarlo.
 
 ## Puntos y niveles
 
-Los puntos **no se guardan**: se calculan siempre a partir de lo que ya hay en la base de datos (sesiones, respuestas y temas estudiados).
+Los puntos **no se guardan**: se calculan siempre a partir de lo que ya hay en la base de datos (sesiones, respuestas, temas estudiados y retos terminados).
 Así cuentan también las sesiones antiguas y, si cambias una regla, se recalcula todo sin tocar la base de datos.
 
 | Qué | Puntos |
@@ -198,8 +198,11 @@ Así cuentan también las sesiones antiguas y, si cambias una regla, se recalcul
 | Tema estudiado | +10 |
 | Bonus al terminar una sesión (ejercicios o reto completo) en positivo | +5 |
 | Bonus al terminar una sesión en negativo | −5 |
+| **Racha**: reto que acaba en positivo | + los días de racha de ese día (hoy incluido) |
 
 El reto completo cuenta como **una sola** sesión (un solo bonus). El total nunca baja de 0.
+
+**Bonus de racha**: si un reto termina con puntos positivos, suma además tantos puntos como días de racha llevaba ese día. Ejemplo: reto del día 10 con +7 → 17; al día siguiente, reto con −9 → −9 (sin bonus); al otro, reto del día 12 con +11 → 23. La racha usa las mismas reglas que la insignia (un día de cortesía por semana; el segundo día sin reto la pone a 0) y se calcula con los retos terminados (`reto_diario`), por el día del reto. Cuenta con carácter retroactivo: al estar los puntos calculados sobre el historial, los retos ya hechos también lo reciben. Solo el reto lo lleva (no los ejercicios ni el mix). Está en `streakBonus` del resumen, en `streak-by-day.js` (app) y `stats-streak.js` (Worker, copia), y lo comprueba `tests/test-streak-points.mjs`.
 Las reglas están en `features/points/rules.js` y los niveles en `features/points/levels.js`:
 
 | Nivel | Nombre (chico) | Nombre (chica) | Puntos |

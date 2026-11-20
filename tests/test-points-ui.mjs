@@ -90,21 +90,21 @@ pushes.length = 0;
 await visit('#/p/alex/c/4-primaria/reto');
 for (let i = 0; i < 10; i++) await answer(i < 8);
 await sleep(300); await settle(); await sleep(100);
-assert.ok(q('.result__score')); assert.equal(q('.points-burst__number').textContent, '+11'); assert.match(q('.points-burst').textContent, /8 aciertos\+8/); assert.match(q('.points-burst').textContent, /2 fallos−2/); assert.match(q('.points-burst').textContent, /⭐ Bonus\+5/); assert.match(q('.points-burst').textContent, new RegExp(`Total ahora${before + 11} puntos`)); ok(`reto 8/10: "+11" (8 − 2 + bonus 5, un solo bonus por todo el reto) · total ${before + 11}`);
+assert.ok(q('.result__score')); assert.equal(q('.points-burst__number').textContent, '+12'); assert.match(q('.points-burst').textContent, /8 aciertos\+8/); assert.match(q('.points-burst').textContent, /2 fallos−2/); assert.match(q('.points-burst').textContent, /⭐ Bonus\+5/); assert.match(q('.points-burst').textContent, /🔥 Racha de 1 día\+1/); assert.match(q('.points-burst').textContent, new RegExp(`Total ahora${before + 12} puntos`)); ok(`reto 8/10: "+12" (8 − 2 + bonus 5, un solo bonus por todo el reto, + racha de 1 día) · total ${before + 12}`);
 if (celebration()) await closeCelebration();
-assert.match(pushes[0].body, /8 de 10 \(80 %\) ✅ · \+11 puntos/); ok('el aviso del reto a los padres incluye "+11 puntos"');
+assert.match(pushes[0].body, /8 de 10 \(80 %\) ✅ · \+12 puntos/); ok('el aviso del reto a los padres incluye "+12 puntos" (con la racha)');
 
 // 6) Lista de niveles
 await visit('#/p/alex/levels');
 assert.equal(qa('.level-row').length, 20); assert.deepEqual(qa('.level-row__min').map((e) => e.textContent.replace(' ◀', '')), ['0', '50', '120', '220', '350', '520', '750', '1.050', '1.450', '2.000', '2.700', '3.500', '4.400', '5.400', '6.500', '7.700', '9.000', '10.500', '12.200', '14.000']);
-const cur = qa('.level-row--current'); assert.equal(cur.length, 1); const lvNow = (await import('../js/features/points/levels.js')).levelFor(before + 11); assert.match(cur[0].textContent, new RegExp(`${lvNow.n} · ${lvNow.name}`)); assert.equal(qa('.level-row--done').length, lvNow.n - 1); assert.ok(q('a.icon-btn[href="#/p/alex"]')); ok('pantalla "Mis niveles": 10 filas con sus puntos (1.050, 2.000…), el actual marcado y los anteriores en gris');
+const cur = qa('.level-row--current'); assert.equal(cur.length, 1); const lvNow = (await import('../js/features/points/levels.js')).levelFor(before + 12); assert.match(cur[0].textContent, new RegExp(`${lvNow.n} · ${lvNow.name}`)); assert.equal(qa('.level-row--done').length, lvNow.n - 1); assert.ok(q('a.icon-btn[href="#/p/alex"]')); ok('pantalla "Mis niveles": 10 filas con sus puntos (1.050, 2.000…), el actual marcado y los anteriores en gris');
 
 // 7) Zona de padres
 await visit('#/parents');
-const row = q('a.row-card'); assert.match(row.querySelector('.row-card__points').textContent, new RegExp(`${before + 11}.*Nivel ${lvNow.n}`)); ok('lista de perfiles: puntos y nivel de Alex a la derecha');
+const row = q('a.row-card'); assert.match(row.querySelector('.row-card__points').textContent, new RegExp(`${before + 12}.*Nivel ${lvNow.n}`)); ok('lista de perfiles: puntos y nivel de Alex a la derecha');
 await visit('#/parents/alex');
 const sec = q('.level-card'); assert.ok(sec); assert.equal(q('a.level-card'), null); assert.match(qa('.stat-chip').map((c) => c.textContent).join('|'), /\+\d+Hoy/); ok('estadísticas de Alex: tarjeta de nivel (sin enlace) y chips de hoy / semana');
-const lines = qa('.points-card .points-line').map((l) => l.textContent); assert.ok(lines.some((l) => /Aciertos/.test(l))); assert.ok(lines.some((l) => /Fallos/.test(l))); assert.ok(lines.some((l) => /Bonus/.test(l))); assert.ok(lines.some((l) => /Temas estudiados \(5\)\+50/.test(l))); assert.match(lines.at(-1), new RegExp(`Total${before + 11}`)); ok('desglose: aciertos, fallos, bonus, temas estudiados (5 → +50) y total');
+const lines = qa('.points-card .points-line').map((l) => l.textContent); assert.ok(lines.some((l) => /Aciertos/.test(l))); assert.ok(lines.some((l) => /Fallos/.test(l))); assert.ok(lines.some((l) => /Bonus/.test(l))); assert.ok(lines.some((l) => /Temas estudiados \(5\)\+50/.test(l))); assert.match(lines.at(-1), new RegExp(`Total${before + 12}`)); ok('desglose: aciertos, fallos, bonus, temas estudiados (5 → +50) y total');
 assert.equal(qa('.points-days__col').length, 7); assert.equal(qa('.points-days__col--today').length, 1); ok('gráfica de los últimos 7 días (hoy resaltado)');
 assert.equal(errors.filter((e) => !/Experimental/.test(e)).length, 0, errors.join('\n')); ok('sin errores');
 console.log('\n' + steps + ' comprobaciones OK'); process.exit(0);

@@ -14,10 +14,11 @@ for (let i = 0; i < 400; i++) {
   sessions.push({ id: kind === 'practice' ? `s${i}` : `${kind}${group}:${['mates', 'ingles'][i % 2]}:t${i % 5}`, kind, correct: Math.floor(rnd() * (total + 1)), total, finished_at: new Date(Date.UTC(2026, 8, 1 + (i % 60), Math.floor(rnd() * 24), 30)).toISOString() });
 }
 for (let i = 0; i < 20; i++) studied.push({ completed_at: new Date(Date.UTC(2026, 8, 1 + i, 23, 59)).toISOString() });
-const client = summarizePoints({ sessions, studied }); const server = summarizePointsJson({ sessions, studied });
-assert.deepEqual({ ...server, byDay: new Map(Object.entries(server.byDay)) }, client); console.log('✓ el cálculo del Worker coincide con el de la app (400 sesiones, retos y mixes agrupados, 20 temas)');
+const retos = [...new Set(sessions.filter((x) => x.kind === 'reto').map((x) => x.id.split(':')[0]))].map((id, i) => ({ id, day: `2026-09-${String(1 + (i % 28)).padStart(2, '0')}` }));
+const client = summarizePoints({ sessions, studied, retos }); const server = summarizePointsJson({ sessions, studied, retos });
+assert.deepEqual({ ...server, byDay: new Map(Object.entries(server.byDay)) }, client); console.log('✓ el cálculo del Worker coincide con el de la app (400 sesiones, retos con racha y mixes agrupados, 20 temas)');
 sessions.push({ id: 'x', kind: 'practice', correct: 0, total: 5, finished_at: 'no-es-fecha' });
-assert.deepEqual({ ...summarizePointsJson({ sessions, studied }), byDay: 0 }, { ...summarizePoints({ sessions, studied }), byDay: 0 }); console.log('✓ igual con una fecha rota');
+assert.deepEqual({ ...summarizePointsJson({ sessions, studied, retos }), byDay: 0 }, { ...summarizePoints({ sessions, studied, retos }), byDay: 0 }); console.log('✓ igual con una fecha rota');
 assert.equal(summarizePointsJson({ sessions: [], studied: [] }).total, 0); console.log('✓ sin datos: 0');
 
 // Ruta: permisos y datos

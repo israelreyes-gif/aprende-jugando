@@ -7,9 +7,9 @@ const MAX_TOPIC = 60;
 const short = (text) => (text.length > MAX_TOPIC ? `${text.slice(0, MAX_TOPIC - 1)}…` : text);
 
 /** Resumen de la nota: { low, score, points } con score = "7 de 8 (88 %)" y points = "+8 puntos". */
-function grade(correct, total) {
+function grade(correct, total, streakBonus = 0) {
   const pct = Math.round((correct * 100) / total);
-  return { low: pct < REINFORCE_BELOW, score: `${correct} de ${total} (${pct} %)`, points: pointsText(sessionPoints(correct, total).total) };
+  return { low: pct < REINFORCE_BELOW, score: `${correct} de ${total} (${pct} %)`, points: pointsText(sessionPoints(correct, total).total + streakBonus) };
 }
 
 const countCorrect = (results) => results.filter((r) => r.correct).length;
@@ -25,9 +25,9 @@ export function practiceMessage({ name, topicTitle, subjectName, results }) {
     : { title: `${name} ha practicado`, body: `${detail} ✅ · ${points}` };
 }
 
-/** Aviso al terminar el reto del día. */
-export function retoMessage({ name, answers }) {
-  const { low, score, points } = grade(countCorrect(answers), answers.length);
+/** Aviso al terminar el reto del día. streakBonus: los puntos de racha que suma si acaba en positivo. */
+export function retoMessage({ name, answers, streakBonus = 0 }) {
+  const { low, score, points } = grade(countCorrect(answers), answers.length, streakBonus);
   return { title: `${name} ha hecho el reto`, body: low ? `${score} ⚠️ Necesita refuerzo · ${points}` : `${score} ✅ · ${points}` };
 }
 

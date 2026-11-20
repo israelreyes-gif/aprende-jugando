@@ -1,6 +1,7 @@
 import { listSessions } from '../../data/practice.repo.js';
 import { listStudied } from '../../data/study.repo.js';
 import { api } from '../../core/api.js';
+import { listFinishedRetos } from '../../data/reto/list-finished-retos.js';
 import { summarizePoints } from './summarize-points.js';
 
 /** Puntos de un perfil, calculados con sus sesiones y temas estudiados. Lanza error si no se puede leer. */
@@ -12,8 +13,8 @@ export async function loadPoints(profileId) {
     if (err.code === 'auth') throw err;
     // Worker sin esta ruta todavía (o fallo): se calcula aquí con las sesiones, como antes
   }
-  const [sessions, studied] = await Promise.all([listSessions(profileId), listStudied(profileId)]);
-  return summarizePoints({ sessions, studied });
+  const [sessions, studied, retos] = await Promise.all([listSessions(profileId), listStudied(profileId), listFinishedRetos(profileId)]);
+  return summarizePoints({ sessions, studied, retos });
 }
 
 /** Igual, pero devuelve null si no se pudo leer (para pantallas que funcionan sin los puntos). */

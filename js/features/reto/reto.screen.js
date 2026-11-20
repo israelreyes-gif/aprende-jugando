@@ -13,6 +13,7 @@ import { reportPoints } from '../points/ui/report-points.js';
 import { sessionPoints } from '../points/session-points.js';
 import { notifyParents } from '../push/parent-alerts/notify-parents.js';
 import { retoMessage } from '../push/parent-alerts/parent-messages.js';
+import { loadStreak } from './load-streak.js';
 import { answersSaver } from './answers-saver.js';
 import { loadRetoStatus } from './reto-status.js';
 import { loadRetoTopics } from './load-reto-topics.js';
@@ -93,8 +94,11 @@ export async function retoScreen({ pid, cid }) {
       );
       return;
     }
-    if (answers.length) notifyParents(retoMessage({ name: profile.name, answers }));
-    const result = sessionPoints(answers.filter((a) => a.correct).length, answers.length);
+    // Si el reto acaba en positivo, suma además tantos puntos como días de racha lleva (con hoy incluido).
+    const base = sessionPoints(answers.filter((a) => a.correct).length, answers.length);
+    const streakBonus = answers.length && base.total > 0 ? await loadStreak(profile.id) : 0;
+    const result = { ...base, streakBonus, total: base.total + streakBonus };
+    if (answers.length) notifyParents(retoMessage({ name: profile.name, answers, streakBonus }));
     const burst = answers.length ? pointsBurst({ result }) : null;
     await showResult(answers, burst?.node);
     if (burst) reportPoints({ profile, delta: result.total, queued: false, burst });

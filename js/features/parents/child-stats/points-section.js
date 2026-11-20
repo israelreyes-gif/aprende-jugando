@@ -17,6 +17,7 @@ export function pointsSection(points, today, gender) {
     { label: '✅ Aciertos', value: signed(points.right), tone: 'pos' },
     { label: '❌ Fallos', value: signed(-points.wrong), tone: points.wrong ? 'neg' : null },
     { label: '⭐ Bonus de sesiones', value: signed(points.bonus), tone: points.bonus > 0 ? 'pos' : points.bonus < 0 ? 'neg' : null },
+    ...(points.streakBonus ? [{ label: '🔥 Bonus de racha', value: signed(points.streakBonus), tone: 'pos' }] : []),
     { label: `📚 Temas estudiados (${points.studied})`, value: signed(points.studiedPts), tone: 'pos' },
     { label: 'Total', value: formatNumber(points.total), tone: 'total' },
   ];

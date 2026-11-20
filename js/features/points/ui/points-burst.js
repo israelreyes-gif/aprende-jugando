@@ -11,7 +11,7 @@ const TEXTS = {
 
 /**
  * Bloque de puntos de una sesión (ejercicios o reto): mochila, cifra grande, mensaje y desglose.
- * result: lo que devuelve sessionPoints(). Devuelve { node, setTotal(total) }: el total se rellena cuando se conoce.
+ * result: lo que devuelve sessionPoints() (en el reto, con streakBonus: la racha de hoy, ya sumada al total). Devuelve { node, setTotal(total) }: el total se rellena cuando se conoce.
  */
 export function pointsBurst({ result }) {
   const tone = result.total > 0 ? 'up' : result.total < 0 ? 'down' : 'even';
@@ -20,6 +20,7 @@ export function pointsBurst({ result }) {
     { label: `${result.wrong} ${result.wrong === 1 ? 'fallo' : 'fallos'}`, value: signed(-result.wrong), tone: result.wrong ? 'neg' : null },
   ];
   if (result.bonus) lines.push({ label: '⭐ Bonus', value: signed(result.bonus), tone: result.bonus > 0 ? 'pos' : 'neg' });
+  if (result.streakBonus) lines.push({ label: `🔥 Racha de ${result.streakBonus} ${result.streakBonus === 1 ? 'día' : 'días'}`, value: signed(result.streakBonus), tone: 'pos' });
 
   const lines$ = pointsLines(lines);
   const totalValue = h('span', { class: 'points-line__value' }, '…');

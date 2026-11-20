@@ -91,7 +91,7 @@ pushes.length = 0;
 await visit('#/p/alex/c/4-primaria/reto');
 for (let i = 0; i < 10; i++) await answer(i < 7);
 await sleep(150); await settle(); assert.ok(q('.result__score'));
-assert.equal(pushes.length, 1); assert.deepEqual({ t: pushes[0].title, b: pushes[0].body }, { t: 'Alex ha hecho el reto', b: '7 de 10 (70 %) ⚠️ Necesita refuerzo · +9 puntos' }); ok('reto 7/10: un solo aviso con la nota global y ⚠️ por estar bajo el 75 %');
+assert.equal(pushes.length, 1); assert.deepEqual({ t: pushes[0].title, b: pushes[0].body }, { t: 'Alex ha hecho el reto', b: '7 de 10 (70 %) ⚠️ Necesita refuerzo · +10 puntos' }); ok('reto 7/10 (+9 y +1 de racha): un solo aviso con la nota global y ⚠️ por estar bajo el 75 %');
 await visit('#/p/alex/c/4-primaria/reto'); await sleep(50); assert.equal(pushes.length, 1); ok('volver a entrar al reto terminado no repite el aviso');
 
 // 7) Zona de padres: campanita

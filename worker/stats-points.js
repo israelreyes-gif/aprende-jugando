@@ -13,9 +13,10 @@ export async function handleStatsPoints(request, env, parts, cors, session) {
   if (!profileId) throw new HttpError(400, 'Falta profile_id');
   if (session.owner !== PARENT && session.owner !== profileId) throw new HttpError(403, 'Operación no permitida');
 
-  const [sessions, studied] = await Promise.all([
+  const [sessions, studied, retos] = await Promise.all([
     env.DB.prepare('SELECT id, kind, correct, total, finished_at FROM practice_sessions WHERE profile_id = ?').bind(profileId).all(),
     env.DB.prepare('SELECT completed_at FROM study_progress WHERE profile_id = ?').bind(profileId).all(),
+    env.DB.prepare('SELECT id, day FROM reto_diario WHERE profile_id = ? AND finished_at IS NOT NULL').bind(profileId).all(),
   ]);
-  return json(summarizePointsJson({ sessions: sessions.results, studied: studied.results }), 200, cors);
+  return json(summarizePointsJson({ sessions: sessions.results, studied: studied.results, retos: retos.results }), 200, cors);
 }
