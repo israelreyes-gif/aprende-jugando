@@ -17,6 +17,7 @@
 import { HttpError, assertBodySize, corsHeaders, errorResponse, json, safeEqual } from './http.js';
 import { loadSchema } from './schema.js';
 import { assertPushEndpoints } from './push-endpoint.js';
+import { assertProfileIds } from './profile-id.js';
 import { handleDelete, handleGet, handlePatch, handlePost } from './handlers.js';
 import { handlePush } from './push-handle-push.js';
 import { runReminders } from './reminder-run.js';
@@ -81,6 +82,10 @@ export default {
       const id = parts[2];
       const params = url.searchParams;
       await enforceScope(env.DB, session, request.method, table, params, id, request);
+      if (table.name === 'profiles' && (request.method === 'POST' || request.method === 'PATCH')) {
+        const sent = await request.clone().json().catch(() => null);
+        assertProfileIds(Array.isArray(sent) ? sent : sent ? [sent] : []);
+      }
       if (table.name === 'push_devices' && (request.method === 'POST' || request.method === 'PATCH')) {
         const sent = await request.clone().json().catch(() => null);
         assertPushEndpoints(Array.isArray(sent) ? sent : sent ? [sent] : [], env);
