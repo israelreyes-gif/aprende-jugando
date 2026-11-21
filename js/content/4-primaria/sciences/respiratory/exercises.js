@@ -1,6 +1,7 @@
 import { choiceQ } from '../../../../exercises/make/choice.js';
 import { orderQ } from '../../../../exercises/make/order.js';
 import { textQ } from '../../../../exercises/make/text.js';
+import { respiratoryFigure } from './figures.js';
 
 export const exercises = [
   { id: 'resp-job', ...choiceQ('What is the respiratory system responsible for?', 'the breathing function', ['moving the bones', 'pumping the blood', 'breaking food down'], 'The respiratory system is responsible for the breathing function.') },
@@ -33,4 +34,21 @@ export const exercises = [
   { id: 'es-lungs', ...choiceQ('¿Qué significa "lungs"?', 'pulmones', ['bronquios', 'tráquea', 'corazón'], 'Lungs = pulmones.') },
   { id: 'es-diaphragm', ...choiceQ('¿Qué significa "diaphragm"?', 'diafragma', ['laringe', 'faringe', 'costilla'], 'Diaphragm = diafragma.') },
   { id: 'es-trachea', ...choiceQ('¿Qué significa "trachea"?', 'tráquea', ['bronquios', 'laringe', 'esófago'], 'Trachea = tráquea.') },
+  { id: 'resp-what-1', ...choiceQ("Look at the diagram. What is number 1?", "the nose", ["the pharynx", "the trachea", "the diaphragm"], "Number 1 is the nose.", { visual: respiratoryFigure }) },
+  { id: 'resp-what-2', ...choiceQ("Look at the diagram. What is number 2?", "the pharynx", ["the larynx", "the bronchi", "the nose"], "Number 2 is the pharynx.", { visual: respiratoryFigure }) },
+  { id: 'resp-what-3', ...choiceQ("Look at the diagram. What is number 3?", "the larynx", ["the trachea", "the lungs", "the pharynx"], "Number 3 is the larynx.", { visual: respiratoryFigure }) },
+  { id: 'resp-what-4', ...choiceQ("Look at the diagram. What is number 4?", "the trachea", ["the bronchi", "the diaphragm", "the larynx"], "Number 4 is the trachea.", { visual: respiratoryFigure }) },
+  { id: 'resp-what-5', ...choiceQ("Look at the diagram. What is number 5?", "the bronchi", ["the lungs", "the nose", "the trachea"], "Number 5 is the bronchi.", { visual: respiratoryFigure }) },
+  { id: 'resp-what-6', ...choiceQ("Look at the diagram. What is number 6?", "the lungs", ["the diaphragm", "the pharynx", "the bronchi"], "Number 6 is the lungs.", { visual: respiratoryFigure }) },
+  { id: 'resp-what-7', ...choiceQ("Look at the diagram. What is number 7?", "the diaphragm", ["the nose", "the larynx", "the lungs"], "Number 7 is the diaphragm.", { visual: respiratoryFigure }) },
+  { id: 'resp-which-1', ...choiceQ("Look at the diagram. Which number is the nose?", "1", ["2", "4", "7"], "Number 1 is the nose.", { visual: respiratoryFigure }) },
+  { id: 'resp-which-2', ...choiceQ("Look at the diagram. Which number is the pharynx?", "2", ["3", "5", "1"], "Number 2 is the pharynx.", { visual: respiratoryFigure }) },
+  { id: 'resp-which-3', ...choiceQ("Look at the diagram. Which number is the larynx?", "3", ["4", "6", "2"], "Number 3 is the larynx.", { visual: respiratoryFigure }) },
+  { id: 'resp-which-4', ...choiceQ("Look at the diagram. Which number is the trachea?", "4", ["5", "7", "3"], "Number 4 is the trachea.", { visual: respiratoryFigure }) },
+  { id: 'resp-which-5', ...choiceQ("Look at the diagram. Which number is the bronchi?", "5", ["6", "1", "4"], "Number 5 is the bronchi.", { visual: respiratoryFigure }) },
+  { id: 'resp-which-6', ...choiceQ("Look at the diagram. Which number is the lungs?", "6", ["7", "2", "5"], "Number 6 is the lungs.", { visual: respiratoryFigure }) },
+  { id: 'resp-which-7', ...choiceQ("Look at the diagram. Which number is the diaphragm?", "7", ["1", "3", "6"], "Number 7 is the diaphragm.", { visual: respiratoryFigure }) },
+  { id: 'resp-text-4', ...textQ("Look at the diagram. Write the word: number 4 is the ______.", ["trachea"], "Number 4 is the trachea.", { visual: respiratoryFigure }) },
+  { id: 'resp-text-7', ...textQ("Look at the diagram. Write the word: number 7 is the ______.", ["diaphragm"], "Number 7 is the diaphragm.", { visual: respiratoryFigure }) },
+  { id: 'resp-text-5', ...textQ("Look at the diagram. Write the word: number 5 is the ______.", ["bronchi", "bronchus"], "Number 5 is the bronchi.", { visual: respiratoryFigure }) },
 ];

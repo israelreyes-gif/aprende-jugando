@@ -1,6 +1,7 @@
 import { choiceQ } from '../../../../exercises/make/choice.js';
 import { orderQ } from '../../../../exercises/make/order.js';
 import { textQ } from '../../../../exercises/make/text.js';
+import { excretoryFigure } from './figures.js';
 
 export const exercises = [
   { id: 'exc-job', ...choiceQ('What does the excretory system do?', 'It removes the waste substances from the body', ['It makes us breathe', 'It moves our bones', 'It pumps the blood'], 'The excretory system helps to remove the waste substances from all the processes of the body.') },
@@ -34,4 +35,15 @@ export const exercises = [
   { id: 'es-kidney', ...choiceQ('¿Qué significa "kidneys"?', 'riñones', ['vejiga', 'uréteres', 'uretra'], 'Kidneys = riñones.') },
   { id: 'es-bladder', ...choiceQ('¿Qué significa "bladder"?', 'vejiga', ['riñón', 'uréter', 'uretra'], 'Bladder = vejiga.') },
   { id: 'es-sweat', ...choiceQ('¿Qué significa "sweat"?', 'sudor', ['orina', 'sangre', 'saliva'], 'Sweat = sudor.') },
+  { id: 'exc-what-1', ...choiceQ("Look at the diagram. What is number 1?", "a kidney", ["a ureter", "the bladder", "the urethra"], "Number 1 is a kidney.", { visual: excretoryFigure }) },
+  { id: 'exc-what-2', ...choiceQ("Look at the diagram. What is number 2?", "a ureter", ["the bladder", "the urethra", "a kidney"], "Number 2 is a ureter.", { visual: excretoryFigure }) },
+  { id: 'exc-what-3', ...choiceQ("Look at the diagram. What is number 3?", "the bladder", ["the urethra", "a kidney", "a ureter"], "Number 3 is the bladder.", { visual: excretoryFigure }) },
+  { id: 'exc-what-4', ...choiceQ("Look at the diagram. What is number 4?", "the urethra", ["a kidney", "a ureter", "the bladder"], "Number 4 is the urethra.", { visual: excretoryFigure }) },
+  { id: 'exc-which-1', ...choiceQ("Look at the diagram. Which number is a kidney?", "1", ["2", "3", "4"], "Number 1 is a kidney.", { visual: excretoryFigure }) },
+  { id: 'exc-which-2', ...choiceQ("Look at the diagram. Which number is a ureter?", "2", ["3", "4", "1"], "Number 2 is a ureter.", { visual: excretoryFigure }) },
+  { id: 'exc-which-3', ...choiceQ("Look at the diagram. Which number is the bladder?", "3", ["4", "1", "2"], "Number 3 is the bladder.", { visual: excretoryFigure }) },
+  { id: 'exc-which-4', ...choiceQ("Look at the diagram. Which number is the urethra?", "4", ["1", "2", "3"], "Number 4 is the urethra.", { visual: excretoryFigure }) },
+  { id: 'exc-text-3', ...textQ("Look at the diagram. Write the word: number 3 is the ______.", ["bladder"], "Number 3 is the bladder.", { visual: excretoryFigure }) },
+  { id: 'exc-text-4', ...textQ("Look at the diagram. Write the word: number 4 is the ______.", ["urethra"], "Number 4 is the urethra.", { visual: excretoryFigure }) },
+  { id: 'exc-text-1', ...textQ("Look at the diagram. Write the word: number 1 is a ______.", ["kidney"], "Number 1 is a kidney.", { visual: excretoryFigure }) },
 ];

@@ -1,6 +1,7 @@
 import { choiceQ } from '../../../../exercises/make/choice.js';
 import { orderQ } from '../../../../exercises/make/order.js';
 import { textQ } from '../../../../exercises/make/text.js';
+import { digestiveFigure } from './figures.js';
 
 export const exercises = [
   { id: 'nutrition-is', ...choiceQ('What does nutrition provide to your body?', 'nutrients and energy', ['sounds and colours', 'only water', 'bones and muscles'], 'Nutrition provides your body with all the nutrients and energy that are necessary for life.') },
@@ -31,4 +32,21 @@ export const exercises = [
   { id: 'es-oesophagus', ...choiceQ('¿Qué significa "oesophagus"?', 'esófago', ['estómago', 'faringe', 'recto'], 'Oesophagus = esófago.') },
   { id: 'es-intestine', ...choiceQ('¿Qué significa "small intestine"?', 'intestino delgado', ['intestino grueso', 'estómago', 'recto'], 'Small intestine = intestino delgado.') },
   { id: 'es-large', ...choiceQ('¿Qué significa "large intestine"?', 'intestino grueso', ['intestino delgado', 'estómago', 'esófago'], 'Large intestine = intestino grueso.') },
+  { id: 'dig-what-1', ...choiceQ("Look at the diagram. What is number 1?", "the mouth", ["the oesophagus", "the liver", "the rectum"], "Number 1 is the mouth.", { visual: digestiveFigure }) },
+  { id: 'dig-what-2', ...choiceQ("Look at the diagram. What is number 2?", "the oesophagus", ["the stomach", "the small intestine", "the mouth"], "Number 2 is the oesophagus.", { visual: digestiveFigure }) },
+  { id: 'dig-what-3', ...choiceQ("Look at the diagram. What is number 3?", "the stomach", ["the liver", "the large intestine", "the oesophagus"], "Number 3 is the stomach.", { visual: digestiveFigure }) },
+  { id: 'dig-what-4', ...choiceQ("Look at the diagram. What is number 4?", "the liver", ["the small intestine", "the rectum", "the stomach"], "Number 4 is the liver.", { visual: digestiveFigure }) },
+  { id: 'dig-what-5', ...choiceQ("Look at the diagram. What is number 5?", "the small intestine", ["the large intestine", "the mouth", "the liver"], "Number 5 is the small intestine.", { visual: digestiveFigure }) },
+  { id: 'dig-what-6', ...choiceQ("Look at the diagram. What is number 6?", "the large intestine", ["the rectum", "the oesophagus", "the small intestine"], "Number 6 is the large intestine.", { visual: digestiveFigure }) },
+  { id: 'dig-what-7', ...choiceQ("Look at the diagram. What is number 7?", "the rectum", ["the mouth", "the stomach", "the large intestine"], "Number 7 is the rectum.", { visual: digestiveFigure }) },
+  { id: 'dig-which-1', ...choiceQ("Look at the diagram. Which number is the mouth?", "1", ["2", "4", "7"], "Number 1 is the mouth.", { visual: digestiveFigure }) },
+  { id: 'dig-which-2', ...choiceQ("Look at the diagram. Which number is the oesophagus?", "2", ["3", "5", "1"], "Number 2 is the oesophagus.", { visual: digestiveFigure }) },
+  { id: 'dig-which-3', ...choiceQ("Look at the diagram. Which number is the stomach?", "3", ["4", "6", "2"], "Number 3 is the stomach.", { visual: digestiveFigure }) },
+  { id: 'dig-which-4', ...choiceQ("Look at the diagram. Which number is the liver?", "4", ["5", "7", "3"], "Number 4 is the liver.", { visual: digestiveFigure }) },
+  { id: 'dig-which-5', ...choiceQ("Look at the diagram. Which number is the small intestine?", "5", ["6", "1", "4"], "Number 5 is the small intestine.", { visual: digestiveFigure }) },
+  { id: 'dig-which-6', ...choiceQ("Look at the diagram. Which number is the large intestine?", "6", ["7", "2", "5"], "Number 6 is the large intestine.", { visual: digestiveFigure }) },
+  { id: 'dig-which-7', ...choiceQ("Look at the diagram. Which number is the rectum?", "7", ["1", "3", "6"], "Number 7 is the rectum.", { visual: digestiveFigure }) },
+  { id: 'dig-text-3', ...textQ("Look at the diagram. Write the word: number 3 is the ______.", ["stomach"], "Number 3 is the stomach.", { visual: digestiveFigure }) },
+  { id: 'dig-text-2', ...textQ("Look at the diagram. Write the word: number 2 is the ______.", ["oesophagus", "esophagus"], "Number 2 is the oesophagus.", { visual: digestiveFigure }) },
+  { id: 'dig-text-7', ...textQ("Look at the diagram. Write the word: number 7 is the ______.", ["rectum"], "Number 7 is the rectum.", { visual: digestiveFigure }) },
 ];

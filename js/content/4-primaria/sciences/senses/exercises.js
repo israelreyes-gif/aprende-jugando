@@ -1,5 +1,6 @@
 import { choiceQ } from '../../../../exercises/make/choice.js';
 import { textQ } from '../../../../exercises/make/text.js';
+import { sensesFigure } from './figures.js';
 
 export const exercises = [
   { id: 'sen-what', ...choiceQ('What are the senses?', 'sensors that take in information from around us', ['parts of the heart', 'kinds of bones', 'waste substances'], 'The senses take in information around us so that we perceive the world and interact.') },
@@ -28,4 +29,17 @@ export const exercises = [
   { id: 'es-smell', ...choiceQ('¿Qué significa "smell"?', 'olfato', ['gusto', 'tacto', 'vista'], 'Smell = olfato.') },
   { id: 'es-taste', ...choiceQ('¿Qué significa "taste"?', 'gusto', ['olfato', 'tacto', 'oído'], 'Taste = gusto.') },
   { id: 'es-touch', ...choiceQ('¿Qué significa "touch"?', 'tacto', ['gusto', 'olfato', 'vista'], 'Touch = tacto.') },
+  { id: 'sen-what-1', ...choiceQ("Look at the diagram. What is number 1?", "the eyes", ["the ears", "the nose", "the skin"], "Number 1 is the eyes.", { visual: sensesFigure }) },
+  { id: 'sen-what-2', ...choiceQ("Look at the diagram. What is number 2?", "the ears", ["the nose", "the tongue", "the eyes"], "Number 2 is the ears.", { visual: sensesFigure }) },
+  { id: 'sen-what-3', ...choiceQ("Look at the diagram. What is number 3?", "the nose", ["the tongue", "the skin", "the ears"], "Number 3 is the nose.", { visual: sensesFigure }) },
+  { id: 'sen-what-4', ...choiceQ("Look at the diagram. What is number 4?", "the tongue", ["the skin", "the eyes", "the nose"], "Number 4 is the tongue.", { visual: sensesFigure }) },
+  { id: 'sen-what-5', ...choiceQ("Look at the diagram. What is number 5?", "the skin", ["the eyes", "the ears", "the tongue"], "Number 5 is the skin.", { visual: sensesFigure }) },
+  { id: 'sen-which-1', ...choiceQ("Look at the diagram. Which number is the eyes?", "1", ["2", "3", "5"], "Number 1 is the eyes.", { visual: sensesFigure }) },
+  { id: 'sen-which-2', ...choiceQ("Look at the diagram. Which number is the ears?", "2", ["3", "4", "1"], "Number 2 is the ears.", { visual: sensesFigure }) },
+  { id: 'sen-which-3', ...choiceQ("Look at the diagram. Which number is the nose?", "3", ["4", "5", "2"], "Number 3 is the nose.", { visual: sensesFigure }) },
+  { id: 'sen-which-4', ...choiceQ("Look at the diagram. Which number is the tongue?", "4", ["5", "1", "3"], "Number 4 is the tongue.", { visual: sensesFigure }) },
+  { id: 'sen-which-5', ...choiceQ("Look at the diagram. Which number is the skin?", "5", ["1", "2", "4"], "Number 5 is the skin.", { visual: sensesFigure }) },
+  { id: 'sen-text-1', ...textQ("Look at the diagram. Write the word: number 1 is the ______.", ["eyes", "eye"], "Number 1 is the eyes.", { visual: sensesFigure }) },
+  { id: 'sen-text-4', ...textQ("Look at the diagram. Write the word: number 4 is the ______.", ["tongue"], "Number 4 is the tongue.", { visual: sensesFigure }) },
+  { id: 'sen-text-5', ...textQ("Look at the diagram. Write the word: number 5 is the ______.", ["skin"], "Number 5 is the skin.", { visual: sensesFigure }) },
 ];

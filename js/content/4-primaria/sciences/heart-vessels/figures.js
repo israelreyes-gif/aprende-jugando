@@ -1,5 +1,5 @@
 /** Dibujo propio (esquema) del corazón visto de frente, con partes numeradas. Los números deben coincidir con `parts` en exercises.js. */
-export const heartFigure = `<svg class="heart-fig" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 350" role="img" aria-label="Diagram of the heart with numbered parts">
+export const heartFigure = `<svg class="sci-fig" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 350" role="img" aria-label="Diagram of the heart with numbered parts">
 <defs>
 <linearGradient id="hb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e07a80"/><stop offset="1" stop-color="#a73a4a"/></linearGradient>
 <linearGradient id="hr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d98aa2"/><stop offset="1" stop-color="#b5546f"/></linearGradient>

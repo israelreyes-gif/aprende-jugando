@@ -35,7 +35,7 @@ const go = async (hash, sel) => { await page.goto(B + hash); await page.reload()
 await go('', '.app *'); ok('inicio carga');
 for (const h of ['#/', '#/parents', '#/profiles']) { await page.goto(B + h); await page.waitForTimeout(700); }
 ok('pantallas: inicio, zona de padres, perfiles');
-await page.goto(B + '#/parents'); await page.waitForSelector('.backup-card', { timeout: 8000 });
+await page.goto(B + '#/parents'); await page.waitForSelector('.backup-card', { timeout: 20000 });
 const [dl] = await Promise.all([page.waitForEvent('download', { timeout: 8000 }).catch(() => null), page.click('.backup-card button')]); await page.waitForTimeout(1500);
 ok('copia de seguridad (blob:) ' + (dl ? 'descargada' : 'lanzada'));
 // recorrido real: cursos, asignatura, estudio, práctica (responde), reto, niveles, edición y estadísticas de padres

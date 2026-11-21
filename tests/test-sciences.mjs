@@ -29,13 +29,24 @@ for (const { id } of topics) {
   assert.ok(buildSession(exercises, 8).length > 0);
   console.log(`  ✓ ${id}: ${exercises.length} preguntas`);
 }
-// Dibujo del corazón: cada número marcado en el esquema tiene sus preguntas (qué es / qué número es) y viceversa.
-{
-  const { heartFigure } = await import(`${dir.href}heart-vessels/figures.js`);
-  const { exercises } = await import(`${dir.href}heart-vessels/exercises.js`);
-  const marked = [...heartFigure.matchAll(/<text [^>]*>(\d+)<\/text>/g)].map((m) => Number(m[1])).sort();
-  assert.deepEqual(marked, [1, 2, 3, 4, 5, 6, 7], 'el dibujo marca los números 1 a 7');
-  for (const n of marked) for (const kind of ['what', 'which']) assert.ok(exercises.some((q) => q.id === `fig-${kind}-${n}` && q.visual === heartFigure), `falta fig-${kind}-${n}`);
-  for (const q of exercises.filter((x) => x.id.startsWith('fig-'))) assert.ok(q.visual, `${q.id} sin dibujo`);
-  console.log('  ✓ dibujo del corazón: 7 partes con sus preguntas');
+// Dibujos con partes numeradas: cada número marcado tiene sus preguntas «what» y «which» (y viceversa), y no hay pistas con los nombres en el dibujo.
+for (const { id } of topics) {
+  if (!fs.existsSync(new URL(`${dir.href}${id}/figures.js`))) continue;
+  const figures = await import(`${dir.href}${id}/figures.js`);
+  const { exercises } = await import(`${dir.href}${id}/exercises.js`);
+  for (const [name, svg] of Object.entries(figures)) {
+    const marked = [...svg.matchAll(/<text [^>]*>(\d+)<\/text>/g)].map((m) => Number(m[1])).sort((x, y) => x - y);
+    assert.ok(marked.length >= 4 && new Set(marked).size === marked.length, `${id}/${name}: números marcados`);
+    assert.deepEqual(marked, marked.map((_, i) => i + 1), `${id}/${name}: numeración 1..N`);
+    const qs = exercises.filter((q) => q.visual === svg);
+    const nums = (kind) => qs.map((q) => q.id.match(new RegExp(`-${kind}-(\\d+)$`))?.[1]).filter(Boolean).map(Number).sort((x, y) => x - y);
+    assert.deepEqual(nums('what'), marked, `${id}/${name}: falta «What is number N?»`);
+    assert.deepEqual(nums('which'), marked, `${id}/${name}: falta «Which number is…?»`);
+    assert.ok(qs.some((q) => q.type === 'text'), `${id}/${name}: falta una pregunta de escribir`);
+    assert.ok(/class="sci-fig"/.test(svg) && /viewBox/.test(svg), `${id}/${name}: svg sin class/viewBox`);
+    // el pie de foto no puede dar los nombres de las partes
+    const caption = (svg.match(/<text [^>]*font-size="11"[^>]*>([^<]*)<\/text>/) || [])[1] || '';
+    assert.ok(!/\d\s*[·\-]/.test(caption), `${id}/${name}: el pie de foto da pistas`);
+    console.log(`  ✓ dibujo ${name}: ${marked.length} partes con sus preguntas`);
+  }
 }

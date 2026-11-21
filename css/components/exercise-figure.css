@@ -7,5 +7,5 @@
 .clock { display: block; width: 100%; max-width: 220px; margin: 0 auto; }
 .tap-item .clock { max-width: none; }
 
-/* Esquemas de Sciences (corazón) */
-.heart-fig { display: block; width: 100%; max-width: 300px; height: auto; margin: 0 auto; }
+/* Esquemas de Sciences con partes numeradas */
+.sci-fig { display: block; width: 100%; max-width: 300px; height: auto; margin: 0 auto; }
