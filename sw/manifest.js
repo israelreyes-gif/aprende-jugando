@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'ddf4990d60d6';
+const BUILD = 'ceedcc75a2cc';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -413,6 +413,7 @@ const FILES = {
   './js/data/push-devices.js': '53ef5ad01c89',
   './js/data/push-send.js': '8df25465a2fe',
   './js/data/release.repo.js': '27e9f914c128',
+  './js/data/reserved-name.js': 'c8b05b2cefc4',
   './js/data/reto/finish-reto.js': 'a9d51b32caf9',
   './js/data/reto/get-reto.js': 'dd726ed08e52',
   './js/data/reto/group-by-topic.js': 'e61a6430415b',
@@ -559,7 +560,7 @@ const FILES = {
   './js/features/profiles/new-profile.screen.js': 'eb05a5e38e90',
   './js/features/profiles/profile-cards.js': '8f2b1fd9190f',
   './js/features/profiles/profile-completion.js': '4fd0761ac061',
-  './js/features/profiles/profile-form.js': '6d38d0807391',
+  './js/features/profiles/profile-form.js': '2a7e8e6fb91d',
   './js/features/profiles/profile-level-chip.js': 'ff931d4eb6be',
   './js/features/profiles/profiles.screen.js': '4f226886aaff',
   './js/features/push/bell-row.js': '9b9b0f2c5903',

@@ -1,5 +1,6 @@
 import { h } from '../../core/dom.js';
 import { AVATAR_COLORS, MAX_NAME_LENGTH } from '../../data/profile-options.js';
+import { isReservedName } from '../../data/reserved-name.js';
 import { avatar } from '../../shared/avatar.js';
 import { colorPicker } from './color-picker.js';
 import { courseField } from './course-field.js';
@@ -67,6 +68,11 @@ export function profileForm({ initial, submitLabel, errorText, onSave, extra, sh
     error.textContent = '';
     if (!name.trim()) {
       error.textContent = 'Escribe un nombre para el perfil.';
+      nameInput.focus();
+      return;
+    }
+    if (isReservedName(name)) {
+      error.textContent = 'Ese nombre no se puede usar. Elige otro.';
       nameInput.focus();
       return;
     }

@@ -143,6 +143,9 @@ assert.equal(document.getElementById('profile-name').value, 'Alex'); assert.equa
 type(document.getElementById('profile-name'), '   ');
 submit(q('form')); await sleep(30);
 assert.match(q('.field__error').textContent, /nombre/); ok('editar: no deja guardar sin nombre');
+type(document.getElementById('profile-name'), ' Parent ');
+submit(q('form')); await sleep(30);
+assert.match(q('.field__error').textContent, /Ese nombre no se puede usar/); ok('editar: no deja llamar "parent" al perfil');
 type(document.getElementById('profile-name'), 'Álex Pro');
 qa('.swatch')[2].click();
 submit(q('form')); await sleep(150);
