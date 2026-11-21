@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '1b614f3ec092';
+const BUILD = '4783725e600c';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -342,7 +342,7 @@ const FILES = {
   './js/content/4-primaria/sciences/heart-vessels/figures.js': 'f87561201342',
   './js/content/4-primaria/sciences/heart-vessels/index.js': 'aae73edb9e58',
   './js/content/4-primaria/sciences/heart-vessels/study.js': 'd3ea4e1c7e56',
-  './js/content/4-primaria/sciences/index.js': 'e7cf7a9ae63e',
+  './js/content/4-primaria/sciences/index.js': '9e55e2fa0af7',
   './js/content/4-primaria/sciences/locomotor/exercises.js': 'a3b232a0df62',
   './js/content/4-primaria/sciences/locomotor/figures.js': 'b688cea0ddc6',
   './js/content/4-primaria/sciences/locomotor/index.js': 'aae73edb9e58',
@@ -368,7 +368,7 @@ const FILES = {
   './js/content/4-primaria/sociales/edad-metales/exercises.js': '9f751d644931',
   './js/content/4-primaria/sociales/edad-metales/index.js': 'aae73edb9e58',
   './js/content/4-primaria/sociales/edad-metales/study.js': 'd200e803f541',
-  './js/content/4-primaria/sociales/index.js': '05d9cc9c18f8',
+  './js/content/4-primaria/sociales/index.js': '89f479037f31',
   './js/content/4-primaria/sociales/neolitico/exercises.js': '5c89dbe9cc85',
   './js/content/4-primaria/sociales/neolitico/index.js': 'aae73edb9e58',
   './js/content/4-primaria/sociales/neolitico/study.js': 'da1a68dc95ec',

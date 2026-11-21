@@ -9,7 +9,8 @@ const { buildSession } = await import('../js/exercises/session.js');
 // Contenido real del repo (run-all deja en su copia temporal temas de prueba en Sociales).
 const real = process.env.REAL_REPO ? `file://${process.env.REAL_REPO}` : new URL('../', import.meta.url).href.replace(/\/$/, '');
 const dir = new URL(`${real}/js/content/4-primaria/sociales/`);
-const { topics } = await import(`${dir.href}index.js`);
+const { topics, mixes } = await import(`${dir.href}index.js`);
+assert.deepEqual(mixes.map((m) => [m.id, m.size]), [['sociales', 36]], 'Sociales declara su mix de 36 preguntas');
 const loadTopic = async (_c, _s, id) => import(`${dir.href}${id}/index.js`);
 const folders = fs.readdirSync(dir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
 assert.deepEqual(topics.map((t) => t.id).sort(), folders.sort(), 'cada carpeta de Sociales está en index.js y al revés');

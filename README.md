@@ -150,7 +150,7 @@ Se declara en el índice de la asignatura, sin tocar nada más:
 export const mixes = [{ id: 'unit-1', unit: UNIT_1, emoji: '🎲', title: 'Mix · Unit 1', size: 36 }];
 ```
 
-Sin `unit`, mezcla todos los temas de la asignatura. Ahora existe el de la Unit 1 de Inglés.
+Sin `unit`, mezcla todos los temas de la asignatura. Tienen mix: Mates 4.º, Inglés 4.º (Unit 1 y Unit 2), Inglés 1.º, Sciences 4.º y Sociales 4.º. Lengua 4.º lo tendrá cuando tenga temas.
 
 ## Actualizar la app en los móviles
 

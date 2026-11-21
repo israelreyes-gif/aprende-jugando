@@ -7,3 +7,6 @@ export const topics = [
   { id: 'arte-prehistoria', emoji: '🎨', minutes: 5, load: () => import('./arte-prehistoria/index.js') },
   { id: 'cuevas-animales', emoji: '🗺️', minutes: 5, load: () => import('./cuevas-animales/index.js') },
 ];
+
+/** Mix de preguntas de toda la asignatura (sin `unit`: mezcla todos los temas liberados y estudiados). */
+export const mixes = [{ id: 'sociales', emoji: '🎲', title: 'Mix · Sociales', size: 36 }];

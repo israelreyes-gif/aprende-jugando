@@ -12,3 +12,6 @@ export const topics = [
   { id: 'senses', emoji: '👀', minutes: 5, load: () => import('./senses/index.js') },
   { id: 'reproduction', emoji: '👶', minutes: 5, load: () => import('./reproduction/index.js') },
 ];
+
+/** Mix de preguntas de toda la asignatura (sin `unit`: mezcla todos los temas liberados y estudiados). */
+export const mixes = [{ id: 'sciences', emoji: '🎲', title: 'Mix · Sciences', size: 36 }];
