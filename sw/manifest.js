@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '4783725e600c';
+const BUILD = '5dc13c9ecafe';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -213,7 +213,7 @@ const FILES = {
   './js/content/4-primaria/ingles/who-which-where/exercises.js': '9d144834b6c0',
   './js/content/4-primaria/ingles/who-which-where/index.js': 'aae73edb9e58',
   './js/content/4-primaria/ingles/who-which-where/study.js': '369459d1467f',
-  './js/content/4-primaria/lengua/index.js': '737f2ff710e5',
+  './js/content/4-primaria/lengua/index.js': '772dd9226f32',
   './js/content/4-primaria/mates/cajitas/exercises.js': '0542bd8f6fee',
   './js/content/4-primaria/mates/cajitas/gen/cuatro-operaciones.js': 'ac7677c74c5c',
   './js/content/4-primaria/mates/cajitas/gen/division-inversa.js': '9f151b03a3f0',
