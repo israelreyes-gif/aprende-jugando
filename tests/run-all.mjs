@@ -41,28 +41,40 @@ const files = fs.readdirSync(dir).filter((f) => /^test-.*\.(js|mjs)$/.test(f) &&
 
 const server = await serveApp(8761, work);
 const failed = [];
-for (const file of files) {
-  const started = Date.now();
-  const code = await new Promise((resolve) => {
+const retried = [];
+
+/** Ejecuta una prueba y devuelve { code, out }. */
+function runTest(file) {
+  return new Promise((resolve) => {
     const child = spawn(process.execPath, ['--no-warnings', onRepo.has(file) ? `${repo}tests/${file}` : file], { cwd: onRepo.has(file) ? `${repo}tests/` : dir, stdio: ['ignore', 'pipe', 'pipe'] });
     let out = '';
     child.stdout.on('data', (d) => { out += d; if (process.env.VERBOSE) process.stdout.write(d); });
     child.stderr.on('data', (d) => { out += d; if (process.env.VERBOSE) process.stderr.write(d); });
     const timer = setTimeout(() => child.kill('SIGKILL'), 4 * 60 * 1000);
-    child.on('close', (c) => {
-      clearTimeout(timer);
-      if (c !== 0 || /^\s*✗/m.test(out)) {
-        console.log(`\n--- ${file} ---\n${out.split('\n').slice(-40).join('\n')}`);
-        // En GitHub Actions, un resumen del fallo aparece como anotación en la pantalla de la ejecución.
-        if (process.env.GITHUB_ACTIONS) console.log(`::error title=${file}::${out.split('\n').slice(-12).join('\n').replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A')}`);
-      }
-      resolve(c !== 0 || /^\s*✗/m.test(out) ? 1 : 0);
-    });
+    child.on('close', (c) => { clearTimeout(timer); resolve({ code: c !== 0 || /^\s*✗/m.test(out) ? 1 : 0, out }); });
   });
-  console.log(`${code === 0 ? '✓' : '✗'} ${file} (${Math.round((Date.now() - started) / 1000)} s)`);
+}
+
+for (const file of files) {
+  const started = Date.now();
+  let { code, out } = await runTest(file);
+  // Las pruebas con navegador fallan a veces por tiempos de espera (no por errores). Se repiten UNA vez y queda avisado.
+  // Las demás son deterministas: si fallan, fallan.
+  if (code !== 0 && /playwright/.test(fs.readFileSync(`${dir}${file}`, 'utf8'))) {
+    console.log(`\n⚠ ${file} falló; se repite una vez (prueba con navegador). Primer intento:\n${out.split('\n').slice(-12).join('\n')}`);
+    ({ code, out } = await runTest(file));
+    if (code === 0) retried.push(file);
+  }
+  if (code !== 0) {
+    console.log(`\n--- ${file} ---\n${out.split('\n').slice(-40).join('\n')}`);
+    // En GitHub Actions, un resumen del fallo aparece como anotación en la pantalla de la ejecución.
+    if (process.env.GITHUB_ACTIONS) console.log(`::error title=${file}::${out.split('\n').slice(-12).join('\n').replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A')}`);
+  }
+  console.log(`${code === 0 ? '✓' : '✗'} ${file} (${Math.round((Date.now() - started) / 1000)} s)${retried.includes(file) ? ' · pasó al repetir' : ''}`);
   if (code !== 0) failed.push(file);
 }
 server.close();
 fs.rmSync(work, { recursive: true, force: true });
+if (retried.length) console.log(`\n⚠ Pasaron solo al repetir (revisa si se repite): ${retried.join(', ')}`);
 console.log(failed.length ? `\n${failed.length} de ${files.length} con fallos: ${failed.join(', ')}` : `\nTodo bien: ${files.length} pruebas`);
 process.exit(failed.length ? 1 : 0);

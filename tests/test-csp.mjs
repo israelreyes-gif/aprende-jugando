@@ -11,7 +11,7 @@ const ROOT = process.env.REAL_REPO || path.resolve(new URL('..', import.meta.url
 const API = 'http://localhost:8795', B = 'http://localhost:8762/';
 const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
 db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color,gender) VALUES ('alex','Alex','#8EDBC0','chico')`);
-db.sqlite.exec(`INSERT INTO topic_release (id,profile_id,course_id,subject_id,topic_id) VALUES ('r1','alex','4-primaria','mates','tablas')`);
+for (const [i, [sub, top]] of [['mates', 'tablas'], ['sciences', 'heart-vessels'], ['sciences', 'reproduction'], ['sociales', 'neolitico']].entries()) db.sqlite.exec(`INSERT INTO topic_release (id,profile_id,course_id,subject_id,topic_id) VALUES ('r${i}','alex','4-primaria','${sub}','${top}')`);
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
 const stat = http.createServer((req, res) => { let p = decodeURIComponent(req.url.split('?')[0]); if (p.endsWith('/')) p += 'index.html'; const f = path.join(ROOT, p);
   if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); return res.end(); }
@@ -22,7 +22,7 @@ const api = http.createServer(async (req, res) => { const ch = []; for await (co
   const hd = Object.fromEntries(r.headers); hd['access-control-allow-origin'] = '*'; hd['access-control-allow-headers'] = '*'; hd['access-control-allow-methods'] = '*';
   if (req.method === 'OPTIONS') { res.writeHead(204, hd); return res.end(); } res.writeHead(r.status, hd); res.end(Buffer.from(await r.arrayBuffer())); }).listen(8795);
 const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-assert.match(html, /http-equiv="Content-Security-Policy"/); assert.match(html, /script-src 'self'(;|")/); assert.doesNotMatch(html, /unsafe-eval|script-src[^;"]*unsafe-inline/);
+assert.match(html, /http-equiv="Content-Security-Policy"/); assert.match(html, /script-src 'self'(;|")/); assert.doesNotMatch(html, /unsafe-eval|unsafe-inline/, 'la CSP no debe permitir inline ni eval');
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
 const browser = await chromium.launch(); const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: 'es-ES', acceptDownloads: true });
 await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); sessionStorage.setItem('aj.session.parent','test');
@@ -41,10 +41,25 @@ ok('copia de seguridad (blob:) ' + (dl ? 'descargada' : 'lanzada'));
 // recorrido real: cursos, asignatura, estudio, práctica (responde), reto, niveles, edición y estadísticas de padres
 const rutas = ['#/p/alex', '#/p/alex/c/4-primaria', '#/p/alex/c/4-primaria/s/mates/topics', '#/p/alex/c/4-primaria/s/mates/study/tablas', '#/p/alex/levels', '#/p/alex/edit', '#/parents/alex', '#/parents/alex/release/4-primaria', '#/parents/alex/release/4-primaria/mates', '#/p/alex/c/4-primaria/reto'];
 for (const l of rutas) { await page.goto(B + l); await page.waitForTimeout(600); }
-await page.goto(B + '#/p/alex/c/4-primaria/s/mates/practice/tablas'); await page.waitForTimeout(900);
-for (let i = 0; i < 6; i++) { const b = await page.$('.opt, .option, .choice, button.answer, .exercise button'); if (b) { await b.click().catch(() => {}); await page.waitForTimeout(250); } }
-const links = rutas; const txt = await page.textContent('.app'); assert.ok(txt.length > 40, 'la práctica no pintó nada'); await page.screenshot({ path: '/tmp/csp-practice.png' });
-ok('recorrido por ' + links.length + ' pantallas y un ejercicio');
+// juega una sesión entera (contesta lo que sea) hasta ver la pantalla de resultado: cubre dibujos SVG, confeti y puntos
+const jugar = async (ruta) => { const t0 = Date.now(); process.env.CSP_DEBUG && console.log('  .. jugando', ruta);
+  await page.goto(B + ruta); await page.waitForTimeout(700);
+  for (let i = 0; i < 12 && (await page.$('.question__prompt')); i++) {
+    if (await page.$('.option')) await page.click('.option'); else if (await page.$('input[type=text], input:not([type])')) await page.fill('input[type=text], input:not([type])', '1'); else break;
+    const accion = page.locator('.btn--primary.btn--block').first();
+    if (!(await accion.isEnabled())) break; // tipo de pregunta que este recorrido genérico no sabe contestar
+    await accion.click({ timeout: 1500 }).catch(() => {}); await page.waitForTimeout(150); await accion.click({ timeout: 1500 }).catch(() => {}); await page.waitForTimeout(150);
+    if (process.env.CSP_DEBUG) console.log('     pregunta', i, Date.now() - t0, 'ms');
+  }
+  await page.waitForTimeout(500);
+};
+for (const [sub, top] of [['mates', 'tablas'], ['sciences', 'heart-vessels'], ['sciences', 'reproduction'], ['sociales', 'neolitico']]) {
+  await page.goto(B + `#/p/alex/c/4-primaria/s/${sub}/study/${top}`); await page.waitForTimeout(600);
+  await jugar(`#/p/alex/c/4-primaria/s/${sub}/practice/${top}`);
+}
+const txt = await page.textContent('.app'); assert.ok(txt.length > 40, 'la práctica no pintó nada'); await page.screenshot({ path: '/tmp/csp-practice.png' });
+const links = rutas;
+ok('recorrido por ' + links.length + ' pantallas y 4 sesiones (Mates, Sciences con dibujos y Sociales, contestando hasta el resultado cuando se puede)');
 // CSP efectiva: un script en línea inyectado debe bloquearse
 const blocked = await page.evaluate(() => new Promise((res) => { const s = document.createElement('script'); s.textContent = 'window.__x=1'; document.head.appendChild(s); setTimeout(() => res(!window.__x), 100); }));
 assert.ok(blocked); ok('un script en línea se bloquea (la CSP está activa)');

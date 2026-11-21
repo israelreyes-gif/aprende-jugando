@@ -239,6 +239,13 @@ await check('los errores no enseñan SQL, rutas del servidor ni trazas', async (
   }
 });
 
+// Cabeceras de las respuestas JSON del Worker: sin caché y sin adivinar el tipo de contenido.
+await check('respuestas del Worker: nosniff y no-store', async () => {
+  const r = await worker.fetch(new Request('https://w.example/api/profiles', { headers: { 'X-Api-Key': 'wrong' } }), env);
+  assert.equal(r.headers.get('X-Content-Type-Options'), 'nosniff');
+  assert.equal(r.headers.get('Cache-Control'), 'no-store');
+});
+
 console.log(`\n${n} comprobaciones OK`);
 if (failures.length) { console.log(`\n${failures.length} con fallos:`); for (const f of failures) console.log(' ✗', f); process.exit(1); }
 process.exit(0);
