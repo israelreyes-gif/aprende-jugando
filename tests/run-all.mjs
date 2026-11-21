@@ -25,6 +25,10 @@ fs.cpSync(`${fixtures}/mates`, `${content}/mates`, { recursive: true }); // índ
 fs.cpSync(`${fixtures}/ingles/verb-to-be`, `${content}/ingles/verb-to-be`, { recursive: true });
 const inglesIndex = `${content}/ingles/index.js`;
 fs.writeFileSync(inglesIndex, fs.readFileSync(inglesIndex, 'utf8').replace('export const topics = [', "export const topics = [\n  { id: 'verb-to-be', emoji: '🧩', title: 'Verb to be', minutes: 5, load: () => import('./verb-to-be/index.js') },"));
+// Solo en la copia de pruebas: la API de prueba va por http en localhost, que la CSP real (solo https) bloquearía.
+// Se hace antes de calcular la lista de archivos para que la huella de index.html coincida.
+const indexCopy = `${work}/index.html`;
+fs.writeFileSync(indexCopy, fs.readFileSync(indexCopy, 'utf8').replace("connect-src 'self' https:", "connect-src 'self' https: http://localhost:*"));
 // La lista de archivos del service worker se rehace para la copia (lleva archivos de prueba distintos a los del repo).
 fs.writeFileSync(`${work}/sw/manifest.js`, manifestText(work));
 

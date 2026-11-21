@@ -300,6 +300,7 @@ Operadores de filtro: `eq neq gt gte lt lte like in is`.
 - **Editar un perfil** pide siempre el código del perfil (la sesión de padres lo salta). En el perfil se puede activar «Pedir el código siempre al abrir la tarjeta».
 - Si un niño olvida su código, los padres le ponen uno nuevo desde sus estadísticas («Poner código nuevo»). Si se olvida el código de padres: en la consola de D1, `DELETE FROM credentials WHERE owner = 'parent';` y se crea uno nuevo.
 - Los códigos no entran en las copias de seguridad ni en la caché del dispositivo.
+- **CSP (política de contenido)**: `index.html` lleva un `<meta http-equiv="Content-Security-Policy">` (GitHub Pages no permite cabeceras). Solo se ejecuta código de la propia web (`script-src 'self'`, sin scripts en línea ni `eval`), sin plugins, sin iframes y sin `<base>`; se permiten las fuentes de Google, imágenes propias/`data:`/`blob:` (copia de seguridad) y conexiones solo a la propia web o por `https` (la API). Un `<meta>` no admite modo «solo informar» ni `frame-ancestors`. `tests/test-csp.mjs` carga la app en Chromium con esa política, recorre las pantallas y un ejercicio y falla si el navegador bloquea algo. Si añades un servicio externo, permítelo en la política y en el test.
 
 ## Pruebas automáticas
 

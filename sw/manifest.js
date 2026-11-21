@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'ceedcc75a2cc';
+const BUILD = 'ae8edf91ea9d';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -41,7 +41,7 @@ const FILES = {
   './icons/mochila-halloween.svg': 'ffd9bb0588d8',
   './icons/mochila-navidad.svg': '2abb40651667',
   './icons/mochila.svg': '71b56d2379bd',
-  './index.html': '720eee08e6e1',
+  './index.html': '1446027ba8d0',
   './js/config.js': '8cb1a6ab4b83',
   './js/content/1-primaria/ingles/adjectives/exercises.js': '54d8d68296ce',
   './js/content/1-primaria/ingles/adjectives/index.js': 'aae73edb9e58',
