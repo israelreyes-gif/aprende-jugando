@@ -29,3 +29,13 @@ for (const { id } of topics) {
   assert.ok(buildSession(exercises, 8).length > 0);
   console.log(`  ✓ ${id}: ${exercises.length} preguntas`);
 }
+// Dibujo del corazón: cada número marcado en el esquema tiene sus preguntas (qué es / qué número es) y viceversa.
+{
+  const { heartFigure } = await import(`${dir.href}heart-vessels/figures.js`);
+  const { exercises } = await import(`${dir.href}heart-vessels/exercises.js`);
+  const marked = [...heartFigure.matchAll(/<text [^>]*>(\d+)<\/text>/g)].map((m) => Number(m[1])).sort();
+  assert.deepEqual(marked, [1, 2, 3, 4, 5, 6, 7], 'el dibujo marca los números 1 a 7');
+  for (const n of marked) for (const kind of ['what', 'which']) assert.ok(exercises.some((q) => q.id === `fig-${kind}-${n}` && q.visual === heartFigure), `falta fig-${kind}-${n}`);
+  for (const q of exercises.filter((x) => x.id.startsWith('fig-'))) assert.ok(q.visual, `${q.id} sin dibujo`);
+  console.log('  ✓ dibujo del corazón: 7 partes con sus preguntas');
+}

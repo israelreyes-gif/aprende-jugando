@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'ae8edf91ea9d';
+const BUILD = '935654fb53e3';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -12,7 +12,7 @@ const FILES = {
   './css/components/exercise-cajita.css': '11ffc0534db2',
   './css/components/exercise-digit-cards.css': 'fe6617edffcd',
   './css/components/exercise-fields.css': 'd6cd66d464fe',
-  './css/components/exercise-figure.css': 'ff538d33b16e',
+  './css/components/exercise-figure.css': 'a6b636c464da',
   './css/components/exercise-mini-board.css': 'cc7cc076c2e5',
   './css/components/exercise-order.css': '210ce95d9dfe',
   './css/components/exercise-tap.css': '837ee19ad1cb',
@@ -336,7 +336,8 @@ const FILES = {
   './js/content/4-primaria/sciences/excretory/exercises.js': 'bc5081e29c20',
   './js/content/4-primaria/sciences/excretory/index.js': 'aae73edb9e58',
   './js/content/4-primaria/sciences/excretory/study.js': 'ff61a196bbfe',
-  './js/content/4-primaria/sciences/heart-vessels/exercises.js': '5daffc7ad8ab',
+  './js/content/4-primaria/sciences/heart-vessels/exercises.js': '7708d0f6b848',
+  './js/content/4-primaria/sciences/heart-vessels/figures.js': '32e01c0b6faf',
   './js/content/4-primaria/sciences/heart-vessels/index.js': 'aae73edb9e58',
   './js/content/4-primaria/sciences/heart-vessels/study.js': 'd3ea4e1c7e56',
   './js/content/4-primaria/sciences/index.js': 'e7cf7a9ae63e',

@@ -1,5 +1,6 @@
 import { choiceQ } from '../../../../exercises/make/choice.js';
 import { textQ } from '../../../../exercises/make/text.js';
+import { heartFigure } from './figures.js';
 
 export const exercises = [
   { id: 'heart-is', ...choiceQ('What is the heart?', 'a muscle that pumps blood around the body', ['a tube that carries blood', 'a liquid inside the body', 'a kind of blood cell'], 'The heart is a muscle that pumps the blood around the body.') },
@@ -28,4 +29,21 @@ export const exercises = [
   { id: 'es-veins', ...choiceQ('¿Qué significa "veins"?', 'venas', ['arterias', 'capilares', 'ventrículos'], 'Veins = venas.') },
   { id: 'es-atrium', ...choiceQ('¿Qué significa "atrium"?', 'aurícula', ['ventrículo', 'válvula', 'arteria'], 'Atrium = aurícula.') },
   { id: 'es-ventricle', ...choiceQ('¿Qué significa "ventricle"?', 'ventrículo', ['aurícula', 'válvula', 'vena'], 'Ventricle = ventrículo.') },
+  { id: 'fig-what-1', ...choiceQ('Look at the diagram. What is number 1?', 'the right atrium', ['the left atrium', 'the left ventricle', 'the aorta'], 'Number 1 is the right atrium.', { visual: heartFigure }) },
+  { id: 'fig-what-2', ...choiceQ('Look at the diagram. What is number 2?', 'the left atrium', ['the right ventricle', 'the superior vena cava', 'the pulmonary artery'], 'Number 2 is the left atrium.', { visual: heartFigure }) },
+  { id: 'fig-what-3', ...choiceQ('Look at the diagram. What is number 3?', 'the right ventricle', ['the left ventricle', 'the aorta', 'the right atrium'], 'Number 3 is the right ventricle.', { visual: heartFigure }) },
+  { id: 'fig-what-4', ...choiceQ('Look at the diagram. What is number 4?', 'the left ventricle', ['the superior vena cava', 'the pulmonary artery', 'the left atrium'], 'Number 4 is the left ventricle.', { visual: heartFigure }) },
+  { id: 'fig-what-5', ...choiceQ('Look at the diagram. What is number 5?', 'the superior vena cava', ['the aorta', 'the right atrium', 'the right ventricle'], 'Number 5 is the superior vena cava.', { visual: heartFigure }) },
+  { id: 'fig-what-6', ...choiceQ('Look at the diagram. What is number 6?', 'the aorta', ['the pulmonary artery', 'the left atrium', 'the left ventricle'], 'Number 6 is the aorta.', { visual: heartFigure }) },
+  { id: 'fig-what-7', ...choiceQ('Look at the diagram. What is number 7?', 'the pulmonary artery', ['the right atrium', 'the right ventricle', 'the superior vena cava'], 'Number 7 is the pulmonary artery.', { visual: heartFigure }) },
+  { id: 'fig-which-1', ...choiceQ('Look at the diagram. Which number is the right atrium?', '1', ['2', '4', '6'], 'Number 1 is the right atrium.', { visual: heartFigure }) },
+  { id: 'fig-which-2', ...choiceQ('Look at the diagram. Which number is the left atrium?', '2', ['1', '4', '6'], 'Number 2 is the left atrium.', { visual: heartFigure }) },
+  { id: 'fig-which-3', ...choiceQ('Look at the diagram. Which number is the right ventricle?', '3', ['1', '4', '6'], 'Number 3 is the right ventricle.', { visual: heartFigure }) },
+  { id: 'fig-which-4', ...choiceQ('Look at the diagram. Which number is the left ventricle?', '4', ['1', '3', '6'], 'Number 4 is the left ventricle.', { visual: heartFigure }) },
+  { id: 'fig-which-5', ...choiceQ('Look at the diagram. Which number is the superior vena cava?', '5', ['1', '3', '6'], 'Number 5 is the superior vena cava.', { visual: heartFigure }) },
+  { id: 'fig-which-6', ...choiceQ('Look at the diagram. Which number is the aorta?', '6', ['1', '3', '5'], 'Number 6 is the aorta.', { visual: heartFigure }) },
+  { id: 'fig-which-7', ...choiceQ('Look at the diagram. Which number is the pulmonary artery?', '7', ['1', '3', '5'], 'Number 7 is the pulmonary artery.', { visual: heartFigure }) },
+  { id: 'fig-text-6', ...textQ('Look at the diagram. Write the word: number 6 is the ______.', ['aorta'], 'Number 6 is the aorta.', { visual: heartFigure }) },
+  { id: 'fig-text-5', ...textQ('Look at the diagram. Write the word: number 5 is the superior vena ______.', ['cava'], 'Number 5 is the superior vena cava.', { visual: heartFigure }) },
+  { id: 'fig-text-7', ...textQ('Look at the diagram. Write the word: number 7 is the pulmonary ______.', ['artery'], 'Number 7 is the pulmonary artery.', { visual: heartFigure }) },
 ];
