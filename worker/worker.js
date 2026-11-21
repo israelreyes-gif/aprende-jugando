@@ -75,7 +75,10 @@ export default {
       if (parts[0] !== 'api' || parts.length > 3) throw new HttpError(404, 'Ruta no encontrada');
 
       const schema = await loadSchema(env.DB);
-      if (parts.length === 1) return json({ ok: true, tables: visibleTables(Object.keys(schema)) }, 200, cors);
+      if (parts.length === 1) {
+        if (request.method !== 'GET') throw new HttpError(405, 'Método no permitido');
+        return json({ ok: true, tables: visibleTables(Object.keys(schema)) }, 200, cors);
+      }
 
       const table = schema[parts[1]];
       if (!table) throw new HttpError(404, `Tabla desconocida: ${parts[1]}`);

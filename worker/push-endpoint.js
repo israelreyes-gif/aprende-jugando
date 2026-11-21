@@ -27,6 +27,7 @@ export function isPushEndpoint(value, env) {
 /** Al guardar un móvil con avisos: la dirección tiene que ser de un servicio conocido. */
 export function assertPushEndpoints(rows, env) {
   for (const row of rows) {
-    if (row && 'endpoint' in row && !isPushEndpoint(row.endpoint, env)) throw new HttpError(400, 'Dirección de avisos no válida');
+    if (row === null || typeof row !== 'object' || Array.isArray(row)) throw new HttpError(400, 'Datos no válidos');
+    if ('endpoint' in row && !isPushEndpoint(row.endpoint, env)) throw new HttpError(400, 'Dirección de avisos no válida');
   }
 }

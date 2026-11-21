@@ -25,7 +25,8 @@ assert.equal((await call('PATCH', `/api/profiles/${id}`, { name: 'Otro' })).stat
 
 // El nombre 'parent' tampoco se puede usar (en la app y en el Worker)
 for (const name of ['parent', 'Parent', 'PARENT', '  parent  ']) { assert.equal(isReservedName(name), true, name); assert.throws(() => assertProfileNames([{ name }]), (e) => e.status === 400, name); }
-for (const name of ['Alex', 'Parents', 'my parent', 'Padres', '', undefined, null]) { assert.equal(isReservedName(name), false, String(name)); assertProfileNames([{ name }]); }
+for (const name of [5, null, ['a'], {}]) assert.throws(() => assertProfileNames([{ name }]), (e) => e.status === 400, 'nombre que no es texto');
+for (const name of ['Alex', 'Parents', 'my parent', 'Padres', '', undefined]) { assert.equal(isReservedName(name), false, String(name)); assertProfileNames([{ name }]); }
 ok('el nombre "parent" se rechaza (cualquier mayúscula, con espacios); "Parents", "Padres" y "my parent" valen');
 assert.equal((await call('POST', '/api/profiles', { id: crypto.randomUUID(), name: ' Parent ', avatar_color: '#000' })).status, 400);
 assert.equal((await call('PATCH', `/api/profiles/${id}`, { name: 'PARENT' })).status, 400);

@@ -2,6 +2,7 @@ import { HttpError, MAX_BODY_BYTES } from './http.js';
 import { PARENT } from './auth-rules.js';
 import { assertReplaceAllowed } from './auth-replace.js';
 import { assertPlausible } from './auth-validate.js';
+import { assertRetoPatch } from './reto-rows.js';
 
 const FORBIDDEN = () => new HttpError(403, 'Operación no permitida');
 
@@ -25,7 +26,9 @@ async function bodyRows(request) {
   if (text.length > MAX_BODY_BYTES) throw new HttpError(413, 'Petición demasiado grande');
   let body = null;
   try { body = JSON.parse(text); } catch { /* cuerpo no válido: sin filas */ }
-  return Array.isArray(body) ? body : body ? [body] : [];
+  const rows = Array.isArray(body) ? body : body ? [body] : [];
+  if (rows.some((row) => row === null || typeof row !== 'object' || Array.isArray(row))) throw new HttpError(400, 'Datos no válidos');
+  return rows;
 }
 
 /**
@@ -43,6 +46,7 @@ export async function enforceScope(db, session, method, table, params, id, reque
     const rows = await bodyRows(request);
     await assertReplaceAllowed(db, owner, table, params, rows);
     if (rule.viaSession) {
+      if (rows.some((r) => typeof r.session_id !== 'string')) throw FORBIDDEN();
       const ids = [...new Set(rows.map((r) => r.session_id))];
       const found = ids.length
         ? (await db.prepare(`SELECT COUNT(*) AS n FROM practice_sessions WHERE profile_id = ? AND id IN (${ids.map(() => '?').join(',')})`).bind(owner, ...ids).first()).n
@@ -67,7 +71,7 @@ export async function enforceScope(db, session, method, table, params, id, reque
   if (action === 'edit' && rule.cols) {
     const [body] = await bodyRows(request);
     if (!body || Object.keys(body).some((k) => !rule.cols.includes(k))) throw FORBIDDEN();
-    if (table.name === 'reto_diario' && String(body.answers ?? '').length > 60_000) throw new HttpError(400, 'Respuestas demasiado largas');
+    if (table.name === 'reto_diario') assertRetoPatch(body);
   }
 }
 

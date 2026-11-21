@@ -1,12 +1,12 @@
 import { HttpError } from './http.js';
+import { checkDate } from './check-date.js';
+import { assertRetoRow } from './reto-rows.js';
 
 // Lo que una sesión de perfil puede guardar de verdad: sesiones de ejercicios y temas estudiados "razonables".
 // Evita inflar los puntos con datos inventados. Los padres no pasan por aquí.
 export const MAX_QUESTIONS = 40; // la sesión más larga: 36 preguntas (reto y mix); un tema normal, 8
 const KINDS = new Set(['practice', 'reto', 'mix']);
 const MAX_ID = 120;
-const PAST_DAYS = 60; // una escritura guardada sin conexión puede llegar con retraso, pero no de hace meses
-const FUTURE_MS = 24 * 60 * 60 * 1000;
 
 // Topes para que una sesión de perfil no sature la base de datos (muy por encima del uso real).
 export const MAX_ROWS_PER_REQUEST = 50;
@@ -18,12 +18,6 @@ const MAX_TEXT = 500;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 const bad = (message) => new HttpError(400, message);
-
-function checkDate(value) {
-  const time = Date.parse(value);
-  const now = Date.now();
-  if (Number.isNaN(time) || time > now + FUTURE_MS || time < now - PAST_DAYS * FUTURE_MS) throw bad('Fecha no válida');
-}
 
 function checkText(value, name) {
   if (typeof value !== 'string' || value.length === 0 || value.length > MAX_ID) throw bad(`${name} no válido`);
@@ -61,7 +55,10 @@ async function assertWithinLimits(db, owner, table, rows) {
   } else if (table.name === 'sync_events') {
     const today = await count(db, 'SELECT COUNT(*) AS n FROM sync_events WHERE profile_id IS ? AND created_at >= ?', owner, sinceDay());
     if (today + rows.length > MAX_SYNC_EVENTS_PER_DAY) throw limit('Límite diario alcanzado');
-    for (const row of rows) for (const key of ['what', 'detail']) if (row[key] != null && String(row[key]).length > MAX_TEXT) throw bad('Texto demasiado largo');
+    for (const row of rows) {
+      checkText(row.id, 'id');
+      for (const key of ['what', 'detail']) if (row[key] != null && String(row[key]).length > MAX_TEXT) throw bad('Texto demasiado largo');
+    }
   } else if (table.name === 'push_devices') {
     const ids = rows.map((row) => String(row.id));
     const others = await count(db, `SELECT COUNT(*) AS n FROM push_devices WHERE profile_id = ? AND id NOT IN (${ids.map(() => '?').join(',')})`, owner, ...ids);
@@ -87,6 +84,8 @@ export async function assertPlausible(db, owner, table, rows) {
       checkDate(row.completed_at);
       await assertReleased(db, owner, row);
     }
+  } else if (table.name === 'reto_diario') {
+    for (const row of rows) assertRetoRow(row);
   } else if (table.name === 'answers' && rows.length > MAX_QUESTIONS) {
     throw bad('Demasiadas respuestas');
   }
