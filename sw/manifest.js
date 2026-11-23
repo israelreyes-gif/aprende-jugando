@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '237e36940ed1';
+const BUILD = '8a2ddfd6c6d6';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -28,6 +28,7 @@ const FILES = {
   './css/components/sync-card.css': '1d00738b3308',
   './css/components/tabs.css': 'ee24de7137d1',
   './css/components/utilities.css': '0b2430c937de',
+  './css/fonts.css': '1d382e8416aa',
   './css/screens/home.css': '471c3093c187',
   './css/screens/points.css': '7836a1ca0921',
   './css/screens/practice.css': '0e29504d7213',
@@ -36,12 +37,20 @@ const FILES = {
   './css/screens/stats.css': '36a568dcffbe',
   './css/screens/study.css': 'a1d6f1a7dc9d',
   './css/tokens.css': '44173c28d359',
+  './fonts/LICENSE-Fredoka.txt': '2a60a248a95c',
+  './fonts/LICENSE-Nunito.txt': 'a33131941c98',
+  './fonts/fredoka-latin-500-normal.woff2': '84a3167d817d',
+  './fonts/fredoka-latin-600-normal.woff2': 'b9fca786c012',
+  './fonts/nunito-latin-400-normal.woff2': '19064e82b373',
+  './fonts/nunito-latin-600-normal.woff2': 'ce661d0099c8',
+  './fonts/nunito-latin-700-normal.woff2': 'fd0ec8a34598',
+  './fonts/nunito-latin-800-normal.woff2': 'bce64e85802f',
   './icons/apple-touch-icon.png': 'f4238664cac3',
   './icons/icon.svg': '732f6acf1571',
   './icons/mochila-halloween.svg': 'ffd9bb0588d8',
   './icons/mochila-navidad.svg': '2abb40651667',
   './icons/mochila.svg': '71b56d2379bd',
-  './index.html': '67db8e76c1b8',
+  './index.html': 'e7566a8d1faf',
   './js/config.js': '8cb1a6ab4b83',
   './js/content/1-primaria/ingles/adjectives/exercises.js': '54d8d68296ce',
   './js/content/1-primaria/ingles/adjectives/index.js': 'aae73edb9e58',

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<!-- CSP: solo se ejecuta código de esta misma web (sin scripts en línea ni eval), sin plugins ni iframes, y solo se hacen conexiones https (la API de la app) o a este mismo sitio. Si añades un servicio externo nuevo (fuentes, imágenes, etc.), permítelo aquí y en tests/test-csp.mjs. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https:; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<!-- CSP: solo se ejecuta código de esta misma web (sin scripts en línea ni eval), sin plugins ni iframes, y solo se hacen conexiones https (la API de la app) o a este mismo sitio. Si añades un servicio externo nuevo (imágenes, etc.), permítelo aquí y en tests/test-csp.mjs. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https:; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <title>Aprende y juega</title>
 <meta name="theme-color" content="#4B3FD1">
 <meta name="description" content="Practica y aprende los contenidos de primaria jugando.">
@@ -12,9 +12,8 @@
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <!-- Icono para la pantalla de inicio del iPhone (PNG 180x180, icons/apple-touch-icon.png) -->
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/nunito-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css">
 <!-- Hojas de estilo en paralelo. El orden importa. Si añades una hoja nueva, ponla aquí. -->
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">

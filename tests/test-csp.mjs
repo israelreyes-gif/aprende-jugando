@@ -27,9 +27,7 @@ let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
 const browser = await chromium.launch(); const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: 'es-ES', acceptDownloads: true });
 await ctx.addInitScript(`localStorage.setItem('aj.apiUrl','${API}'); localStorage.setItem('aj.apiKey','k'); sessionStorage.setItem('aj.session.parent','test');
   window.__v = []; document.addEventListener('securitypolicyviolation', (e) => window.__v.push(e.violatedDirective + ' ' + e.blockedURI));`);
-// Google Fonts no se alcanza desde aquí; la CSP se evalúa antes, así que responder vacío no oculta bloqueos
-await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, contentType: r.request().url().includes('googleapis') ? 'text/css' : 'font/woff2', body: '' }));
-const page = await ctx.newPage(); const errs = []; page.on('pageerror', (e) => errs.push(String(e))); page.on('console', (m) => { if (/Content Security Policy|Refused to/i.test(m.text())) errs.push(m.text()); });
+const page = await ctx.newPage(); const externas = []; page.on('request', (r) => { const u = new URL(r.url()); if (!['localhost'].includes(u.hostname) && !['data:', 'blob:'].includes(u.protocol)) externas.push(r.url()); }); const errs = []; page.on('pageerror', (e) => errs.push(String(e))); page.on('console', (m) => { if (/Content Security Policy|Refused to/i.test(m.text())) errs.push(m.text()); });
 const viol = () => page.evaluate(() => window.__v);
 const go = async (hash, sel) => { await page.goto(B + hash); await page.reload(); await page.waitForSelector(sel, { timeout: 8000 }); await page.waitForTimeout(400); };
 await go('', '.app *'); ok('inicio carga');
@@ -61,6 +59,12 @@ const txt = await page.textContent('.app'); assert.ok(txt.length > 40, 'la prác
 const links = rutas;
 ok('recorrido por ' + links.length + ' pantallas y 4 sesiones (Mates, Sciences con dibujos y Sociales, contestando hasta el resultado cuando se puede)');
 // CSP efectiva: un script en línea inyectado debe bloquearse
+// fuentes propias: se cargan de verdad (no se queda en la de reserva) y la app no habla con nadie más que con su propio servidor y la API
+await page.goto(B + '#/p/alex/c/4-primaria'); await page.waitForTimeout(800); await page.screenshot({ path: '/tmp/csp-home.png' });
+const cargadas = await page.evaluate(async () => { await document.fonts.ready; return [...document.fonts].filter((f) => f.status === 'loaded').map((f) => `${f.family} ${f.weight}`); });
+for (const f of ['Nunito 800', 'Nunito 700', 'Fredoka 500']) assert.ok(cargadas.some((c) => c.replace(/"/g, '') === f), `fuente ${f} sin cargar: ${cargadas}`);
+ok('fuentes propias cargadas: ' + cargadas.map((c) => c.replace(/"/g, '')).sort().join(', '));
+assert.deepEqual(externas, [], 'la app pidió algo a un servidor externo: ' + externas.join(' | ')); ok('ninguna petición a servidores externos (Google incluido)');
 const blocked = await page.evaluate(() => new Promise((res) => { const s = document.createElement('script'); s.textContent = 'window.__x=1'; document.head.appendChild(s); setTimeout(() => res(!window.__x), 100); }));
 assert.ok(blocked); ok('un script en línea se bloquea (la CSP está activa)');
 const v = (await viol()).filter((x) => !/inline/.test(x) || !x.startsWith('script-src'));
