@@ -3,7 +3,8 @@
 html { -webkit-text-size-adjust: 100%; }
 
 /* Sin zoom con dos dedos ni doble toque, y sin rebote al llegar al final del scroll */
-html, body { touch-action: pan-x pan-y; overscroll-behavior: none; }
+/* manipulation: se puede desplazar y ampliar con los dedos (accesibilidad), pero no hay zoom por doble toque (los niños tocan rápido). */
+html, body { touch-action: manipulation; overscroll-behavior: none; }
 
 body {
   margin: 0;
