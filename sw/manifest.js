@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '8a2ddfd6c6d6';
+const BUILD = '44e12f1ef2e2';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -46,6 +46,9 @@ const FILES = {
   './fonts/nunito-latin-700-normal.woff2': 'fd0ec8a34598',
   './fonts/nunito-latin-800-normal.woff2': 'bce64e85802f',
   './icons/apple-touch-icon.png': 'f4238664cac3',
+  './icons/icon-192.png': 'f1702ba0ab73',
+  './icons/icon-512.png': '032fb8038d2e',
+  './icons/icon-maskable-512.png': '94b508b56f0d',
   './icons/icon.svg': '732f6acf1571',
   './icons/mochila-halloween.svg': 'ffd9bb0588d8',
   './icons/mochila-navidad.svg': '2abb40651667',
@@ -661,5 +664,5 @@ const FILES = {
   './js/update/is-busy-route.js': 'bf9323cc8e6d',
   './js/update/offer-update.js': '910980d1a72e',
   './js/update/watch-updates.js': 'b07f9c605114',
-  './manifest.webmanifest': 'cf69a6d1d9fe',
+  './manifest.webmanifest': 'a1a9a78c7059',
 };
