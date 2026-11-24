@@ -23,6 +23,16 @@ typ(w.el, '3,5'); assert.equal(state.value, 3.5); ok('number: puntos de miles, c
 // text
 q = { type: 'text', prompt: 'p', answers: ['Ochenta y ocho mil'] };
 assert.ok(K.text.check(q, 'ochenta y OCHO mil.')); assert.ok(!K.text.check(q, 'ochenta y nueve mil')); ok('text: ignora mayúsculas/signos');
+q = { type: 'text', prompt: 'p', answers: ['león', 'un león'] };
+for (const v of ['leon', 'el leon', 'El León', 'un leon', 'una leon', 'los leones'.replace('leones', 'leon')]) assert.ok(K.text.check(q, v), v);
+assert.ok(!K.text.check(q, 'el tigre')); assert.ok(!K.text.check(q, 'el'));
+ok('text: ignora el artículo del principio');
+q = { type: 'text', prompt: 'p', answers: ['el'] };
+assert.ok(K.text.check(q, 'el')); assert.ok(K.text.check(q, 'El.')); assert.ok(!K.text.check(q, 'la')); assert.ok(!K.text.check(q, 'un'));
+ok('text: un artículo solo sigue siendo respuesta válida');
+q = { type: 'text', prompt: 'p', answers: ['el perro'], strictArticle: true };
+assert.ok(K.text.check(q, 'El perro')); assert.ok(!K.text.check(q, 'la perro')); assert.ok(!K.text.check(q, 'perro'));
+ok('text: strictArticle exige el artículo');
 // multi
 q = { type: 'multi', prompt: 'p', fields: [{ label: 'Cociente', answer: 15 }, { label: 'Resto', answer: 1 }] };
 ({ w, state } = mount(q)); const ins = [...document.querySelectorAll('input')];

@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '44e12f1ef2e2';
+const BUILD = '03a472b783ef';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -456,7 +456,7 @@ const FILES = {
   './js/exercises/kinds/rule.js': '1a1d13d15444',
   './js/exercises/kinds/tap.js': 'f5188264ceef',
   './js/exercises/kinds/text-input.js': '11d20012e73c',
-  './js/exercises/kinds/text.js': '75c878160582',
+  './js/exercises/kinds/text.js': '02a6f5b50fec',
   './js/exercises/kinds/words.js': '56bee04a1151',
   './js/exercises/make/choice.js': 'b7a23d2dc11e',
   './js/exercises/make/multi.js': '4d66506a46cd',
@@ -653,6 +653,7 @@ const FILES = {
   './js/shared/speech/speak-button.js': '15521c43df22',
   './js/shared/speech/speak.js': 'd0ed49a14fb6',
   './js/shared/speech/study-text.js': '824d93f811bb',
+  './js/shared/strip-article.js': '13cda4a9593a',
   './js/shared/switch-button.js': '075da7aff299',
   './js/shared/text-normalize.js': 'd1818c7a80a9',
   './js/sounds/audio-context.js': 'a7be29948958',
