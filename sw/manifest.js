@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'ba55e7196332';
+const BUILD = '0fcfedb081db';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -494,8 +494,10 @@ const FILES = {
   './js/features/backup/backup-status.js': '2a948be1d5f6',
   './js/features/backup/backup-summary.js': '2d1712674409',
   './js/features/backup/backup-tables.js': 'f362a5efefc7',
+  './js/features/backup/backup-with-tap.js': 'e12575b9f82d',
   './js/features/backup/build-backup.js': 'fbd0cc3a18ba',
   './js/features/backup/check-backup.js': 'c8e3b3104c11',
+  './js/features/backup/ensure-recent-backup.js': '13da3de129af',
   './js/features/backup/finish-backup.js': 'c509f511771a',
   './js/features/backup/last-backup.js': 'a474f8fa3919',
   './js/features/backup/read-backup-file.js': 'b420b9f51320',
@@ -514,7 +516,7 @@ const FILES = {
   './js/features/mix/mix.screen.js': '1b9a9e6550ea',
   './js/features/parents/child-stats.screen.js': '47ae27869051',
   './js/features/parents/child-stats/course-picker.js': 'c5b59406605a',
-  './js/features/parents/child-stats/delete-profile-button.js': '77e10cda8eed',
+  './js/features/parents/child-stats/delete-profile-button.js': 'a5b59627546a',
   './js/features/parents/child-stats/load-course-progress.js': 'bf1246c8009e',
   './js/features/parents/child-stats/points-days.js': '863833bc4926',
   './js/features/parents/child-stats/points-section.js': 'b9d409bfe776',

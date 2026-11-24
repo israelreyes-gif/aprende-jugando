@@ -4,10 +4,12 @@ import { paths } from '../../../core/paths.js';
 import { deleteProfile } from '../../../data/profiles.repo.js';
 import { icon } from '../../../shared/icons.js';
 import { confirmDialog, notify } from '../../../shared/modal.js';
+import { ensureRecentBackup } from '../../backup/ensure-recent-backup.js';
 
-/** Botón para borrar un perfil y todo su progreso (pide confirmación). */
+/** Botón para borrar un perfil y todo su progreso (ofrece antes una copia de seguridad y pide confirmación). */
 export function deleteProfileButton(profile) {
   async function onClick() {
+    if (!(await ensureRecentBackup(profile.name))) return;
     const confirmed = await confirmDialog({
       title: `¿Borrar el perfil de ${profile.name}?`,
       message: 'Se borrará también todo su progreso. Esto no se puede deshacer.',

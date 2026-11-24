@@ -303,11 +303,17 @@ assert.match(text(), /No hemos encontrado/); ok('ruta desconocida -> pantalla de
 
 sessionStorage.setItem('aj.session.parent','test');
 await visit('#/parents/' + alex.id);
-q('.btn--danger').click(); await sleep(20);
+q('.btn--danger').click(); await sleep(60);
+assert.match(document.querySelector('.modal').textContent, /Antes de borrar a Alex/); assert.match(document.querySelector('.modal').textContent, /Todavía no has hecho ninguna copia/);
+assert.deepEqual([...document.querySelectorAll('.modal .btn')].map((b) => b.textContent), ['Cancelar', 'Borrar sin copia', 'Hacer copia ahora']);
+document.querySelectorAll('.modal .btn')[0].click(); await sleep(40); assert.equal(rows('SELECT * FROM profiles').length, 1); assert.equal(document.querySelector('.modal'), null); ok('borrar: sin copia reciente se ofrece hacerla, y Cancelar no borra nada');
+q('.btn--danger').click(); await sleep(60);
+document.querySelectorAll('.modal .btn')[1].click(); await sleep(40); // Borrar sin copia -> sigue el aviso rojo de siempre
 assert.ok(document.querySelector('.modal--danger')); assert.match(document.querySelector('.modal').textContent, /¿Borrar el perfil de Alex\?/);
 const modalBtns = [...document.querySelectorAll('.modal .btn')]; assert.deepEqual(modalBtns.map((b) => b.textContent), ['Cancelar', 'Borrar']);
 modalBtns[0].click(); await sleep(40); assert.equal(rows('SELECT * FROM profiles').length, 1); assert.equal(document.querySelector('.modal'), null); ok('borrar: Cancelar cierra la ventana y no borra nada');
-q('.btn--danger').click(); await sleep(20);
+q('.btn--danger').click(); await sleep(60);
+document.querySelectorAll('.modal .btn')[1].click(); await sleep(40);
 document.querySelectorAll('.modal .btn')[1].click(); await sleep(80); await settle();
 assert.equal(rows('SELECT * FROM profiles').length, 0);
 assert.equal(rows('SELECT * FROM practice_sessions').length, 0);
