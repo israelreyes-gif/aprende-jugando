@@ -9,8 +9,14 @@ export function readOutbox() {
   }
 }
 
+/** Guarda la cola. Devuelve false si no ha podido (por ejemplo, almacenamiento lleno): nunca finge que se guardó. */
 export function writeOutbox(items) {
-  localStorage.setItem(KEY_OUTBOX, JSON.stringify(items));
+  try {
+    localStorage.setItem(KEY_OUTBOX, JSON.stringify(items));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function pendingCount() {
