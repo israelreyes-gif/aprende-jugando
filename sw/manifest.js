@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '585111484e79';
+const BUILD = 'ba55e7196332';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -400,9 +400,11 @@ const FILES = {
   './js/core/api/connection.js': '2d605383159e',
   './js/core/api/data-events.js': '0d53bfd02324',
   './js/core/api/fetch-timeout.js': 'dd1f57f7ffb0',
+  './js/core/api/flush-on-return.js': '4a9f390ad34f',
   './js/core/api/memory-cache.js': 'b49917a72d1f',
-  './js/core/api/outbox-store.js': '8342427caf45',
-  './js/core/api/outbox.js': '05eea389788a',
+  './js/core/api/outbox-poison.js': 'cc23abcf432a',
+  './js/core/api/outbox-store.js': 'c6d8328d3c4a',
+  './js/core/api/outbox.js': '1e3d78b91890',
   './js/core/api/owner.js': 'e3c17bfdfa6f',
   './js/core/api/query.js': '29e0ca8a0e5c',
   './js/core/api/read-cache.js': '8538c20fceca',
@@ -447,7 +449,7 @@ const FILES = {
   './js/data/titles.repo.js': '233f1e2446e0',
   './js/exercises/bank.js': 'a39a03ba3fab',
   './js/exercises/kinds/choice.js': 'c0d155548da4',
-  './js/exercises/kinds/fields-render.js': '1fcfb5e824d9',
+  './js/exercises/kinds/fields-render.js': '898265812c91',
   './js/exercises/kinds/index.js': 'b8319c0af6dd',
   './js/exercises/kinds/multi.js': '0b23c336d33c',
   './js/exercises/kinds/number-label.js': '7952736b927e',
@@ -455,7 +457,7 @@ const FILES = {
   './js/exercises/kinds/order.js': '3fbec20ac247',
   './js/exercises/kinds/rule.js': '1a1d13d15444',
   './js/exercises/kinds/tap.js': 'f5188264ceef',
-  './js/exercises/kinds/text-input.js': '11d20012e73c',
+  './js/exercises/kinds/text-input.js': '5fb3255a7ae8',
   './js/exercises/kinds/text.js': '02a6f5b50fec',
   './js/exercises/kinds/words.js': '56bee04a1151',
   './js/exercises/make/choice.js': 'b7a23d2dc11e',
@@ -627,7 +629,7 @@ const FILES = {
   './js/features/subjects/topic-state.js': '3f339a087327',
   './js/features/subjects/topic-tile.js': '9b8086717537',
   './js/features/subjects/topics-summary.js': '4561a8f68377',
-  './js/main.js': '44b212da9c7c',
+  './js/main.js': 'c366545e7020',
   './js/no-zoom.js': '05f17cc44237',
   './js/register-sw.js': '1647a5bd996f',
   './js/routes.js': '6850a79b645c',

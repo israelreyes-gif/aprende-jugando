@@ -4,7 +4,7 @@ import { h } from '../../core/dom.js';
 export function textInputRender({ inputmode, parse }) {
   return (q, { t, onChange, onSubmit }) => {
     const input = h('input', {
-      class: 'input', type: 'text', inputmode, autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false',
+      class: 'input', type: 'text', inputmode, autocomplete: 'off', autocapitalize: 'off', autocorrect: 'off', spellcheck: 'false',
       placeholder: t.yourAnswer, 'aria-label': q.prompt,
       onInput: () => onChange(parse(input.value)),
       onKeydown: (event) => {

@@ -22,7 +22,7 @@ export function fieldsRender({ kindOf, judge }) {
       const kind = kindOf(field);
       return h('input', {
         class: 'input', type: 'text', inputmode: kind === 'number' ? 'decimal' : 'text',
-        autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false',
+        autocomplete: 'off', autocapitalize: 'off', autocorrect: 'off', spellcheck: 'false',
         placeholder: t.yourAnswer, 'aria-label': field.label,
         onInput: (event) => {
           values[i] = PARSERS[kind](event.target.value);

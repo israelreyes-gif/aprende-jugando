@@ -33,6 +33,11 @@ ok('text: un artículo solo sigue siendo respuesta válida');
 q = { type: 'text', prompt: 'p', answers: ['el perro'], strictArticle: true };
 assert.ok(K.text.check(q, 'El perro')); assert.ok(!K.text.check(q, 'la perro')); assert.ok(!K.text.check(q, 'perro'));
 ok('text: strictArticle exige el artículo');
+for (const q of [{ type: 'text', prompt: 'p', answers: ['a'] }, { type: 'number', prompt: 'p', answer: 1 }, { type: 'multi', prompt: 'p', fields: [{ label: 'A', answer: 1 }] }]) {
+  mount(q); const input = document.querySelector('input');
+  assert.equal(input.getAttribute('autocorrect'), 'off', q.type); assert.equal(input.getAttribute('spellcheck'), 'false', q.type); assert.equal(input.getAttribute('autocapitalize'), 'off', q.type);
+}
+ok('campos de escritura: sin autocorrector, sin corrector ortográfico y sin mayúscula automática (iPhone)');
 // multi
 q = { type: 'multi', prompt: 'p', fields: [{ label: 'Cociente', answer: 15 }, { label: 'Resto', answer: 1 }] };
 ({ w, state } = mount(q)); const ins = [...document.querySelectorAll('input')];
