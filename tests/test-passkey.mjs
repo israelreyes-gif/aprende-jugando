@@ -6,7 +6,7 @@ import { makeD1 } from './d1-shim.js';
 
 const ORIGIN = 'https://israelreyes-gif.github.io';
 const RP = 'israelreyes-gif.github.io';
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 const env = { DB: db, API_KEY: 'k', ALLOWED_ORIGIN: ORIGIN, VAPID_PUBLIC_KEY: 'x', VAPID_PRIVATE_KEY: 'x', VAPID_SUBJECT: 'mailto:a@b.c' };
 const sql = (t, ...a) => db.sqlite.prepare(t).run(...a); const one = (t, ...a) => db.sqlite.prepare(t).get(...a);
 const b64 = (buf) => Buffer.from(buf).toString('base64url');

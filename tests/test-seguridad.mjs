@@ -5,7 +5,7 @@ import worker from '../worker/worker.js';
 import { makeD1 } from './d1-shim.js';
 import { createSession } from '../worker/auth-sessions.js';
 
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 const env = { DB: db, API_KEY: 'secreto', ALLOWED_ORIGIN: 'https://yo.github.io' };
 const SECRETO_INTERNO = 'tabla_secreta_xyz';
 const parentToken = await createSession(db, 'parent');

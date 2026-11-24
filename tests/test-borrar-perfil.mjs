@@ -1,7 +1,7 @@
 // Al borrar un perfil se van también su código y sus sesiones (disparador trg_profile_delete).
 import assert from 'node:assert/strict';
 import { makeD1 } from './d1-shim.js';
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 const run = (s, ...a) => db.sqlite.prepare(s).run(...a); const get = (s, ...a) => db.sqlite.prepare(s).get(...a);
 const cols = db.sqlite.prepare("PRAGMA table_info(profiles)").all().filter((c) => c.notnull && c.dflt_value == null && c.name !== 'id').map((c) => c.name);
 for (const id of ['a', 'b']) {

@@ -12,7 +12,7 @@ for (const id of ['parent', 'PARENT', 'Parent', '', 'a b', 'x'.repeat(65), 'a/b'
 for (const id of ['nuevo', 'alex', crypto.randomUUID(), 'id-lx3k9-ab12cd34', 'parent2', 'my-parent']) assertProfileIds([{ id }]);
 assertProfileIds([{ name: 'sin id' }]); assertProfileIds([]); ok('se rechaza "parent" (en cualquier mayúscula) y los ids raros; valen los UUID, los ids normales y los ya existentes');
 
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
 const parent = await createSession(db, 'parent');
 const call = async (method, path, body) => worker.fetch(new Request(`http://w${path}`, { method, headers: { 'X-Api-Key': 'k', 'X-Session': parent, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined }), env);
 assert.equal((await call('POST', '/api/profiles', { id: 'parent', name: 'Falso', avatar_color: '#000' })).status, 400);

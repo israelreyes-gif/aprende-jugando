@@ -10,7 +10,7 @@ const dom = new JSDOM('<!doctype html><html><body><div id="app"></div></body></h
 const { window } = dom;
 Object.assign(globalThis, { window, document: window.document, location: window.location, localStorage: window.localStorage, sessionStorage: window.sessionStorage });
 window.scrollTo = () => {};
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 const env = { DB: db, API_KEY: 'k', ALLOWED_ORIGIN: ORIGIN, TELEGRAM_BOT_TOKEN: '', TELEGRAM_CHAT_ID: '' };
 globalThis.fetch = async (url, init = {}) => worker.fetch(new Request(url, init), env);
 console.error = () => {};

@@ -10,7 +10,7 @@ Object.assign(globalThis, { window, document: window.document, location: window.
 window.scrollTo = () => {};
 window.confirm = () => true;
 
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 const env = { DB: db, API_KEY: 'k' };
 let offline = false;
 globalThis.fetch = async (url, init = {}) => {

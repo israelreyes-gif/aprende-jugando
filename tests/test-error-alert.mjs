@@ -17,7 +17,7 @@ function decrypt(body, uaPrivB64, uaPubB64, authB64) {
 const kp = await webcrypto.subtle.generateKey({ name: 'ECDSA', namedCurve: 'P-256' }, true, ['sign', 'verify']);
 const vPub = toBase64Url(new Uint8Array(await webcrypto.subtle.exportKey('raw', kp.publicKey))); const vPriv = (await webcrypto.subtle.exportKey('jwk', kp.privateKey)).d;
 const vapid = { VAPID_PUBLIC_KEY: vPub, VAPID_PRIVATE_KEY: vPriv, PUSH_ALLOWED_HOSTS: 'e,x,push.example,push,localhost,127.0.0.1,w.example', VAPID_SUBJECT: 'https://yo.github.io/app/' };
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color) VALUES ('p1','Alex','#fff')`);
 const keys = {}; const ins = db.sqlite.prepare('INSERT INTO push_devices (id,kind,profile_id,endpoint,p256dh,auth) VALUES (?,?,?,?,?,?)');
 for (const [id, kind, pid] of [['c1', 'child', 'p1'], ['m1', 'parent', null], ['m2', 'parent', null]]) { const e = createECDH('prime256v1'); e.generateKeys(); keys[id] = { priv: e.getPrivateKey().toString('base64url'), pub: e.getPublicKey().toString('base64url'), auth: 'BTBZMqHH6r4Tts7J_aSIgg' }; ins.run(id, kind, pid, `https://push.example/${id}`, keys[id].pub, keys[id].auth); }
@@ -50,7 +50,7 @@ assert.equal(sent.length, 0); ok('un fallo de /push/send no avisa (evita bucles)
 
 // 4) Sin claves VAPID, sin móviles de padres o sin contexto: responde igual y no lanza
 env = { DB: breaking(/profiles/i), API_KEY: 'k' }; assert.equal((await run(get('/api/profiles'), env)).status, 500); assert.equal(sent.length, 0);
-const db2 = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const b2 = { prepare: (sql) => (/profiles/i.test(sql) ? (() => { throw new Error('x'); })() : db2.prepare(sql)), batch: () => {} };
+const db2 = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname); const b2 = { prepare: (sql) => (/profiles/i.test(sql) ? (() => { throw new Error('x'); })() : db2.prepare(sql)), batch: () => {} };
 assert.equal((await run(get('/api/profiles'), { DB: b2, API_KEY: 'k', ...vapid })).status, 500); assert.equal(sent.length, 0);
 assert.equal((await run(get('/api/profiles'), { DB: breaking(/profiles/i), API_KEY: 'k', ...vapid }, false)).status, 500); assert.equal(sent.length, 0);
 ok('sin claves, sin padres registrados o sin contexto: 500 normal, sin excepciones ni avisos');

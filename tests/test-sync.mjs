@@ -90,7 +90,7 @@ assert.equal(syncLineOf(undefined), '🔄 Sincronización: sin datos esta semana
 assert.match(formatProfile({ ...base, sync: { activity: 1, late: 1, failed: 2 } }, new Map(), { b: (x) => `<b>${x}</b>`, x: (x) => x }), /<b>2 sin guardar<\/b>/); ok('lo sin guardar sale en negrita');
 
 // ---- Worker: un "failed" avisa a los padres; un "late" no
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color) VALUES ('p1','Alex','#fff')`);
 const telegram = [];
 globalThis.fetch = async (url, init) => { telegram.push(JSON.parse(init.body)); return new Response('{}', { status: 200 }); };

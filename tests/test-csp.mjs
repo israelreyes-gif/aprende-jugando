@@ -9,7 +9,7 @@ import { makeD1 } from './d1-shim.js';
 const { chromium } = createRequire(import.meta.url)('playwright');
 const ROOT = process.env.REAL_REPO || path.resolve(new URL('..', import.meta.url).pathname);
 const API = 'http://localhost:8795', B = 'http://localhost:8762/';
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
 db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color,gender) VALUES ('alex','Alex','#8EDBC0','chico')`);
 for (const [i, [sub, top]] of [['mates', 'tablas'], ['sciences', 'heart-vessels'], ['sciences', 'reproduction'], ['sociales', 'neolitico']].entries()) db.sqlite.exec(`INSERT INTO topic_release (id,profile_id,course_id,subject_id,topic_id) VALUES ('r${i}','alex','4-primaria','${sub}','${top}')`);
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };

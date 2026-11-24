@@ -58,7 +58,7 @@ const answers = Array.from({ length: 10 }, (_, i) => ({ correct: i < 8 }));
 assert.match(retoMessage({ name: 'Alex', answers, streakBonus: 10 }).body, /\+21 puntos/); assert.match(retoMessage({ name: 'Alex', answers }).body, /\+11 puntos/); ok('el aviso a padres suma la racha');
 
 // 7) Rutas del Worker: /api/stats/points y la lista de perfiles llevan el bonus
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
 db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color) VALUES ('alex','Alex','#fff')`);
 const insR = db.sqlite.prepare('INSERT INTO reto_diario (id,profile_id,course_id,day,questions,finished_at) VALUES (?,?,?,?,?,?)');
 const insS = db.sqlite.prepare('INSERT INTO practice_sessions (id,profile_id,course_id,subject_id,topic_id,total,correct,duration_s,finished_at,kind) VALUES (?,?,?,?,?,?,?,?,?,?)');

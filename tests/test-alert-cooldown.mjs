@@ -5,7 +5,7 @@ import { claimAlert, COOLDOWN_MS } from '../worker/alert-cooldown.js';
 import { alertParents, errorMessage } from '../worker/error-alert.js';
 import { makeD1 } from './d1-shim.js';
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
-const schema = new URL('./fixtures/schema.sql', import.meta.url).pathname;
+const schema = new URL('../worker/schema.sql', import.meta.url).pathname;
 
 // 1) claimAlert: primero avisa, los repetidos se callan y cuentan, pasado el tiempo avisa con el contador
 let db = makeD1(schema); const T = Date.UTC(2026, 10, 18, 12, 0, 0);

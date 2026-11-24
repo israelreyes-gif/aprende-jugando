@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
 import worker from '../worker/worker.js';
 import { makeD1 } from './d1-shim.js';
 
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 const env = { DB: db, API_KEY: 'k', VAPID_PUBLIC_KEY: 'x', VAPID_PRIVATE_KEY: 'x', VAPID_SUBJECT: 'mailto:a@b.c' };
 const sql = (text, ...args) => db.sqlite.prepare(text).run(...args);
 const one = (text, ...args) => db.sqlite.prepare(text).get(...args);

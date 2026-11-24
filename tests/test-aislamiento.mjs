@@ -4,7 +4,7 @@ import worker from '../worker/worker.js';
 import { makeD1 } from './d1-shim.js';
 import { createSession } from '../worker/auth-sessions.js';
 
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 const env = { DB: db, API_KEY: 'k', PUSH_ALLOWED_HOSTS: 'e,x,push.example,push,localhost,127.0.0.1,w.example' };
 const run = (s, ...a) => db.sqlite.prepare(s).run(...a); const get = (s, ...a) => db.sqlite.prepare(s).get(...a);
 async function call(method, path, tok, body) {

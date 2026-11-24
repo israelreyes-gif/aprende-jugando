@@ -7,7 +7,7 @@ import { weeklyReport } from '../worker/report-format.js';
 import { errorMessage } from '../worker/error-alert.js';
 
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 const sql = (q) => db.sqlite.exec(q);
 const count = (t) => db.sqlite.prepare(`SELECT COUNT(*) AS n FROM ${t}`).get().n;
 

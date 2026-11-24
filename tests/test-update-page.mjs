@@ -11,9 +11,9 @@ const { watchUpdates } = await import(`${P}/update/watch-updates.js`);
 let ok = 0; const t = async (name, fn) => { try { await fn(); ok++; console.log('  ✓', name); } catch (e) { console.log('  ✗', name, '\n    ', e.message.split('\n')[0]); process.exitCode = 1; } };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-await t('pantallas ocupadas: ejercicios, reto y formularios', () => {
-  for (const p of ['/p/a/c/4-primaria/s/mates/practice/tablas', '/p/a/c/4-primaria/reto', '/new-profile', '/p/a/edit']) assert.equal(isBusyRoute(p), true, p);
-  for (const p of ['/', '/p/a', '/p/a/c/4-primaria', '/p/a/c/4-primaria/s/mates/practice', '/p/a/c/4-primaria/s/mates/study', '/p/a/c/4-primaria/s/mates/study/tablas', '/parents', '/parents/a']) assert.equal(isBusyRoute(p), false, p);
+await t('pantallas ocupadas: ejercicios, mix, reto y formularios', () => {
+  for (const p of ['/p/a/c/4-primaria/s/mates/practice/tablas', '/p/a/c/4-primaria/s/mates/mix/mates', '/p/a/c/4-primaria/reto', '/new-profile', '/p/a/edit']) assert.equal(isBusyRoute(p), true, p);
+  for (const p of ['/', '/p/a', '/p/a/c/4-primaria', '/p/a/c/4-primaria/s/mates/practice', '/p/a/c/4-primaria/s/mates/mix', '/p/a/c/4-primaria/s/mates/study', '/p/a/c/4-primaria/s/mates/study/tablas', '/parents', '/parents/a']) assert.equal(isBusyRoute(p), false, p);
 });
 
 /** Un service worker y un registro de mentira con lo mismo que usa la app. */

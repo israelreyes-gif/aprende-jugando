@@ -33,7 +33,7 @@ assert.equal(weeklyReport([]).body, 'Todavía no hay perfiles.');
 assert.match(weeklyReport([empty, full]).body, /Mamá[\s\S]*\n\n👦 Alex/); console.log('✓ informe con varios perfiles');
 
 // Con la base de datos
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color,gender,course_id) VALUES ('a','Alex','#1','chico','4-primaria'),('m','Mamá','#2',NULL,'1-primaria')`);
 db.sqlite.exec(`INSERT INTO topic_release (id,profile_id,course_id,subject_id,topic_id) VALUES ('r1','a','4-primaria','mates','tablas'),('r2','a','4-primaria','mates','divisiones')`);
 db.sqlite.exec(`INSERT INTO study_progress (id,profile_id,course_id,subject_id,topic_id,completed_at) VALUES ('s1','a','4-primaria','mates','tablas','2026-10-28T10:00:00Z')`);

@@ -22,7 +22,7 @@ assert.deepEqual({ ...summarizePointsJson({ sessions, studied, retos }), byDay: 
 assert.equal(summarizePointsJson({ sessions: [], studied: [] }).total, 0); console.log('✓ sin datos: 0');
 
 // Ruta: permisos y datos
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
 db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color) VALUES ('alex','Alex','#fff'),('lucia','Lucía','#fff')`);
 const ins = db.sqlite.prepare('INSERT INTO practice_sessions (id,profile_id,course_id,subject_id,topic_id,total,correct,duration_s,finished_at,kind) VALUES (?,?,?,?,?,?,?,?,?,?)');
 ins.run('a1', 'alex', '4-primaria', 'mates', 'tablas', 10, 8, 60, '2026-10-20T10:00:00Z', 'practice');

@@ -74,7 +74,7 @@ globalThis.fetch = async () => { throw new TypeError('sin red'); };
 r = await sendPush(dev, { title: 't', body: 'b' }, env0); assert.deepEqual([r.ok, r.gone, r.status], [false, false, 0]); ok('sendPush: sin red no rompe nada');
 
 // Ruta /push/send del Worker
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color) VALUES ('p1','Alex','#fff'),('p2','Lucía','#fff')`);
 const mk = (id) => { const e = createECDH('prime256v1'); e.generateKeys(); return { id, p256dh: e.getPublicKey().toString('base64url'), auth: 'BTBZMqHH6r4Tts7J_aSIgg' }; };
 const ins = db.sqlite.prepare('INSERT INTO push_devices (id,kind,profile_id,endpoint,p256dh,auth) VALUES (?,?,?,?,?,?)');

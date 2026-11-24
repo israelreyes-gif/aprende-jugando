@@ -8,7 +8,7 @@ const { window } = dom;
 Object.assign(globalThis, { window, document: window.document, location: window.location, localStorage: window.localStorage, sessionStorage: window.sessionStorage });
 const { setSession } = await import('../js/core/api/session-store.js'); setSession('parent', 'test');
 window.scrollTo = () => {};
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname); const env = { DB: db, API_KEY: 'k' };
 let offline = false;
 globalThis.fetch = async (url, init = {}) => { if (offline && init.method === 'PATCH') throw new TypeError('fetch failed'); return worker.fetch(new Request(url, init), env); };
 const errors = []; console.error = (...a) => errors.push(a.map(String).join(' '));

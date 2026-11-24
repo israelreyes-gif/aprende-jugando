@@ -8,7 +8,7 @@ import { MAX_BODY_BYTES } from '../worker/http.js';
 import { saveCredential } from '../worker/auth-credentials.js';
 import { hashCode } from '../worker/auth-crypto.js';
 
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 const env = { DB: db, API_KEY: 'k' };
 const sql = (q, ...a) => db.sqlite.prepare(q).all(...a);
 const T = Date.now();

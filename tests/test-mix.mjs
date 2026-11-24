@@ -9,7 +9,7 @@ const { window } = dom;
 Object.assign(globalThis, { window, document: window.document, location: window.location, localStorage: window.localStorage, sessionStorage: window.sessionStorage });
 window.scrollTo = () => {};
 sessionStorage.setItem('aj.session.parent', 'test');
-const db = makeD1(new URL('./fixtures/schema.sql', import.meta.url).pathname);
+const db = makeD1(new URL('../worker/schema.sql', import.meta.url).pathname);
 const env = { DB: db, API_KEY: 'k' };
 globalThis.fetch = async (url, init = {}) => worker.fetch(new Request(url, init), env);
 console.error = () => {};
