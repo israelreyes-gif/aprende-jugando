@@ -37,10 +37,19 @@ export async function savePractice({ profileId, courseId, subjectId, topicId, re
   return { queued: first.queued || second.queued };
 }
 
-/** Sesiones de un perfil, de la más reciente a la más antigua. */
-export function listSessions(profileId, { subjectId, topicId } = {}) {
+const PAGE = 1000;
+const MAX_PAGES = 50; // tope de seguridad: 50 000 sesiones
+
+/** Sesiones de un perfil, de la más reciente a la más antigua. Lee todas, por páginas (los puntos y las estadísticas dependen de no perder ninguna). */
+export async function listSessions(profileId, { subjectId, topicId } = {}) {
   const where = { profile_id: profileId };
   if (subjectId) where.subject_id = subjectId;
   if (topicId) where.topic_id = topicId;
-  return api.list('practice_sessions', { where, order: 'finished_at.desc', limit: 2000 });
+  const all = [];
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const rows = await api.list('practice_sessions', { where, order: 'finished_at.desc,id.desc', limit: PAGE, offset: page * PAGE });
+    all.push(...rows);
+    if (rows.length < PAGE) break;
+  }
+  return all;
 }

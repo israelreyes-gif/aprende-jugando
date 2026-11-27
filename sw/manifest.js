@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '8277dbbc685a';
+const BUILD = 'e995143529ef';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -427,7 +427,7 @@ const FILES = {
   './js/data/backup.repo.js': '48f5d52bf2fb',
   './js/data/mix/save-mix.js': 'a106572ec99d',
   './js/data/passkey.repo.js': 'c1c7f62a187b',
-  './js/data/practice.repo.js': '6c2017418828',
+  './js/data/practice.repo.js': '6dfac579ef9f',
   './js/data/profile-options.js': '97b5ccd2cadd',
   './js/data/profiles.repo.js': '8910e77308ea',
   './js/data/push-devices.js': '53ef5ad01c89',
@@ -521,7 +521,7 @@ const FILES = {
   './js/features/parents/child-stats/points-days.js': '863833bc4926',
   './js/features/parents/child-stats/points-section.js': 'b9d409bfe776',
   './js/features/parents/child-stats/progress-rows.js': 'f81830065191',
-  './js/features/parents/child-stats/reinforce-cards.js': 'e580c44308b2',
+  './js/features/parents/child-stats/reinforce-cards.js': '06d64ca8270c',
   './js/features/parents/child-stats/subject-rows.js': 'bac7438b2f88',
   './js/features/parents/child-stats/summary-chips.js': 'a501d30e15e7',
   './js/features/parents/child-stats/sync-section.js': '5b6c0961b75f',
