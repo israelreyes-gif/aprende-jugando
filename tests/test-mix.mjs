@@ -98,7 +98,7 @@ const { loadPoints } = await import('../js/features/points/load-points.js');
 const pts = await loadPoints('alex');
 assert.equal(pts.right, 5); assert.equal(pts.wrong, 1); assert.equal(pts.bonus, 5); ok('puntos como siempre: +1/−1 por pregunta y el bonus de ±5 una sola vez para todo el mix');
 await visit(`#/p/alex/c/${C}/s/ingles/practice`);
-assert.match(text(), /⭐ 2\/2/); ok('cuenta en las estadísticas de cada tema (mejor nota del tema)');
+assert.doesNotMatch(text(), /⭐ 2\/2/); ok('el mix no cuenta como "mejor nota" del tema (solo los ejercicios)');
 await visit('#/parents/alex/stats/' + C + '/ingles'); assert.ok(/time|Time/i.test(text())); ok('la zona de padres lo ve en las estadísticas del tema');
 {
   // Otros mixes: Unit 2 de Inglés (sin la lectura) y Matemáticas (toda la asignatura)

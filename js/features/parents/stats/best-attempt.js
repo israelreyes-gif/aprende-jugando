@@ -1,6 +1,6 @@
 import { practiceOnly } from './practice-only.js';
 
-/** Resumen de un tema para las tarjetas de la asignatura: la mejor sesión de ejercicios (el reto no cuenta). */
+/** Resumen de un tema para las tarjetas de la asignatura: la mejor sesión de ejercicios (ni el reto ni el mix cuentan). */
 export function bestAttempt(sessions) {
   let best = null;
   for (const s of practiceOnly(sessions)) {

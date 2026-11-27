@@ -5,8 +5,8 @@ import { reinforceLevel } from './reinforce-level.js';
 
 /**
  * Una fila por tema con contenido: si está liberado, si está estudiado y cómo van sus ejercicios.
- * attempts y best: solo sesiones de ejercicios (el reto no cuenta como intento).
- * recentPct: aciertos de las últimas 24 preguntas, de ejercicios y de reto (el mismo número que decide el refuerzo).
+ * attempts y best: solo sesiones de ejercicios (ni el reto ni el mix cuentan como intento).
+ * recentPct: aciertos de las últimas 24 preguntas, de ejercicios, de reto y de mix (el mismo número que decide el refuerzo).
  * level: 'red' | 'orange' | null; solo se marca en temas liberados.
  * sessions: practice_sessions del perfil en esa asignatura.
  */

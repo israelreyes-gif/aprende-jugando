@@ -14,7 +14,7 @@ function levelTag(entry) {
 }
 
 function practiceLine(entry) {
-  if (entry.attempts === 0) return entry.recentPct == null ? 'Sin ejercicios todavía' : `Solo preguntas del reto · últimas 24: ${entry.recentPct}%`;
+  if (entry.attempts === 0) return entry.recentPct == null ? 'Sin ejercicios todavía' : `Solo preguntas del reto o del mix · últimas 24: ${entry.recentPct}%`;
   const times = entry.attempts === 1 ? '1 intento' : `${entry.attempts} intentos`;
   return `${times} · mejor ${entry.best.correct}/${entry.best.total} · últimas 24: ${entry.recentPct}%`;
 }

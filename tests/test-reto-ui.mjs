@@ -102,7 +102,7 @@ const chips = qa('.grid-3 .stat-chip'); assert.equal(chips.length, 3);
 assert.deepEqual(chips.map((c) => c.querySelector('.stat-chip__label').textContent), ['Ejercicios hechos', 'Acierto medio', 'Días de racha']);
 assert.equal(chips[0].querySelector('.stat-chip__value').textContent, '10'); assert.equal(chips[2].querySelector('.stat-chip__value').textContent, '1'); assert.ok(!/Días activo/.test(text())); ok('estadísticas de padres: 10 ejercicios del reto y "Días de racha: 1" en lugar de "Días activo"');
 await visit('#/parents/alex/stats/4-primaria/mates');
-assert.match(q('.topic-stat').textContent, /Solo preguntas del reto · últimas 24: \d+%/); ok('detalle de Matemáticas: el tema solo con preguntas del reto lo dice y no inventa intentos ni "mejor"');
+assert.match(q('.topic-stat').textContent, /Solo preguntas del reto o del mix · últimas 24: \d+%/); ok('detalle de Matemáticas: el tema solo con preguntas del reto lo dice y no inventa intentos ni "mejor"');
 await visit(course + '/s/mates/practice');
 assert.ok(!/⭐/.test(text()), "el reto no debe crear una mejor nota"); assert.match(q('.topic-card').textContent, /Sin intentar/); ok('tarjeta del tema (niño): sigue "Sin intentar" aunque haya preguntas del reto');
 

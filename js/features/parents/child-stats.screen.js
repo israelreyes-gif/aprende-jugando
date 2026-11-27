@@ -4,6 +4,7 @@ import { profileCourse, subjectsOf } from '../../content/registry.js';
 import { getProfile } from '../../data/profiles.repo.js';
 import { listSessions } from '../../data/practice.repo.js';
 import { listStudied } from '../../data/study.repo.js';
+import { listReleased } from '../../data/release.repo.js';
 import { listSyncEvents } from '../../data/sync.repo.js';
 import { appHeader } from '../../shared/app-header.js';
 import { icon } from '../../shared/icons.js';
@@ -28,11 +29,11 @@ import { loadTopicTitles } from './child-stats/topic-titles.js';
 import { computeStats } from './stats.logic.js';
 
 async function renderChildStats({ pid }) {
-  const [profile, sessions, streak, points] = await Promise.all([getProfile(pid), listSessions(pid), loadStreak(pid), loadPointsOrNull(pid)]);
+  const [profile, sessions, streak, points, releasedRows] = await Promise.all([getProfile(pid), listSessions(pid), loadStreak(pid), loadPointsOrNull(pid), listReleased(pid)]);
   if (!profile) return notFoundView();
 
   const course = profileCourse(profile);
-  const stats = computeStats(sessions, subjectsOf(course).map((s) => s.id), streak);
+  const stats = computeStats(sessions, subjectsOf(course).map((s) => s.id), streak, releasedRows);
   const topicTitles = await loadTopicTitles(stats.reinforce);
 
   const [events, studied] = await Promise.all([listSyncEvents(pid).catch(() => []), listStudied(pid).catch(() => [])]);

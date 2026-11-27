@@ -106,6 +106,24 @@ console.log('  ✓ refuerzo: ventana de 24 preguntas; las del reto pesan solo lo
 
 assert.deepEqual(bestAttempt([s('m', 't', 5, 8, 'x'), rs('t', 1, 1, 'y')]), { correct: 5, total: 8 }); // 1/1 no gana a 5/8
 assert.equal(bestAttempt([rs('t', 1, 1, 'y')]), null);
+// Mix: sesiones de 1-3 preguntas por tema con kind 'mix'; no son intentos ni la "mejor sesión", pero sí pesan en las últimas 24
+const ms = (topic, correct, total, finished, subject = 'mates') => ({ ...s(subject, topic, correct, total, finished), kind: 'mix' });
+assert.deepEqual(bestAttempt([s('m', 't', 5, 8, 'x'), ms('t', 2, 2, 'y')]), { correct: 5, total: 8 }); // 2/2 del mix no gana a 5/8
+assert.equal(bestAttempt([ms('t', 2, 2, 'y')]), null);
+const withMix = topicStats([T('a')], '4-primaria', 'mates', [rel('mates', 'a')], [], [s('mates', 'a', 5, 8, '2026-10-24T09:00:00'), ms('a', 2, 2, '2026-10-25T09:00:00')]);
+assert.equal(withMix[0].attempts, 1); assert.deepEqual(withMix[0].best, { correct: 5, total: 8 }); assert.equal(withMix[0].recentPct, 70);
+const onlyMix = topicStats([T('a')], '4-primaria', 'mates', [rel('mates', 'a')], [], [ms('a', 1, 2, '2026-10-25T09:00:00')]);
+assert.equal(onlyMix[0].attempts, 0); assert.equal(onlyMix[0].best, null);
+// sesiones antiguas sin kind cuentan como ejercicios
+assert.deepEqual(bestAttempt([s('m', 't', 5, 8, 'x')]), { correct: 5, total: 8 });
+console.log('  ✓ el mix no cuenta como intento ni como mejor sesión (sí en las últimas 24)');
+
+// Refuerzo solo de temas liberados (si se pasan las filas de liberados)
+const weak = [s('mates', 'a', 2, 8, '2026-10-24T09:00:00'), s('mates', 'b', 2, 8, '2026-10-24T09:00:00')];
+assert.deepEqual(computeStats(weak, subjects).reinforce.map((x) => x.topicId).sort(), ['a', 'b']); // sin filas: no se filtra
+assert.deepEqual(computeStats(weak, subjects, 0, [rel('mates', 'a')]).reinforce.map((x) => x.topicId), ['a']);
+assert.deepEqual(computeStats(weak, subjects, 0, []).reinforce, []);
+console.log('  ✓ refuerzo: solo temas liberados');
 const withReto = topicStats([T('a')], '4-primaria', 'mates', [rel('mates', 'a')], [], [s('mates', 'a', 4, 8, '2026-10-24T09:00:00'), rs('a', 1, 2, '2026-10-24T10:00:00')]);
 assert.equal(withReto[0].attempts, 1); assert.deepEqual(withReto[0].best, { correct: 4, total: 8 }); assert.equal(withReto[0].recentPct, 50); assert.equal(withReto[0].level, 'orange');
 const onlyReto = topicStats([T('a')], '4-primaria', 'mates', [rel('mates', 'a')], [], [rs('a', 0, 2, '2026-10-24T10:00:00')]);

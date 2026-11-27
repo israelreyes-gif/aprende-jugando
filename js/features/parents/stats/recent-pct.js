@@ -6,7 +6,7 @@ import { REINFORCE_LAST_QUESTIONS } from './thresholds.js';
  * Se recorren las sesiones de la más reciente a la más antigua hasta reunir REINFORCE_LAST_QUESTIONS preguntas.
  * Una sesión de 8 pesa 8; una del reto (1 o 2 preguntas) pesa solo lo que tiene.
  * Si la última sesión no cabe entera, se cuenta la parte que falta en proporción.
- * sessions: practice_sessions de un tema, de ejercicios y de reto.
+ * sessions: practice_sessions de un tema, de ejercicios, de reto y de mix.
  */
 export function recentPct(sessions) {
   const newestFirst = sessions.slice().sort((a, b) => new Date(b.finished_at) - new Date(a.finished_at));

@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '0fcfedb081db';
+const BUILD = '8277dbbc685a';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -514,7 +514,7 @@ const FILES = {
   './js/features/mix/mix-card.js': '742caab1007e',
   './js/features/mix/mix-pool.js': '082193669d17',
   './js/features/mix/mix.screen.js': '1b9a9e6550ea',
-  './js/features/parents/child-stats.screen.js': '47ae27869051',
+  './js/features/parents/child-stats.screen.js': '2df52656f331',
   './js/features/parents/child-stats/course-picker.js': 'c5b59406605a',
   './js/features/parents/child-stats/delete-profile-button.js': 'a5b59627546a',
   './js/features/parents/child-stats/load-course-progress.js': 'bf1246c8009e',
@@ -536,18 +536,18 @@ const FILES = {
   './js/features/parents/release/subject-release-row.js': '1a23f1be9648',
   './js/features/parents/release/topic-switch-row.js': 'c6c10d7fa117',
   './js/features/parents/stats.logic.js': 'c61fb4a40dd3',
-  './js/features/parents/stats/best-attempt.js': '20d5ab325dc4',
-  './js/features/parents/stats/compute-stats.js': 'df23bb3a1c03',
+  './js/features/parents/stats/best-attempt.js': '902f8f538af9',
+  './js/features/parents/stats/compute-stats.js': '732ea07f7a31',
   './js/features/parents/stats/course-progress.js': '012ee13b6141',
   './js/features/parents/stats/math.js': 'e7d90096d597',
-  './js/features/parents/stats/practice-only.js': '5689ee27743b',
-  './js/features/parents/stats/recent-pct.js': '614c855dae7c',
+  './js/features/parents/stats/practice-only.js': '94e1c91f837b',
+  './js/features/parents/stats/recent-pct.js': '3ffb79b340db',
   './js/features/parents/stats/reinforce-level.js': 'a3fade32b687',
-  './js/features/parents/stats/reinforcement.js': 'ed4982910f5e',
+  './js/features/parents/stats/reinforcement.js': '5caa3d8099e4',
   './js/features/parents/stats/thresholds.js': '05801b810964',
-  './js/features/parents/stats/topic-stats.js': '2e3a1345f266',
+  './js/features/parents/stats/topic-stats.js': '07fb1d3e16b8',
   './js/features/parents/subject-stats.screen.js': '53d0cb92f523',
-  './js/features/parents/subject-stats/topic-stat-row.js': 'ef6ccdb5b21b',
+  './js/features/parents/subject-stats/topic-stat-row.js': '5ea2b59aa6ec',
   './js/features/points/format-points.js': 'db90c288505d',
   './js/features/points/levels.js': '2863faccd340',
   './js/features/points/levels.screen.js': 'c9084e19ed45',
