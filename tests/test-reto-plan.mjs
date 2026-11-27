@@ -36,4 +36,15 @@ t('materializar: preguntas de rule siguen con su función test', () => { let see
 t('materializar: ejercicio desaparecido se salta', () => { const p = planReto(mates); const q = materializePlan([...p, { subjectId: 'mates', topicId: p[0].topicId, exerciseId: 'no-existe', seed: 1 }], mates); assert.equal(q.length, 10); });
 t('materializar: no cambia Math.random', () => { const o = Math.random; materializePlan(planReto(mates), mates); assert.equal(Math.random, o); });
 t('buildSession sigue igual (8 preguntas por tema)', () => { for (const topic of mates) assert.equal(buildSession(topic.exercises, 8).length >= 8, true); });
+const { pendingPlan } = await import(`${R}/features/reto/plan/pending-plan.js`);
+const ansOf = (e) => ({ subjectId: e.subjectId, topicId: e.topicId, questionId: e.exerciseId, correct: true });
+t('retomar: sin respuestas falta todo; con 3 respuestas faltan las otras 7 en orden', () => { const p = planReto(mates); assert.equal(pendingPlan(p, []).length, 10); assert.deepEqual(pendingPlan(p, p.slice(0, 3).map(ansOf)), p.slice(3)); });
+t('retomar: todo respondido no deja nada', () => { const p = planReto(mates); assert.equal(pendingPlan(p, p.map(ansOf)).length, 0); });
+t('retomar: un ejercicio pendiente que desaparece se salta, y lo contestado no se vuelve a pedir', () => {
+  const p = planReto(mates); const gone = p[5].exerciseId;
+  const reduced = mates.map((tp) => ({ ...tp, exercises: tp.exercises.filter((e) => !(tp.topicId === p[5].topicId && e.id === gone)) }));
+  const rest = materializePlan(pendingPlan(p, p.slice(0, 3).map(ansOf)), reduced);
+  assert.ok(rest.length < 7 && rest.every((q) => !(q.topicId === p[5].topicId && q.id === gone)));
+  assert.equal(rest.length, 7 - p.slice(3).filter((e) => e.topicId === p[5].topicId && e.exerciseId === gone).length);
+});
 console.log(`\n${ok} ✓`);

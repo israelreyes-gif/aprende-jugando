@@ -18,6 +18,7 @@ import { answersSaver } from './answers-saver.js';
 import { loadRetoStatus } from './reto-status.js';
 import { loadRetoTopics } from './load-reto-topics.js';
 import { materializePlan } from './plan/materialize-plan.js';
+import { pendingPlan } from './plan/pending-plan.js';
 import { planReto } from './plan/plan-reto.js';
 import { retoEmptyText } from './reto-empty-text.js';
 import { retoQuestions } from './reto-questions.js';
@@ -73,7 +74,7 @@ export async function retoScreen({ pid, cid }) {
     return view;
   }
 
-  const questions = materializePlan(reto.plan, topics).slice(reto.answers.length);
+  const questions = materializePlan(pendingPlan(reto.plan, reto.answers), topics);
   if (questions.length === 0 && reto.answers.length === 0) {
     emptyView('Hoy no hay preguntas disponibles para el reto.');
     return view;

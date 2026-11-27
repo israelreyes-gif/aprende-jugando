@@ -1,3 +1,4 @@
+import { guardLeave } from './leave-guard.js';
 import { h } from '../../core/dom.js';
 import { reload } from '../../core/router.js';
 import { paths } from '../../core/paths.js';
@@ -49,6 +50,8 @@ export async function practiceScreen({ pid, cid, sid, tid }) {
   const results = [];
   const startedAt = Date.now();
   let index = 0;
+  let finished = false;
+  guardLeave(view, { t, isActive: () => results.length > 0 && !finished });
 
   function showQuestion() {
     const question = questionView({
@@ -65,6 +68,7 @@ export async function practiceScreen({ pid, cid, sid, tid }) {
   }
 
   function showResult() {
+    finished = true;
     const saveNote = h('p', { class: 'lead', role: 'status' }, '…');
     const result = sessionPoints(results.filter((r) => r.correct).length, results.length);
     const burst = pointsBurst({ result });

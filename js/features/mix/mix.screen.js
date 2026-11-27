@@ -1,3 +1,4 @@
+import { guardLeave } from '../practice/leave-guard.js';
 import { h } from '../../core/dom.js';
 import { reload } from '../../core/router.js';
 import { paths } from '../../core/paths.js';
@@ -46,8 +47,12 @@ export async function mixScreen({ pid, cid, sid, mid }) {
 
   const questions = materializePlan(planReto(pool, mix.size), pool);
   const startedAt = Date.now();
+  let answered = 0;
+  let finished = false;
+  guardLeave(view, { t, isActive: () => answered > 0 && !finished });
 
   async function finish(answers) {
+    finished = true;
     const saveNote = h('p', { class: 'lead', role: 'status' }, t.mixSaving);
     const result = sessionPoints(answers.filter((a) => a.correct).length, answers.length);
     const burst = pointsBurst({ result });
@@ -64,6 +69,6 @@ export async function mixScreen({ pid, cid, sid, mid }) {
     }
   }
 
-  retoQuestions({ body, answers: [], questions, onAnswered: () => {}, onDone: finish });
+  retoQuestions({ body, answers: [], questions, onAnswered: (all) => { answered = all.length; }, onDone: finish });
   return view;
 }

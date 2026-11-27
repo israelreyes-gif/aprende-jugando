@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'e995143529ef';
+const BUILD = '6fa40f61c690';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -513,7 +513,7 @@ const FILES = {
   './js/features/courses/locked-course-card.js': 'a4b59457bd0c',
   './js/features/mix/mix-card.js': '742caab1007e',
   './js/features/mix/mix-pool.js': '082193669d17',
-  './js/features/mix/mix.screen.js': '1b9a9e6550ea',
+  './js/features/mix/mix.screen.js': '8b809c0cfa31',
   './js/features/parents/child-stats.screen.js': '2df52656f331',
   './js/features/parents/child-stats/course-picker.js': 'c5b59406605a',
   './js/features/parents/child-stats/delete-profile-button.js': 'a5b59627546a',
@@ -567,7 +567,8 @@ const FILES = {
   './js/features/points/ui/points-lines.js': 'b55a6b019f57',
   './js/features/points/ui/report-points.js': '3cef3948e66e',
   './js/features/practice/feedback-box.js': 'f65b75190b8d',
-  './js/features/practice/practice.screen.js': '6d6545f665ac',
+  './js/features/practice/leave-guard.js': 'e192db0f2934',
+  './js/features/practice/practice.screen.js': 'd167724ddb08',
   './js/features/practice/progress-meter.js': '2419e36ffd63',
   './js/features/practice/question-types.js': 'e4eee328d54f',
   './js/features/practice/question-view.js': 'f306ae6dac42',
@@ -597,6 +598,7 @@ const FILES = {
   './js/features/reto/load-streak.js': '5cf0996c0067',
   './js/features/reto/plan/item-supplier.js': '9e1dc92cc083',
   './js/features/reto/plan/materialize-plan.js': '75ad32afa417',
+  './js/features/reto/plan/pending-plan.js': 'efa18e7695ad',
   './js/features/reto/plan/plan-reto.js': '1cc30c38f520',
   './js/features/reto/reto-card.js': 'fcbdd31d508b',
   './js/features/reto/reto-empty-text.js': '093db2fec704',
@@ -604,7 +606,7 @@ const FILES = {
   './js/features/reto/reto-result-view.js': 'f8fde7e18432',
   './js/features/reto/reto-size.js': '8a72bcb368b0',
   './js/features/reto/reto-status.js': '33c86c702ce5',
-  './js/features/reto/reto.screen.js': '54c5581e446a',
+  './js/features/reto/reto.screen.js': '89bf2a61dff6',
   './js/features/reto/streak-badge.js': 'e693052ce45c',
   './js/features/reto/streak/compute-streak.js': 'b8ec67d77a32',
   './js/features/reto/streak/date-keys.js': '9e10c71a0ca9',
@@ -640,8 +642,8 @@ const FILES = {
   './js/shared/avatar.js': '29df535e8624',
   './js/shared/error-view.js': '6d2941aab7f5',
   './js/shared/i18n.js': '46762857b6f5',
-  './js/shared/i18n/en.js': '521215577f5c',
-  './js/shared/i18n/es.js': 'cf724014d901',
+  './js/shared/i18n/en.js': '633362cb7629',
+  './js/shared/i18n/es.js': '97f343931cd7',
   './js/shared/icons.js': 'b93b927207d6',
   './js/shared/loading-view.js': '313cf08ff3b0',
   './js/shared/locked-view.js': 'a449d6ec546f',

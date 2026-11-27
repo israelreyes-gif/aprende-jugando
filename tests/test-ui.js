@@ -234,6 +234,25 @@ async function playSession(plan) {
 await visit('#/p/' + alex.id + '/c/4-primaria/s/mates/practice/tablas');
 assert.match(text(), /Pregunta 1 de 8/);
 assert.equal(q('.practice .btn--primary').disabled, true); ok('ejercicios: "Comprobar" desactivado hasta responder');
+{
+  // Salir a mitad de una sesión: sin respuestas sale directo; con respuestas pide confirmación
+  const here = '#/p/' + alex.id + '/c/4-primaria/s/mates/practice/tablas';
+  const list = '#/p/' + alex.id + '/c/4-primaria/s/mates/practice';
+  const modalBtn = (re) => [...document.querySelectorAll('.modal .btn')].find((b) => re.test(b.textContent));
+  q('a.icon-btn').click(); await sleep(60); await settle();
+  assert.equal(location.hash, list); ok('salir sin haber respondido nada: directo, sin aviso');
+  await visit(here);
+  const first = byPrompt.get(q('.question__prompt').textContent);
+  if (first.type === 'choice') qa('.option')[0].click(); else type(q('input.input'), '1');
+  q('.practice .btn--primary').click(); await sleep(5);
+  q('a.icon-btn').click(); await sleep(60);
+  assert.equal(location.hash, here); assert.match(document.querySelector('.modal').textContent, /Si sales ahora, se perderán/);
+  modalBtn(/Seguir/).click(); await sleep(80);
+  assert.equal(location.hash, here); assert.equal(document.querySelector('.modal'), null); assert.ok(q('.feedback')); ok('con respuestas: pide confirmación y "Seguir" se queda en la sesión');
+  q('a.icon-btn').click(); await sleep(60); modalBtn(/Salir/).click(); await sleep(100); await settle();
+  assert.equal(location.hash, list); ok('con respuestas: "Salir" abandona la sesión');
+  await visit(here);
+}
 await playSession((i) => i < 5);
 assert.equal(q('.result__score').textContent, '5/8');
 assert.equal(qa('.result__item').length, 3); assert.match(text(), /Resultado guardado/);
