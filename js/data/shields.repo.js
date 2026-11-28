@@ -1,10 +1,9 @@
 import { api } from '../core/api.js';
 import { uuid } from '../core/ids.js';
 
-/** Días protegidos ('AAAA-MM-DD') de un perfil: cada uno gastó un protector de racha. */
-export async function listShieldDays(profileId) {
-  const rows = await api.list('streak_shields', { where: { profile_id: profileId }, select: ['day'], order: 'day.desc', limit: 5000 });
-  return rows.map((row) => row.day);
+/** Protectores gastados de un perfil: [{ day, created_at }] (el día protegido y cuándo se usó), del más reciente al más antiguo. */
+export function listShields(profileId) {
+  return api.list('streak_shields', { where: { profile_id: profileId }, select: ['day', 'created_at'], order: 'day.desc', limit: 5000 });
 }
 
 /** Gasta un protector en un día pasado. Lo puede hacer el propio perfil; el Worker comprueba que se puede. */

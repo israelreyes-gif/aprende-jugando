@@ -15,16 +15,26 @@ let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
 const run = (start, count) => Array.from({ length: count }, (_, i) => addDays(start, i)); // días seguidos desde start
 
 // --- Cálculo ---
-assert.deepEqual(shieldBalance(run('2026-09-01', 9), [], []), { earned: 0, used: 0, available: 0 });
-assert.deepEqual(shieldBalance(run('2026-09-01', 10), [], []), { earned: 1, used: 0, available: 1 });
-assert.deepEqual(shieldBalance(run('2026-09-01', 25), [], []), { earned: 2, used: 0, available: 2 });
-assert.deepEqual(shieldBalance(run('2026-09-01', 25), [], ['2026-12-31']), { earned: 2, used: 1, available: 1 });
-assert.equal(shieldBalance(run('2026-09-01', 10), [], ['2026-12-01', '2026-12-02']).available, 0, 'nunca baja de 0'); ok('1 protector por cada 10 días de racha, menos los usados (nunca negativo)');
+const sh = (day, usedOn = addDays(day, 1)) => ({ day, created_at: `${usedOn}T12:00:00Z` }); // protector que protege `day` y se usó en `usedOn`
+const bal = (d, f, s) => { const { earned, used, lost, available } = shieldBalance(d, f, s); return { earned, used, lost, available }; };
+assert.deepEqual(bal(run('2026-09-01', 9), [], []), { earned: 0, used: 0, lost: 0, available: 0 });
+assert.deepEqual(bal(run('2026-09-01', 10), [], []), { earned: 1, used: 0, lost: 0, available: 1 });
+assert.deepEqual(bal(run('2026-09-01', 20), [], []), { earned: 2, used: 0, lost: 0, available: 2 });
+assert.deepEqual(bal(run('2026-09-01', 25), [], [sh('2026-12-31')]), { earned: 2, used: 1, lost: 0, available: 1 });
+assert.equal(shieldBalance(run('2026-09-01', 10), [], [sh('2026-12-01'), sh('2026-12-02')]).available, 0, 'nunca baja de 0'); ok('1 protector por cada 10 días de racha, menos los usados (nunca negativo)');
+// Tope de 2 guardados a la vez: el tercero (día 30) se pierde
+assert.deepEqual(bal(run('2026-09-01', 30), [], []), { earned: 3, used: 0, lost: 1, available: 2 });
+assert.equal(shieldBalance(run('2026-09-01', 50), [], []).available, 2, 'con 5 ganados sigue habiendo solo 2');
+// Gastar uno antes de llegar al tope libera hueco: 10, 20 (2 guardados) → usa uno el día 25 → el día 30 gana otro y vuelve a 2
+assert.deepEqual(bal(run('2026-09-01', 30), [], [sh('2026-09-22', '2026-09-25')]), { earned: 3, used: 1, lost: 0, available: 2 });
+// Gastarlo después de perder el tercero no lo recupera: el día 30 ya estaba al tope
+assert.deepEqual(bal(run('2026-09-01', 30), [], [sh('2026-09-22', '2026-10-05')]), { earned: 3, used: 1, lost: 1, available: 1 });
+ok('tope de 2: lo que sobra se pierde, y gastar uno antes libera hueco para el siguiente');
 // una racha rota no cuenta como seguida: 6 + fallo doble + 6 = ninguna llega a 10
 assert.equal(shieldBalance([...run('2026-09-01', 6), ...run('2026-09-10', 6)], [], []).earned, 0);
 // un día protegido mantiene la racha y por tanto puede dar el décimo día: 6 + (2 fallos, uno protegido) + 6
 const withShield = [...run('2026-09-01', 6), ...run('2026-09-09', 6)]; // hechos 1-6 y 9-14; falla el 7 y el 8
-assert.equal(shieldBalance(withShield, [], ['2026-09-07']).earned, 1); ok('un día protegido sigue la racha y puede completar los 10 días');
+assert.equal(shieldBalance(withShield, [], [sh('2026-09-07', '2026-09-15')]).earned, 1); ok('un día protegido sigue la racha y puede completar los 10 días');
 // el protector gastado en un día rompe-racha la salva de verdad
 const done = [...run('2026-11-01', 12), '2026-11-15', '2026-11-16']; // fallan el 13 y el 14
 assert.equal(computeStreak(done, '2026-11-17'), 2);
@@ -32,12 +42,12 @@ assert.equal(computeStreak(done, '2026-11-17', ['2026-11-13']), 14); ok('protege
 
 // --- Paridad con el Worker (azar) ---
 let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-for (let round = 0; round < 80; round++) {
+for (let round = 0; round < 120; round++) {
   const d = [], f = [], s = [];
-  for (let i = 0; i < 100; i++) { const day = addDays('2026-08-01', i); const r = rnd(); if (r < 0.7) d.push(day); else if (r < 0.8) f.push(day); else if (r < 0.88) s.push(day); }
+  for (let i = 0; i < 100; i++) { const day = addDays('2026-08-01', i); const r = rnd(); if (r < 0.75) d.push(day); else if (r < 0.82) f.push(day); else if (r < 0.9) s.push(sh(day, addDays(day, Math.floor(rnd() * 12)))); }
   assert.deepEqual(shieldBalance(d, f, s), workerBalance(d, f, s));
 }
-ok('la copia del Worker calcula lo mismo (80 casos al azar)');
+ok('la copia del Worker calcula lo mismo (120 casos al azar, con tope y usos en distintos días)');
 
 // --- Días que se pueden proteger ---
 assert.deepEqual(missedDays([], [], [], '2026-11-28'), []);
@@ -71,7 +81,7 @@ const fin = (profile, day) => db.sqlite.prepare(`INSERT INTO reto_diario (id,pro
 for (let back = 11; back >= 2; back--) fin('alex', addDays(today, -back));
 const yesterday = addDays(today, -1);
 
-const { addShield, listShieldDays, removeShield } = await import('../js/data/shields.repo.js');
+const { addShield, listShields, removeShield } = await import('../js/data/shields.repo.js');
 const { loadRetoStatus } = await import('../js/features/reto/reto-status.js');
 switchTo('child');
 let status = await loadRetoStatus('alex');
@@ -107,7 +117,7 @@ switchTo('child'); await assert.rejects(addShield('alex', yesterday), undefined,
 assert.equal(sqlAll('SELECT * FROM streak_shields').length, 0); ok('Worker: rechaza repetir un día, anterior al primer reto, sin protectores y un día ya libre');
 // un perfil no puede borrarlos ni ver los de otro
 await addShield('alex', yesterday);
-await assert.rejects(removeShield('alex', yesterday)); switchTo('other'); assert.deepEqual(await listShieldDays('alex'), []); switchTo('child'); assert.deepEqual(await listShieldDays('alex'), [yesterday]); ok('perfil: no puede quitar protectores y solo ve los suyos');
+await assert.rejects(removeShield('alex', yesterday)); switchTo('other'); assert.deepEqual(await listShields('alex'), []); switchTo('child'); assert.deepEqual((await listShields('alex')).map((r) => r.day), [yesterday]); ok('perfil: no puede quitar protectores y solo ve los suyos');
 
 // --- Efecto: ya no queda protector, la racha sigue y los puntos/Worker lo cuentan ---
 status = await loadRetoStatus('alex');
@@ -136,13 +146,13 @@ assert.deepEqual(sqlAll('SELECT day FROM streak_shields').map((r) => r.day), [ye
 switchTo('parent');
 const { loadShieldInfo } = await import('../js/features/reto/shield/load-shield-info.js');
 const info = await loadShieldInfo('alex');
-assert.deepEqual({ earned: info.earned, used: info.used, available: info.available, days: info.shieldDays }, { earned: 1, used: 1, available: 0, days: [yesterday] });
+assert.deepEqual({ earned: info.earned, used: info.used, lost: info.lost, available: info.available, days: info.shieldDays }, { earned: 1, used: 1, lost: 0, available: 0, days: [yesterday] });
 const { shieldsSection } = await import('../js/features/parents/child-stats/shields-section.js');
 const section = shieldsSection({ profile: { id: 'alex', name: 'Alex' }, info });
 app.replaceChildren(section);
-assert.match(section.textContent, /Alex tiene 0 protectores \(ganados 1, usados 1\)/); assert.match(section.textContent, /cada 10 días/); assert.equal(section.querySelectorAll('.free-days__row').length, 1);
+assert.match(section.textContent, /Alex tiene 0 protectores \(máximo 2 guardados\)\. Ha usado 1\./); assert.match(section.textContent, /cada 10 días/); assert.equal(section.querySelectorAll('.free-days__row').length, 1);
 section.querySelector('.free-days__row button').click(); await sleep(250);
-assert.equal(sqlAll('SELECT * FROM streak_shields').length, 0); assert.match(section.textContent, /Alex tiene 1 protector \(ganados 1, usados 0\)/); assert.match(section.textContent, /Aún no ha usado ningún protector/); ok('padres: ven protectores y días salvados, y pueden quitar uno (vuelve a estar disponible)');
+assert.equal(sqlAll('SELECT * FROM streak_shields').length, 0); assert.match(section.textContent, /Alex tiene 1 protector \(máximo 2 guardados\)\. Ha usado 0\./); assert.match(section.textContent, /Aún no ha usado ningún protector/); ok('padres: ven protectores y días salvados, y pueden quitar uno (vuelve a estar disponible)');
 
 // --- Puntos y lista de perfiles del Worker cuentan los días protegidos ---
 db.sqlite.exec(`INSERT INTO streak_shields (id,profile_id,day) VALUES ('s1','alex','${yesterday}')`);
@@ -156,6 +166,17 @@ const { checkBackup } = await import('../js/features/backup/check-backup.js');
 const old = { app: 'aprende-y-juega', format: 1, created_at: '2026-11-01T10:00:00Z', tables: { profiles: [], practice_sessions: [], answers: [], study_progress: [], topic_release: [], reto_diario: [] } };
 assert.deepEqual(checkBackup(old).tables.streak_shields, []);
 const { buildBackup } = await import('../js/features/backup/build-backup.js'); const made = await buildBackup(); assert.equal(made.tables.streak_shields.length, 1); ok('copias: la nueva incluye los protectores y las antiguas siguen valiendo');
+
+// --- Tope de 2 de punta a punta: 30 días de racha ganan 3, pero solo 2 se pueden tener ---
+db.sqlite.exec(`CREATE TABLE IF NOT EXISTS streak_shields (id TEXT PRIMARY KEY, profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE, day TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')), UNIQUE (profile_id, day))`);
+db.sqlite.exec(`DELETE FROM streak_shields`);
+db.sqlite.exec(`INSERT INTO profiles (id,name,avatar_color) VALUES ('cap','Cap','#123')`);
+for (let back = 38; back >= 9; back--) fin('cap', addDays(today, -back)); // 30 retos seguidos; después faltan los últimos 8 días
+const capToken = await createSession(db, 'cap');
+const shieldPost = async (day) => (await worker.fetch(new Request('https://w.example/api/streak_shields', { method: 'POST', headers: { 'X-Api-Key': 'k', 'Content-Type': 'application/json', 'X-Session': capToken }, body: JSON.stringify({ id: `cap-${day}`, profile_id: 'cap', day }) }), env, { waitUntil() {} })).status;
+assert.equal(await shieldPost(addDays(today, -7)), 201); assert.equal(await shieldPost(addDays(today, -6)), 201);
+assert.equal(await shieldPost(addDays(today, -5)), 400, 'el tercero no existe: se perdió al llegar al tope');
+assert.equal(sqlAll("SELECT * FROM streak_shields WHERE profile_id = 'cap'").length, 2); ok('Worker: con 30 días de racha (3 ganados) solo se pueden gastar 2 protectores');
 
 // --- Worker sin la tabla creada ---
 db.sqlite.exec('DROP TABLE streak_shields');

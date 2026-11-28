@@ -17,8 +17,8 @@ export async function loadRetoStatus(profileId) {
   return {
     today,
     reto,
-    streak: computeStreak(days, today, [...free, ...shields]),
+    streak: computeStreak(days, today, [...free, ...shields.map((s) => s.day)]),
     shields: { available },
-    missed: available > 0 ? missedDays(days, free, shields, today) : [],
+    missed: available > 0 ? missedDays(days, free, shields.map((s) => s.day), today) : [],
   };
 }

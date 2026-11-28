@@ -25,6 +25,6 @@ export async function assertShieldRows(db, owner, rows, now = new Date()) {
   const [done, { free, shields }] = await Promise.all([finishedRetoDays(db, owner), loadProtections(db, owner)]);
   if (done.length === 0 || day <= [...done].sort()[0]) throw bad('Ese día es anterior al primer reto');
   if (done.includes(day)) throw bad('Ese día ya hizo el reto');
-  if (free.includes(day) || shields.includes(day)) throw bad('Ese día ya está protegido');
+  if (free.includes(day) || shields.some((s) => s.day === day)) throw bad('Ese día ya está protegido');
   if (shieldBalance(done, free, shields).available < 1) throw bad('No tienes protectores');
 }

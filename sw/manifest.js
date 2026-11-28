@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '3a79fa367116';
+const BUILD = '0708019400da';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -433,7 +433,7 @@ const FILES = {
   './js/data/practice.repo.js': '6dfac579ef9f',
   './js/data/profile-options.js': '97b5ccd2cadd',
   './js/data/profiles.repo.js': '8910e77308ea',
-  './js/data/protected-days.js': '1fcce34c105e',
+  './js/data/protected-days.js': '03f101e72bb9',
   './js/data/push-devices.js': '53ef5ad01c89',
   './js/data/push-send.js': '8df25465a2fe',
   './js/data/release.repo.js': '27e9f914c128',
@@ -448,7 +448,7 @@ const FILES = {
   './js/data/reto/start-reto-retry.js': '22bde9e20a26',
   './js/data/reto/start-reto.js': '42195396a6e6',
   './js/data/settings.repo.js': 'feae7d71f55b',
-  './js/data/shields.repo.js': '36d7840592b3',
+  './js/data/shields.repo.js': 'b381ae5d9ce1',
   './js/data/study.repo.js': '0c2653ff49e1',
   './js/data/sync.repo.js': 'e195ee7ae9e3',
   './js/data/titles.repo.js': '233f1e2446e0',
@@ -529,7 +529,7 @@ const FILES = {
   './js/features/parents/child-stats/points-section.js': 'b9d409bfe776',
   './js/features/parents/child-stats/progress-rows.js': 'f81830065191',
   './js/features/parents/child-stats/reinforce-cards.js': '06d64ca8270c',
-  './js/features/parents/child-stats/shields-section.js': 'f6c288ca4eac',
+  './js/features/parents/child-stats/shields-section.js': '03894a6b65be',
   './js/features/parents/child-stats/subject-rows.js': 'bac7438b2f88',
   './js/features/parents/child-stats/summary-chips.js': 'a501d30e15e7',
   './js/features/parents/child-stats/sync-section.js': '5b6c0961b75f',
@@ -613,11 +613,11 @@ const FILES = {
   './js/features/reto/reto-questions.js': 'b66c9d62b7da',
   './js/features/reto/reto-result-view.js': 'f8fde7e18432',
   './js/features/reto/reto-size.js': '8a72bcb368b0',
-  './js/features/reto/reto-status.js': '06eae8bd9c7c',
+  './js/features/reto/reto-status.js': '24c5f7f991dc',
   './js/features/reto/reto.screen.js': '89bf2a61dff6',
-  './js/features/reto/shield/load-shield-info.js': 'b953bf4449d7',
+  './js/features/reto/shield/load-shield-info.js': '5181b32648dd',
   './js/features/reto/shield/missed-days.js': '224fe23c9e88',
-  './js/features/reto/shield/shield-balance.js': '55637a61fb71',
+  './js/features/reto/shield/shield-balance.js': '27b7b5e1d866',
   './js/features/reto/shield/shield-bar.js': '22a9ac7d9b18',
   './js/features/reto/shield/use-shield.js': 'a9666d8f4baf',
   './js/features/reto/streak-badge.js': 'e693052ce45c',

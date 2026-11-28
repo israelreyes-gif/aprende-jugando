@@ -2,7 +2,7 @@ import { h } from '../../../core/dom.js';
 import { removeShield } from '../../../data/shields.repo.js';
 import { dayText } from '../../../shared/day-text.js';
 import { notify } from '../../../shared/modal.js';
-import { SHIELD_EVERY } from '../../reto/shield/shield-balance.js';
+import { MAX_SHIELDS, SHIELD_EVERY } from '../../reto/shield/shield-balance.js';
 import { loadShieldInfo } from '../../reto/shield/load-shield-info.js';
 
 /**
@@ -15,7 +15,8 @@ export function shieldsSection({ profile, info }) {
 
   function paint(data) {
     const word = data.available === 1 ? 'protector' : 'protectores';
-    summary.textContent = `${profile.name} tiene ${data.available} ${word} (ganados ${data.earned}, usados ${data.used}). Se gana uno cada ${SHIELD_EVERY} días de racha y sirve para salvar un día perdido de los últimos 7.`;
+    const lost = data.lost ? ` ${data.lost} ${data.lost === 1 ? 'se perdió' : 'se perdieron'} por llegar al máximo.` : '';
+    summary.textContent = `${profile.name} tiene ${data.available} ${word} (máximo ${MAX_SHIELDS} guardados). Ha usado ${data.used}.${lost} Se gana uno cada ${SHIELD_EVERY} días de racha y sirve para salvar un día perdido de los últimos 7.`;
     list.replaceChildren(
       ...(data.shieldDays.length
         ? data.shieldDays.map((day) =>
