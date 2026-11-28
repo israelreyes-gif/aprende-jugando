@@ -10,7 +10,7 @@ export function feedbackBox(ok, q, type, t, value) {
     { class: `feedback ${ok ? 'feedback--ok' : 'feedback--bad'}` },
     h('div', { class: 'feedback__title' }, icon(ok ? 'check' : 'close', 22), ok ? t.correct : t.wrong),
     ok ? null : h('div', {}, `${t.answerWas}: `, h('strong', {}, type.answerText(q))),
-    accents.length ? h('p', { class: 'feedback__accents' }, `${t.accentNote}: `, h('strong', {}, accents.join(', '))) : null,
+    accents.length ? h('p', { class: 'feedback__accents' }, icon('alert', 20), h('span', {}, `${t.accentNote}: `, h('strong', {}, accents.join(', ')))) : null,
     q.explain ? h('p', { style: { marginTop: '6px' } }, q.explain) : null,
     q.say ? h('div', { style: { marginTop: '6px' } }, speakButton(q.say)) : null,
   );

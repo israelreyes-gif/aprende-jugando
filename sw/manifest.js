@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '092c747f80f6';
+const BUILD = 'e83647b9a296';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -33,7 +33,7 @@ const FILES = {
   './css/fonts.css': '1d382e8416aa',
   './css/screens/home.css': '471c3093c187',
   './css/screens/points.css': '7836a1ca0921',
-  './css/screens/practice.css': '0e29504d7213',
+  './css/screens/practice.css': 'c3786baa55d2',
   './css/screens/result.css': '90e1ed773227',
   './css/screens/reto.css': '6d3f06621821',
   './css/screens/stats.css': '36a568dcffbe',
@@ -574,7 +574,7 @@ const FILES = {
   './js/features/points/ui/points-burst.js': 'a0755b37f4b7',
   './js/features/points/ui/points-lines.js': 'b55a6b019f57',
   './js/features/points/ui/report-points.js': '3cef3948e66e',
-  './js/features/practice/feedback-box.js': '4fa44e359081',
+  './js/features/practice/feedback-box.js': '9d7ad2474dc9',
   './js/features/practice/leave-guard.js': 'e192db0f2934',
   './js/features/practice/practice.screen.js': 'd167724ddb08',
   './js/features/practice/progress-meter.js': '2419e36ffd63',

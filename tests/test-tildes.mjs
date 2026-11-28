@@ -24,7 +24,7 @@ assert.deepEqual(text.note(q('águila'), null), []); assert.deepEqual(text.note(
 const { window } = new JSDOM('<!doctype html><body></body>'); Object.assign(globalThis, { window, document: window.document });
 const { feedbackBox } = await import('../js/features/practice/feedback-box.js'); const { es } = await import('../js/shared/i18n/es.js');
 const fb = feedbackBox(true, q('águila'), text, es, 'aguila');
-assert.match(fb.textContent, /Ojo con la tilde, se escribe: águila/); assert.match(fb.querySelector('.feedback__title').textContent, /Muy bien/);
+assert.match(fb.textContent, /Ojo con la tilde, se escribe: águila/); assert.ok(fb.querySelector('.feedback__accents svg')); assert.match(fb.querySelector('.feedback__title').textContent, /Muy bien/);
 assert.doesNotMatch(feedbackBox(true, q('águila'), text, es, 'águila').textContent, /tilde/); assert.doesNotMatch(feedbackBox(false, q('año'), text, es, 'ano').textContent, /tilde/);
 assert.match(feedbackBox(false, q('año'), text, es, 'ano').textContent, /La respuesta correcta es: año/); ok('cuadro de corrección: acierto con aviso, sin aviso si está bien, y error con ñ');
 console.log(`\n${n} comprobaciones OK`);
