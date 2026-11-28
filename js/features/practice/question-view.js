@@ -16,6 +16,8 @@ export function questionView({ q, index, total, t, onChecked, onContinue }) {
   let checked = false;
 
   const action = h('button', { class: 'btn btn--primary btn--block', type: 'button', disabled: true }, t.check);
+  // Enter mantenido: el foco pasa al botón al comprobar y las repeticiones lo pulsarían, saltándose la corrección.
+  action.addEventListener('keydown', (event) => { if (event.repeat) event.preventDefault(); });
   const feedback = h('div', { 'aria-live': 'polite' });
 
   const widget = type.render(q, {

@@ -34,3 +34,21 @@ const mixed = [...fixed, { id: 'tap', always: true, generate: () => ({ type: 'ta
 for (let i = 0; i < 50; i++) { s = buildSession(mixed, 6); assert.equal(s.length, 6); assert.equal(s.filter((q) => q.id === 'tap').length, 1); }
 assert.deepEqual(buildSession([]), []); ok('always: el generador marcado sale siempre; lista vacía -> []');
 console.log(n, 'comprobaciones OK');
+
+// Fijas + un generador: las fijas no se repiten aunque haya que completar la sesión con generadores
+const fixed3 = fixed.slice(0, 3); const one = { id: 'gen', generate: () => ({ type: 'number', prompt: 'x', answer: 1 }) };
+for (let i = 0; i < 100; i++) { s = buildSession([...fixed3, one], 8); assert.equal(s.length, 8); for (const f of fixed3) assert.ok(s.filter((q) => q.id === f.id).length <= 1, 'fija repetida'); }
+ok('fijas + generador: las fijas salen como mucho una vez; el resto lo completa el generador');
+
+// Enter mantenido: la repetición no pulsa el botón ni vuelve a enviar
+const { questionView } = await import('../js/features/practice/question-view.js'); const { es } = await import('../js/shared/i18n/es.js');
+let checkedN = 0, continued = 0;
+const view = questionView({ q: { id: 'q', type: 'text', prompt: 'p', answers: ['a'] }, index: 0, total: 2, t: es, onChecked: () => checkedN++, onContinue: () => continued++ });
+const root = document.createElement('div'); root.append(...view.nodes); document.body.append(root);
+const input = root.querySelector('input'); const button = root.querySelector('.btn--primary');
+input.value = 'a'; input.dispatchEvent(new window.Event('input'));
+const key = (el, repeat) => { const e = new window.KeyboardEvent('keydown', { key: 'Enter', repeat, bubbles: true, cancelable: true }); el.dispatchEvent(e); return e; };
+assert.equal(key(input, true).defaultPrevented, true); assert.equal(checkedN, 0, 'una repetición no envía');
+key(input, false); assert.equal(checkedN, 1);
+assert.equal(key(button, true).defaultPrevented, true, 'la repetición sobre el botón se cancela (no activa Siguiente)'); assert.equal(key(button, false).defaultPrevented, false); assert.equal(continued, 0);
+ok('Enter mantenido: no se envía varias veces y la repetición no pulsa Siguiente');

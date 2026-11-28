@@ -13,13 +13,13 @@ export const materialize = (item) => (isGenerator(item) ? { ...item.generate(), 
 /** Cada elemento tantas veces como pese. */
 export const weighted = (items) => items.flatMap((item) => Array(item.weight || 1).fill(item));
 
-/** `count` elementos: sin repetir si son todos fijos; recorriendo la lista las veces necesarias si hay generadores. */
+/** `count` elementos: sin repetir si son todos fijos. Con generadores, las fijas salen como mucho una vez y se completa con generadores. */
 function take(items, count) {
-  if (!items.some(isGenerator)) return shuffle(items).slice(0, count);
-  const pool = weighted(items);
-  const out = [];
-  while (pool.length && out.length < count) out.push(...shuffle(pool));
-  return out.slice(0, count);
+  const generators = weighted(items.filter(isGenerator));
+  if (!generators.length) return shuffle(items).slice(0, count);
+  const out = shuffle([...items.filter((item) => !isGenerator(item)), ...generators]).slice(0, count);
+  while (out.length < count) out.push(...shuffle(generators).slice(0, count - out.length));
+  return out;
 }
 
 /** Prepara las preguntas de una sesión (por defecto 8), en orden aleatorio. */

@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'e83647b9a296';
+const BUILD = '0465b2bcbac8';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -462,7 +462,7 @@ const FILES = {
   './js/exercises/kinds/order.js': '3fbec20ac247',
   './js/exercises/kinds/rule.js': '1a1d13d15444',
   './js/exercises/kinds/tap.js': 'f5188264ceef',
-  './js/exercises/kinds/text-input.js': '5fb3255a7ae8',
+  './js/exercises/kinds/text-input.js': '8918bc99ec28',
   './js/exercises/kinds/text.js': '15a8b9ecec48',
   './js/exercises/kinds/words.js': '56bee04a1151',
   './js/exercises/make/choice.js': 'b7a23d2dc11e',
@@ -473,7 +473,7 @@ const FILES = {
   './js/exercises/make/tap.js': 'b99a49038656',
   './js/exercises/make/text.js': '1a5c5d034c78',
   './js/exercises/make/words.js': '2db100fc5fe7',
-  './js/exercises/session.js': '7a253bff80cb',
+  './js/exercises/session.js': '5c12dc975226',
   './js/exercises/visual.js': '4b3ad8b16339',
   './js/features/auth/ask-always-row.js': '63eb3d006325',
   './js/features/auth/auth-guard.js': '1846ee636951',
@@ -579,7 +579,7 @@ const FILES = {
   './js/features/practice/practice.screen.js': 'd167724ddb08',
   './js/features/practice/progress-meter.js': '2419e36ffd63',
   './js/features/practice/question-types.js': 'e4eee328d54f',
-  './js/features/practice/question-view.js': '8f36ccfa40b9',
+  './js/features/practice/question-view.js': '714b11b41c11',
   './js/features/practice/result-view.js': '30a18f221133',
   './js/features/profiles/color-picker.js': 'd8df36921318',
   './js/features/profiles/completion-bar.js': 'bdabd520437f',

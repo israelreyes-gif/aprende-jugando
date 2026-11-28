@@ -10,7 +10,7 @@ export function textInputRender({ inputmode, parse }) {
       onKeydown: (event) => {
         if (event.key === 'Enter') {
           event.preventDefault();
-          onSubmit();
+          if (!event.repeat) onSubmit(); // Enter mantenido: no repite la acción
         }
       },
     });
