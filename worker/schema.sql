@@ -75,17 +75,6 @@ CREATE TABLE IF NOT EXISTS free_days (
   UNIQUE (profile_id, day)
 );
 
--- Protectores de racha: un día ya pasado "salvado" por el propio perfil. ------------
--- Se ganan 1 por cada 10 días de racha (se calcula del historial, no se guarda) y cada fila gasta uno.
--- Un día protegido cuenta como día libre: no rompe la racha ni gasta el día de cortesía.
-CREATE TABLE IF NOT EXISTS streak_shields (
-  id         TEXT PRIMARY KEY,
-  profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-  day        TEXT NOT NULL,
-  created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-  UNIQUE (profile_id, day)
-);
-
 -- Temas liberados por los padres para cada perfil ------------
 -- Sin fila = tema bloqueado. Al borrar un perfil se borran sus liberaciones.
 CREATE TABLE IF NOT EXISTS topic_release (

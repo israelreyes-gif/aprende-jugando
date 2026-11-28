@@ -1,5 +1,0 @@
-.shield-bar { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 2px solid var(--line); border-radius: 20px; padding: 12px 14px; }
-.shield-bar__icon { display: grid; place-items: center; flex: none; }
-.shield-bar__text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
-.shield-bar__title { font-weight: 800; font-size: 15px; }
-.shield-bar__sub { font-weight: 600; font-size: 13px; opacity: 0.75; }

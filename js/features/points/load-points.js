@@ -1,7 +1,7 @@
 import { listSessions } from '../../data/practice.repo.js';
 import { listStudied } from '../../data/study.repo.js';
 import { api } from '../../core/api.js';
-import { listProtectedDays } from '../../data/protected-days.js';
+import { listFreeDays } from '../../data/free-days.repo.js';
 import { listFinishedRetos } from '../../data/reto/list-finished-retos.js';
 import { summarizePoints } from './summarize-points.js';
 
@@ -14,7 +14,7 @@ export async function loadPoints(profileId) {
     if (err.code === 'auth') throw err;
     // Worker sin esta ruta todavía (o fallo): se calcula aquí con las sesiones, como antes
   }
-  const [sessions, studied, retos, freeDays] = await Promise.all([listSessions(profileId), listStudied(profileId), listFinishedRetos(profileId), listProtectedDays(profileId)]);
+  const [sessions, studied, retos, freeDays] = await Promise.all([listSessions(profileId), listStudied(profileId), listFinishedRetos(profileId), listFreeDays(profileId).catch(() => [])]);
   return summarizePoints({ sessions, studied, retos, freeDays });
 }
 

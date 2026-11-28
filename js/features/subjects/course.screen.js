@@ -8,7 +8,6 @@ import { loadPointsOrNull } from '../points/load-points.js';
 import { levelCard } from '../points/ui/level-card.js';
 import { loadCoursePercentOrNull } from '../courses/load-course-percent.js';
 import { retoCard } from '../reto/reto-card.js';
-import { shieldBar } from '../reto/shield/shield-bar.js';
 import { loadRetoStatus } from '../reto/reto-status.js';
 import { subjectCard } from './subject-card.js';
 
@@ -27,7 +26,6 @@ export async function courseScreen({ pid, cid }) {
       { class: 'screen__body' },
       points ? levelCard({ points, profileId: pid, gender: profile.gender, course: percent }) : null,
       retoCard({ profile, course, status }),
-      shieldBar({ profile, status }),
       h('p', { class: 'lead' }, 'Toca una asignatura para empezar.'),
       h('div', { class: 'stack' }, subjectsOf(course).map((subject) => subjectCard(profile, course, subject))),
     ),

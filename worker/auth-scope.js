@@ -15,7 +15,6 @@ const PROFILE_RULES = {
   reto_diario: { read: true, create: true, edit: true, by: 'profile_id', cols: ['answers', 'finished_at'] },
   topic_release: { read: true, by: 'profile_id' },
   free_days: { read: true, by: 'profile_id' },
-  streak_shields: { read: true, create: true, by: 'profile_id' },
   push_devices: { read: true, create: true, remove: true, by: 'profile_id', kind: 'child' },
   sync_events: { create: true, by: 'profile_id', nullable: true },
   topic_titles: { read: true },

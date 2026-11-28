@@ -1,5 +1,4 @@
-import { finishedRetoDays, listChildDevices, retoCourses } from './reminder-data.js';
-import { protectedDaysOf } from './shield-data.js';
+import { finishedRetoDays, freeDaysOf, listChildDevices, retoCourses } from './reminder-data.js';
 import { spainDay } from './reminder-dates.js';
 import { reminderMessage } from './reminder-message.js';
 import { reminderSlot } from './reminder-slot.js';
@@ -17,7 +16,7 @@ async function remindProfile(env, { slot, today, profileId, devices }) {
   const courses = await retoCourses(env.DB, profileId);
   if (courses.length === 0) return 'no-topics';
 
-  const [doneDays, freeDays] = await Promise.all([finishedRetoDays(env.DB, profileId), protectedDaysOf(env.DB, profileId)]);
+  const [doneDays, freeDays] = await Promise.all([finishedRetoDays(env.DB, profileId), freeDaysOf(env.DB, profileId)]);
   if (doneDays.includes(today)) return 'done';
   if (freeDays.includes(today)) return 'free';
 
