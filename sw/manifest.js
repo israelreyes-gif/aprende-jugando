@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = 'f7cb1cd1da8d';
+const BUILD = '7db03dbd09ba';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -523,11 +523,9 @@ const FILES = {
   './js/features/parents/child-stats/course-picker.js': 'c5b59406605a',
   './js/features/parents/child-stats/delete-profile-button.js': 'a5b59627546a',
   './js/features/parents/child-stats/diamonds-section.js': 'd7ed778ad74e',
-  './js/features/parents/child-stats/fill-missed-button.js': '489fede28048',
   './js/features/parents/child-stats/free-day-range.js': '315aee18ee9d',
-  './js/features/parents/child-stats/free-days-section.js': 'd559b92a92f6',
+  './js/features/parents/child-stats/free-days-section.js': '59be192fde83',
   './js/features/parents/child-stats/load-course-progress.js': 'bf1246c8009e',
-  './js/features/parents/child-stats/missed-days.js': 'a0aacaf9bd41',
   './js/features/parents/child-stats/points-days.js': '863833bc4926',
   './js/features/parents/child-stats/points-section.js': 'b9d409bfe776',
   './js/features/parents/child-stats/progress-rows.js': 'f81830065191',
