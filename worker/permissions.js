@@ -14,6 +14,7 @@ export const PERMISSIONS = {
   topic_release: { read: true, create: true, remove: true },
   reto_diario: { read: true, create: true, edit: true },
   free_days: { read: true, create: true, remove: true },
+  streak_shields: { read: true, create: true, remove: true },
   push_devices: { read: true, create: true, remove: true },
   topic_titles: { read: true },
   sync_events: { read: true, create: true },

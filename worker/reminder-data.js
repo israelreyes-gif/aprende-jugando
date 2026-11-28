@@ -16,13 +16,6 @@ export async function retoCourses(db, profileId) {
   return rows.map((row) => row.course_id);
 }
 
-/** Días libres ('AAAA-MM-DD') del perfil: días en que el reto no se exige. */
-export async function freeDaysOf(db, profileId) {
-  // Si la tabla aún no se ha creado en D1 se trata como "sin días libres" (así el Worker nuevo no rompe nada antes de crearla).
-  const rows = (await db.prepare('SELECT day FROM free_days WHERE profile_id = ?').bind(profileId).all().catch(() => ({ results: [] }))).results;
-  return rows.map((row) => row.day);
-}
-
 /** Días ('AAAA-MM-DD') en los que el perfil terminó el reto. */
 export async function finishedRetoDays(db, profileId) {
   const rows = (await db.prepare('SELECT day FROM reto_diario WHERE profile_id = ? AND finished_at IS NOT NULL').bind(profileId).all()).results;

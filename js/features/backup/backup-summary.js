@@ -8,6 +8,7 @@ const LABELS = {
   topic_release: 'Temas liberados',
   reto_diario: 'Retos',
   free_days: 'Días libres',
+  streak_shields: 'Protectores usados',
 };
 
 /** "Perfiles: 2 · Sesiones: 14 · …" para enseñar qué trae la copia antes de importarla. */

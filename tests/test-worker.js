@@ -23,7 +23,7 @@ assert.equal((await call('GET', '/api', { key: '' })).status, 401); ok('sin clav
 assert.equal((await call('GET', '/api', { key: 'mala' })).status, 401); ok('clave mala -> 401');
 const root = await call('GET', '/api');
 assert.equal(root.status, 200);
-assert.deepEqual(root.data.tables.sort(), ['answers', 'free_days', 'practice_sessions', 'profiles', 'push_devices', 'reto_diario', 'settings', 'study_progress', 'sync_events', 'topic_release', 'topic_titles']); ok('lista las 11 tablas del esquema');
+assert.deepEqual(root.data.tables.sort(), ['answers', 'free_days', 'practice_sessions', 'profiles', 'push_devices', 'reto_diario', 'settings', 'streak_shields', 'study_progress', 'sync_events', 'topic_release', 'topic_titles']); ok('lista las 12 tablas del esquema');
 
 // CORS
 const pre = await call('OPTIONS', '/api/profiles', { key: '', origin: 'https://yo.github.io' });

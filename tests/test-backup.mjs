@@ -37,7 +37,7 @@ assert.equal(getSetting(), undefined); assert.match(await page.textContent('.bac
 await page.click('.backup-card button'); await page.waitForTimeout(800);
 const shared = await page.evaluate(() => window.__shared); assert.ok(shared); assert.match(shared.name, /^aprende-copia-\d{4}-\d{2}-\d{2}\.json$/);
 const data = JSON.parse(shared.text);
-assert.equal(data.app, 'aprende-y-juega'); assert.deepEqual(Object.keys(data.tables), ['profiles', 'practice_sessions', 'answers', 'study_progress', 'topic_release', 'reto_diario', 'free_days']);
+assert.equal(data.app, 'aprende-y-juega'); assert.deepEqual(Object.keys(data.tables), ['profiles', 'practice_sessions', 'answers', 'study_progress', 'topic_release', 'reto_diario', 'free_days', 'streak_shields']);
 assert.equal(data.tables.profiles.length, 2); assert.equal(data.tables.practice_sessions.length, 1); assert.equal(data.tables.answers.length, 2300); assert.equal(new Set(data.tables.answers.map((a) => a.id)).size, 2300); ok('el archivo trae todas las filas (2.300 respuestas en 3 páginas, sin repetir)');
 assert.ok(!shared.text.includes('SECRETO-HASH') && !shared.text.includes('secreto') && !('settings' in data.tables) && !('push_devices' in data.tables)); ok('no incluye el PIN ni los móviles con avisos');
 assert.ok(getSetting() && Math.abs(Date.now() - new Date(getSetting())) < 60000); assert.match(await page.textContent('.backup-card'), /Copia hecha hoy/); assert.equal(await page.locator('.backup-card--due').count(), 0); ok('al guardar se apunta la fecha en la base de datos y desaparece el aviso');

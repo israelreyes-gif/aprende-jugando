@@ -1,4 +1,5 @@
-import { finishedRetoDays, freeDaysOf } from './reminder-data.js';
+import { finishedRetoDays } from './reminder-data.js';
+import { protectedDaysOf } from './shield-data.js';
 import { addDays, mondayOf } from './reminder-dates.js';
 import { computeStreak } from './reminder-streak.js';
 import { reinforceTopics } from './report-reinforce.js';
@@ -21,7 +22,7 @@ async function profileData(db, profile, today) {
   const all = async (sql) => (await db.prepare(sql).bind(profile.id).all()).results;
   const [doneDays, freeDays, released, studied, sessions] = await Promise.all([
     finishedRetoDays(db, profile.id),
-    freeDaysOf(db, profile.id),
+    protectedDaysOf(db, profile.id),
     all('SELECT course_id, subject_id, topic_id FROM topic_release WHERE profile_id = ?'),
     all('SELECT course_id, subject_id, topic_id, completed_at FROM study_progress WHERE profile_id = ?'),
     all('SELECT course_id, subject_id, topic_id, total, correct, finished_at FROM practice_sessions WHERE profile_id = ?'),

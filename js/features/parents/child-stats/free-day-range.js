@@ -1,3 +1,4 @@
+import { dayText } from '../../../shared/day-text.js';
 import { addDays, spainDay } from '../../reto/streak/date-keys.js';
 
 /** Cuántos días hacia atrás y hacia delante se puede marcar un día libre. */
@@ -17,5 +18,4 @@ export function isValidFreeDay(day, range) {
   return day >= range.min && day <= range.max;
 }
 
-/** "viernes, 27 de noviembre" */
-export const freeDayText = (day) => new Date(`${day}T00:00:00Z`).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
+export const freeDayText = dayText;
