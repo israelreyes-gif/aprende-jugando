@@ -1,6 +1,7 @@
 import { h } from '../../../core/dom.js';
 import { addFreeDay, removeFreeDay } from '../../../data/free-days.repo.js';
 import { notify } from '../../../shared/modal.js';
+import { fillMissedButton } from './fill-missed-button.js';
 import { freeDayRange, freeDayText, isValidFreeDay } from './free-day-range.js';
 
 const saveError = () => notify({ kind: 'error', title: 'No se pudo guardar', message: 'Revisa la conexión e inténtalo de nuevo.' });
@@ -74,6 +75,7 @@ export function freeDaysSection({ profile, days }) {
       { class: 'free-days' },
       h('p', { class: 'free-days__hint' }, `Un día libre no suma a la racha de ${profile.name} ni la rompe. Útil para exámenes, viajes o enfermedad.`),
       h('div', { class: 'free-days__form' }, input, add),
+      fillMissedButton({ profile, current, onFilled: (filled) => { filled.forEach((day) => current.add(day)); paint(); } }), // TEMPORAL
       list,
     ),
   );
