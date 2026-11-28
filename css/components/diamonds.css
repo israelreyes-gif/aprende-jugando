@@ -1,0 +1,20 @@
+.diamond { flex: none; display: block; }
+.modal__icon--graphic { width: auto; height: auto; border-radius: 0; background: none; }
+
+.diamond-strip { display: flex; flex-direction: column; gap: 6px; flex-basis: 100%; }
+.diamond-strip__top { display: flex; align-items: center; gap: 10px; }
+.diamond-strip__slots { display: flex; gap: 5px; flex: none; }
+.diamond-strip__text { font-weight: 700; font-size: 13px; opacity: 0.95; }
+.diamond-strip__bar { height: 8px; border-radius: 99px; background: rgba(255, 255, 255, 0.28); overflow: hidden; }
+.diamond-strip__bar i { display: block; height: 100%; background: #FFFFFF; border-radius: 99px; }
+.reto-card--done { flex-wrap: wrap; }
+.reto-card--done .diamond-strip__bar { background: rgba(0, 0, 0, 0.12); }
+.reto-card--done .diamond-strip__bar i { background: var(--ok); }
+
+.diamond-banner { display: flex; align-items: flex-start; gap: 12px; background: var(--surface); border: 2px solid #85B7EB; border-radius: 20px; padding: 14px; }
+.diamond-banner__gem { flex: none; padding-top: 2px; }
+.diamond-banner__body { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; flex: 1; min-width: 0; }
+.diamond-banner__title { margin: 0; font-weight: 800; font-size: 16px; }
+.diamond-banner__text { margin: 0; font-weight: 600; font-size: 14px; line-height: 1.4; opacity: 0.8; }
+.diamond-banner__chip { font-weight: 800; font-size: 13px; color: #185FA5; }
+.diamond-banner .btn { margin-top: 6px; }

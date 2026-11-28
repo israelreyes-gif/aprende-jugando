@@ -8,6 +8,7 @@ import { loadPointsOrNull } from '../points/load-points.js';
 import { levelCard } from '../points/ui/level-card.js';
 import { loadCoursePercentOrNull } from '../courses/load-course-percent.js';
 import { retoCard } from '../reto/reto-card.js';
+import { scheduleStreakNotice, streakBanner } from '../reto/diamonds/streak-notices.js';
 import { loadRetoStatus } from '../reto/reto-status.js';
 import { subjectCard } from './subject-card.js';
 
@@ -17,7 +18,7 @@ export async function courseScreen({ pid, cid }) {
   const [profile, status, points, percent] = await Promise.all([getProfile(pid), loadRetoStatus(pid).catch(() => null), loadPointsOrNull(pid), loadCoursePercentOrNull(pid, cid)]);
   if (!profile || !course || !course.available) return notFoundView();
 
-  return h(
+  const view = h(
     'main',
     { class: 'screen' },
     appHeader({ title: course.title, sub: profile.name, back: paths.courses(pid), profile }),
@@ -26,8 +27,11 @@ export async function courseScreen({ pid, cid }) {
       { class: 'screen__body' },
       points ? levelCard({ points, profileId: pid, gender: profile.gender, course: percent }) : null,
       retoCard({ profile, course, status }),
+      streakBanner({ profile, status }),
       h('p', { class: 'lead' }, 'Toca una asignatura para empezar.'),
       h('div', { class: 'stack' }, subjectsOf(course).map((subject) => subjectCard(profile, course, subject))),
     ),
   );
+  scheduleStreakNotice(view, { profile, status });
+  return view;
 }

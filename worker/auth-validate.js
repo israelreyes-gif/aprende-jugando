@@ -1,3 +1,4 @@
+import { assertShieldRows } from './shield-rules.js';
 import { HttpError } from './http.js';
 import { checkDate } from './check-date.js';
 import { assertRetoRow } from './reto-rows.js';
@@ -86,6 +87,8 @@ export async function assertPlausible(db, owner, table, rows) {
     }
   } else if (table.name === 'reto_diario') {
     for (const row of rows) assertRetoRow(row);
+  } else if (table.name === 'streak_shields') {
+    await assertShieldRows(db, owner, rows);
   } else if (table.name === 'answers' && rows.length > MAX_QUESTIONS) {
     throw bad('Demasiadas respuestas');
   }

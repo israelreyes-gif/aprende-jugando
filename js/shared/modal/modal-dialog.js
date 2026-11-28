@@ -13,8 +13,9 @@ function closeCurrent(value) {
  * actions: [{ label, value, style: 'primary' | 'outline' | 'bad' }]
  * dismissValue: lo que devuelve si se cierra con Esc o tocando fuera.
  * initialFocus: posición del botón que recibe el foco (por defecto, el primero).
+ * graphic: nodo que sustituye al icono del tipo (por ejemplo, un diamante).
  */
-export function openModal({ kind = 'info', title, message, actions, dismissValue, initialFocus = 0 }) {
+export function openModal({ kind = 'info', title, message, actions, dismissValue, initialFocus = 0, graphic = null }) {
   closeCurrent(dismissValue);
 
   return new Promise((resolve) => {
@@ -26,7 +27,7 @@ export function openModal({ kind = 'info', title, message, actions, dismissValue
     const dialog = h(
       'div',
       { class: `modal modal--${kind}`, role: kind === 'error' ? 'alertdialog' : 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'modal-title' },
-      h('span', { class: 'modal__icon' }, icon(MODAL_KINDS[kind].icon, 34)),
+      h('span', { class: graphic ? 'modal__icon modal__icon--graphic' : 'modal__icon' }, graphic ?? icon(MODAL_KINDS[kind].icon, 34)),
       h('h2', { class: 'modal__title', id: 'modal-title' }, title),
       message ? h('p', { class: 'modal__text' }, message) : null,
       h('div', { class: 'modal__actions' }, buttons),

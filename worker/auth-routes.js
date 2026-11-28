@@ -35,17 +35,18 @@ export async function handleAuth(request, env, parts, cors) {
               EXISTS (SELECT 1 FROM credentials c WHERE c.owner = p.id) AS has_code
        FROM profiles p ORDER BY p.created_at ASC`,
     ).all();
-    const [sessions, studied, retos, free] = await Promise.all([
+    const [sessions, studied, retos, free, shields] = await Promise.all([
       db.prepare('SELECT profile_id, id, kind, correct, total, finished_at FROM practice_sessions').all(),
       db.prepare('SELECT profile_id, completed_at FROM study_progress').all(),
       db.prepare('SELECT profile_id, id, day FROM reto_diario WHERE finished_at IS NOT NULL').all(),
       db.prepare('SELECT profile_id, day FROM free_days').all().catch(() => ({ results: [] })), // tabla aún sin crear: sin días libres
+      db.prepare('SELECT profile_id, day FROM streak_shields').all().catch(() => ({ results: [] })), // ídem: sin protectores
     ]);
     const by = (rows) => rows.reduce((m, r) => m.set(r.profile_id, [...(m.get(r.profile_id) || []), r]), new Map());
     const sessionsOf = by(sessions.results);
     const studiedOf = by(studied.results);
     const retosOf = by(retos.results);
-    const freeOf = by(free.results);
+    const freeOf = by([...free.results, ...shields.results]); // libres y protegidos: ninguno rompe la racha
     // points_total: solo el total (para el nivel de la tarjeta del inicio, sin necesitar sesión en este dispositivo)
     return json(results.map((r) => ({
       ...r,

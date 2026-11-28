@@ -1,6 +1,7 @@
 import { h } from '../../core/dom.js';
 import { paths } from '../../core/paths.js';
 import { icon } from '../../shared/icons.js';
+import { diamondStrip } from './diamonds/diamond-strip.js';
 import { RETO_SIZE } from './reto-size.js';
 import { streakBadge } from './streak-badge.js';
 
@@ -13,6 +14,7 @@ export function retoCard({ profile, course, status }) {
   const streak = status?.streak ?? 0;
   const badge = streak > 0 ? streakBadge(streak) : null;
   const total = reto?.plan.length || RETO_SIZE;
+  const strip = status?.diamonds ? diamondStrip(status.diamonds) : null;
 
   if (reto?.finished) {
     return h(
@@ -21,6 +23,7 @@ export function retoCard({ profile, course, status }) {
       h('span', { class: 'reto-card__icon' }, icon('check', 26)),
       h('span', { class: 'reto-card__text' }, h('span', { class: 'reto-card__title' }, '¡Reto de hoy hecho!'), h('span', { class: 'reto-card__sub' }, 'Vuelve mañana para seguir la racha')),
       badge,
+      strip,
     );
   }
 
@@ -40,6 +43,7 @@ export function retoCard({ profile, course, status }) {
       ),
       badge,
     ),
+    strip,
     h('span', { class: 'reto-card__cta' }, answered > 0 ? 'Seguir el reto' : 'Empezar el reto'),
   );
 }

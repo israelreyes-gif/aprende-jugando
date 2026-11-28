@@ -12,7 +12,7 @@ import { summarizePointsJson } from '../worker/stats-summarize.js';
 import { retoMessage } from '../js/features/push/parent-alerts/parent-messages.js';
 let n = 0; const ok = (m) => { n++; console.log('  ✓', m); };
 
-// 1) La racha de cada día sale igual que computeStreak, con cortesías y roturas, y la copia del Worker es idéntica
+// 1) La racha de cada día sale igual que computeStreak, con roturas, y la copia del Worker es idéntica
 let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
 for (let round = 0; round < 60; round++) {
   const days = []; for (let i = 0; i < 90; i++) if (rnd() < 0.7) days.push(addDays('2026-08-30', i));
@@ -50,13 +50,13 @@ assert.equal(r.streakBonus, 10 + 12); assert.equal(r.raw, 9 * -9 + 17 - 9 + 23);
 r = both({ sessions: [sess('a', 5, day(0)), { id: 'p1', kind: 'practice', correct: 9, total: 10, finished_at: `${day(0)}T11:00:00Z` }, { id: 'm1:mates:t', kind: 'mix', correct: 9, total: 10, finished_at: `${day(0)}T12:00:00Z` }, sess('sinfila', 9, day(1))], studied: [], retos: [{ id: 'a', day: day(0) }] });
 assert.equal(r.streakBonus, 0); ok('sin bonus: reto a 0, ejercicios, mix o reto sin fila terminada');
 
-// 4) Un día sin reto: el primero es de cortesía (no suma ni rompe) y el segundo de la misma semana rompe la racha
+// 4) Un día sin reto rompe la racha (no hay día de gracia)
 const lun = '2026-11-16'; // lunes
-const plan = [[0, true], [1, true], [2, false], [3, true], [4, false], [5, true]]; // lun, mar hechos; mié cortesía; jue hecho; vie falla → racha a 0; sáb hecho
+const plan = [[0, true], [1, true], [2, false], [3, true], [4, false], [5, true]]; // lun, mar hechos; mié falla → racha a 0; jue hecho (1); vie falla → a 0; sáb hecho (1)
 const retos2 = []; const sessions2 = [];
 for (const [i, hecho] of plan) if (hecho) { retos2.push({ id: `c${i}`, day: addDays(lun, i) }); sessions2.push(sess(`c${i}`, 8, addDays(lun, i))); }
 r = both({ sessions: sessions2, studied: [], retos: retos2 });
-assert.deepEqual([...r.byDay].map(([d, v]) => [d, v - 11]), [[addDays(lun, 0), 1], [addDays(lun, 1), 2], [addDays(lun, 3), 3], [addDays(lun, 5), 1]]); ok('la cortesía no rompe la racha y el segundo día sin reto la reinicia');
+assert.deepEqual([...r.byDay].map(([d, v]) => [d, v - 11]), [[addDays(lun, 0), 1], [addDays(lun, 1), 2], [addDays(lun, 3), 1], [addDays(lun, 5), 1]]); ok('el primer día sin reto reinicia la racha (sin día de gracia)');
 
 // 5) La racha se toma del día del reto (reto_diario.day), no de la hora de terminarlo
 r = both({ sessions: [sess('x', 8, day(1))], studied: [], retos: [{ id: 'x', day: day(0) }] }); assert.equal(r.streakBonus, 1); ok('cuenta el día del reto');

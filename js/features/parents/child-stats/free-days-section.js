@@ -72,7 +72,7 @@ export function freeDaysSection({ profile, days }) {
     h(
       'div',
       { class: 'free-days' },
-      h('p', { class: 'free-days__hint' }, `Un día libre no suma a la racha de ${profile.name} ni la rompe, y no gasta el día de cortesía de la semana. Útil para exámenes, viajes o enfermedad.`),
+      h('p', { class: 'free-days__hint' }, `Un día libre no suma a la racha de ${profile.name} ni la rompe. Útil para exámenes, viajes o enfermedad.`),
       h('div', { class: 'free-days__form' }, input, add),
       list,
     ),

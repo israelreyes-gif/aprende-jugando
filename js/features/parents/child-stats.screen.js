@@ -7,6 +7,8 @@ import { listStudied } from '../../data/study.repo.js';
 import { listReleased } from '../../data/release.repo.js';
 import { listFreeDays } from '../../data/free-days.repo.js';
 import { freeDaysSection } from './child-stats/free-days-section.js';
+import { diamondsSection } from './child-stats/diamonds-section.js';
+import { loadShieldInfo } from '../reto/diamonds/load-shield-info.js';
 import { listSyncEvents } from '../../data/sync.repo.js';
 import { appHeader } from '../../shared/app-header.js';
 import { icon } from '../../shared/icons.js';
@@ -38,7 +40,7 @@ async function renderChildStats({ pid }) {
   const stats = computeStats(sessions, subjectsOf(course).map((s) => s.id), streak, releasedRows);
   const topicTitles = await loadTopicTitles(stats.reinforce);
 
-  const [events, studied, freeDays] = await Promise.all([listSyncEvents(pid).catch(() => []), listStudied(pid).catch(() => []), listFreeDays(pid).catch(() => [])]);
+  const [events, studied, freeDays, shieldInfo] = await Promise.all([listSyncEvents(pid).catch(() => []), listStudied(pid).catch(() => []), listFreeDays(pid).catch(() => []), loadShieldInfo(pid).catch(() => null)]);
   const sync = summarizeSync(events, weekActivity(sessions, 'finished_at') + weekActivity(studied, 'completed_at'));
   const progress = await loadCourseProgress(pid, course.id);
   const progressSection = h('section', { class: 'stack' }, h('h2', { class: 'title-lg' }, 'Progreso del curso'), courseMeter(coursePercent(progress)), ...progressRows(profile, course, progress));
@@ -56,7 +58,7 @@ async function renderChildStats({ pid }) {
     'main',
     { class: 'screen' },
     appHeader({ title: profile.name, sub: 'Estadísticas', back: paths.parents(), profile }),
-    h('div', { class: 'screen__body' }, points ? pointsSection(points, spainDay(), profile.gender) : null, coursePicker(profile), releaseLink, progressSection, ...body, freeDaysSection({ profile, days: freeDays }), syncSection(sync, profile.name), h('div', { class: 'spacer' }), setCodeLink(profile), deleteProfileButton(profile)),
+    h('div', { class: 'screen__body' }, points ? pointsSection(points, spainDay(), profile.gender) : null, coursePicker(profile), releaseLink, progressSection, ...body, freeDaysSection({ profile, days: freeDays }), shieldInfo ? diamondsSection({ profile, info: shieldInfo }) : null, syncSection(sync, profile.name), h('div', { class: 'spacer' }), setCodeLink(profile), deleteProfileButton(profile)),
   );
 }
 

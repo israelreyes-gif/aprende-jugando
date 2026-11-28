@@ -80,8 +80,8 @@ const made = await buildBackup(); assert.ok(made.tables.free_days.some((r) => r.
 
 // --- Worker nuevo con la tabla aún sin crear en D1: todo sigue funcionando sin días libres ---
 db.sqlite.exec('DROP TABLE free_days');
-const { freeDaysOf } = await import('../worker/reminder-data.js');
-assert.deepEqual(await freeDaysOf(db, 'alex'), []);
+const { protectedDaysOf } = await import('../worker/shield-data.js');
+assert.deepEqual(await protectedDaysOf(db, 'alex'), []);
 const { handleStatsPoints } = await import('../worker/stats-points.js');
 const res = await handleStatsPoints(new Request('http://w/api/stats/points?profile_id=eq.alex'), env, ['api', 'stats', 'points'], {}, { owner: 'parent' });
 assert.equal(res.status, 200);
