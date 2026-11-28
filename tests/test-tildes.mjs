@@ -15,7 +15,10 @@ assert.deepEqual(accentWarning('aguila', ['águila']), ['águila']);
 assert.deepEqual(accentWarning('el arbol grande', ['árbol grande']), ['árbol']);
 assert.deepEqual(accentWarning('cancion y corazon', ['canción y corazón']), ['canción', 'corazón']);
 assert.deepEqual(accentWarning('águila', ['águila']), []); assert.deepEqual(accentWarning('Águila', ['águila']), []);
-assert.deepEqual(accentWarning('cat', ['cat']), []); assert.deepEqual(accentWarning('aguila', ['águila', 'aguila']), []);
+assert.deepEqual(accentWarning('cat', ['cat']), []);
+// el contenido suele listar las dos formas: se avisa igual si la escribió sin tilde, y no si la escribió bien
+assert.deepEqual(accentWarning('aguila', ['aguila', 'águila']), ['águila']); assert.deepEqual(accentWarning('cerámica', ['ceramica', 'cerámica']), []);
+assert.deepEqual(accentWarning('un leon', ['leon', 'león', 'un leon', 'un león']), ['león']); assert.deepEqual(accentWarning('dolmenes', ['dolmen', 'dólmenes', 'dolmenes']), ['dólmenes']);
 assert.deepEqual(text.note(q('águila'), null), []); assert.deepEqual(text.note(q('águila'), 'aguila'), ['águila']); ok('aviso: palabras sin tilde, varias a la vez, nada si está bien escrito');
 
 const { window } = new JSDOM('<!doctype html><body></body>'); Object.assign(globalThis, { window, document: window.document });

@@ -1,6 +1,6 @@
 // GENERADO por tools/build-sw-manifest.mjs: no se edita a mano.
 // BUILD identifica esta versión de la app; FILES lleva la huella de cada archivo que se guarda en el móvil.
-const BUILD = '532be9080e6f';
+const BUILD = '092c747f80f6';
 const FILES = {
   './css/base.css': 'a3dfaa62447a',
   './css/components/avatar.css': '84367a2dc03f',
@@ -654,7 +654,7 @@ const FILES = {
   './js/no-zoom.js': '05f17cc44237',
   './js/register-sw.js': '1647a5bd996f',
   './js/routes.js': '6850a79b645c',
-  './js/shared/accent-warning.js': '141d9503b5b6',
+  './js/shared/accent-warning.js': 'f76af6549fb4',
   './js/shared/answer-parse.js': '8fe59325780b',
   './js/shared/app-header.js': '0404ed207673',
   './js/shared/avatar.js': '29df535e8624',
