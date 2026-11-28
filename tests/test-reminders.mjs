@@ -30,7 +30,7 @@ for (const [label, [y, mo, d]] of Object.entries({ invierno: [2026, 9, 28], vera
 assert.equal(spainDay(Z('2026-10-28T22:30:00Z')), '2026-10-28'); assert.equal(spainDay(Z('2026-10-28T23:30:00Z')), '2026-10-29'); assert.equal(spainDay(Z('2026-10-28T22:30:00Z')), appDay(Z('2026-10-28T22:30:00Z')));
 for (const d of ['2026-10-26', '2026-10-28', '2026-11-01', '2026-03-29']) { assert.equal(addDays(d, 5), appAdd(d, 5)); assert.equal(mondayOf(d), appMonday(d)); }
 let seed = 42; const rnd = () => ((seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296);
-for (let i = 0; i < 3000; i++) { const today = '2026-10-28'; const days = []; for (let k = 1; k <= 40; k++) if (rnd() < 0.7) days.push(addDays(today, -k)); if (rnd() < 0.4) days.push(today); assert.equal(computeStreak(days, today), appStreak(days, today)); }
+for (let i = 0; i < 3000; i++) { const today = '2026-10-28'; const days = []; const free = []; for (let k = 1; k <= 40; k++) { if (rnd() < 0.7) days.push(addDays(today, -k)); else if (rnd() < 0.3) free.push(addDays(today, -k)); } if (rnd() < 0.4) days.push(today); assert.equal(computeStreak(days, today), appStreak(days, today)); assert.equal(computeStreak(days, today, free), appStreak(days, today, free)); }
 ok('fechas y racha: 3000 casos al azar dan lo mismo que la app');
 
 // 3) Mensajes
@@ -67,11 +67,16 @@ const sentTo = () => pushes.map((p) => p.url.replace('https://push.example/', ''
 
 let r = await runReminders(env, Z('2026-10-28T10:00:00Z').getTime()); assert.deepEqual(r, { slot: null }); assert.equal(pushes.length, 0); ok('a una hora que no es de recordatorio no se envía nada');
 r = await runReminders(env, Z('2026-10-28T07:00:00Z').getTime());
-assert.deepEqual(r, { slot: 'morning', sent: 2, done: 1, 'no-topics': 2, failed: 0 }); assert.deepEqual(sentTo(), ['lucia1', 'lucia2', 'sara']); ok('08:00: avisa a Lucía (sus 2 móviles) y a Sara; no a Alex (ya hecho), ni a Mateo (estudiado pero no liberado), ni a Leo (liberado pero sin estudiar), ni a los padres');
+assert.deepEqual(r, { slot: 'morning', sent: 2, done: 1, free: 0, 'no-topics': 2, failed: 0 }); assert.deepEqual(sentTo(), ['lucia1', 'lucia2', 'sara']); ok('08:00: avisa a Lucía (sus 2 móviles) y a Sara; no a Alex (ya hecho), ni a Mateo (estudiado pero no liberado), ni a Leo (liberado pero sin estudiar), ni a los padres');
 pushes.length = 0; r = await runReminders(env, Z('2026-10-28T17:30:00Z').getTime());
-assert.deepEqual(r, { slot: 'evening', sent: 2, done: 1, 'no-topics': 2, failed: 0 }); assert.deepEqual(sentTo(), ['lucia1', 'lucia2', 'sara']); ok('18:30: mismo grupo de perfiles');
+assert.deepEqual(r, { slot: 'evening', sent: 2, done: 1, free: 0, 'no-topics': 2, failed: 0 }); assert.deepEqual(sentTo(), ['lucia1', 'lucia2', 'sara']); ok('18:30: mismo grupo de perfiles');
 pushes.length = 0; sql.exec(`DELETE FROM reto_diario WHERE profile_id='sara'`); fin('sara', '2026-10-27');
 r = await runReminders(env, Z('2026-10-28T17:30:00Z').getTime()); assert.equal(r.sent, 2); ok('con un día de racha también se envía');
+// Día libre: hoy es libre para Lucía → no se le avisa (ni a sus 2 móviles); Sara sigue recibiendo el suyo
+pushes.length = 0; sql.exec(`INSERT INTO free_days (id, profile_id, day) VALUES ('fd-lucia', 'lucia', '${today}')`);
+r = await runReminders(env, Z('2026-10-28T07:00:00Z').getTime());
+assert.deepEqual(r, { slot: 'morning', sent: 1, done: 1, free: 1, 'no-topics': 2, failed: 0 }); assert.deepEqual(sentTo(), ['sara']); ok('hoy es día libre: no se avisa a ese perfil y se cuenta aparte');
+sql.exec(`DELETE FROM free_days WHERE profile_id='lucia'`); pushes.length = 0; await runReminders(env, Z('2026-10-28T17:30:00Z').getTime()); // deja los avisos de las 18:30 como estaban para las pruebas de más abajo
 // El contenido llega cifrado; comprobamos el cuerpo con un descifrador a través del propio servicio de mentira
 import { createDecipheriv, hkdfSync } from 'node:crypto';
 function decryptFor(devRow, body) { const ecdh = createECDH('prime256v1'); ecdh.setPrivateKey(ua.getPrivateKey()); const salt = body.subarray(0, 16); const idlen = body[20]; const asPub = body.subarray(21, 21 + idlen); const cipher = body.subarray(21 + idlen); const shared = ecdh.computeSecret(asPub); const ikm = hkdfSync('sha256', shared, Buffer.from(devRow.auth, 'base64url'), Buffer.concat([Buffer.from('WebPush: info\0'), Buffer.from(devRow.p256dh, 'base64url'), asPub]), 32); const cek = hkdfSync('sha256', Buffer.from(ikm), salt, Buffer.from('Content-Encoding: aes128gcm\0'), 16); const nonce = hkdfSync('sha256', Buffer.from(ikm), salt, Buffer.from('Content-Encoding: nonce\0'), 12); const d = createDecipheriv('aes-128-gcm', Buffer.from(cek), Buffer.from(nonce)); d.setAuthTag(cipher.subarray(-16)); const plain = Buffer.concat([d.update(cipher.subarray(0, -16)), d.final()]); return JSON.parse(plain.subarray(0, plain.lastIndexOf(2)).toString()); }

@@ -1,4 +1,4 @@
-import { finishedRetoDays, listChildDevices, retoCourses } from './reminder-data.js';
+import { finishedRetoDays, freeDaysOf, listChildDevices, retoCourses } from './reminder-data.js';
 import { spainDay } from './reminder-dates.js';
 import { reminderMessage } from './reminder-message.js';
 import { reminderSlot } from './reminder-slot.js';
@@ -11,18 +11,19 @@ const groupByProfile = (devices) => {
   return groups;
 };
 
-/** Recordatorio de un perfil. Devuelve 'sent', 'done' (ya hizo el reto) o 'no-topics' (sin temas liberados y estudiados: no hay reto posible). */
+/** Recordatorio de un perfil. Devuelve 'sent', 'done' (ya hizo el reto), 'free' (hoy es día libre) o 'no-topics' (sin temas liberados y estudiados: no hay reto posible). */
 async function remindProfile(env, { slot, today, profileId, devices }) {
   const courses = await retoCourses(env.DB, profileId);
   if (courses.length === 0) return 'no-topics';
 
-  const doneDays = await finishedRetoDays(env.DB, profileId);
+  const [doneDays, freeDays] = await Promise.all([finishedRetoDays(env.DB, profileId), freeDaysOf(env.DB, profileId)]);
   if (doneDays.includes(today)) return 'done';
+  if (freeDays.includes(today)) return 'free';
 
   const message = reminderMessage({
     slot,
     name: devices[0].name,
-    streak: computeStreak(doneDays, today),
+    streak: computeStreak(doneDays, today, freeDays),
     url: `#/p/${profileId}/c/${courses[0]}/reto`,
   });
   await sendToDevices(env.DB, env, devices, message);
@@ -40,7 +41,7 @@ export async function runReminders(env, scheduledTime) {
   if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY || !env.VAPID_SUBJECT) return { slot, error: 'Faltan las claves VAPID' };
 
   const today = spainDay(when);
-  const summary = { slot, sent: 0, done: 0, 'no-topics': 0, failed: 0 };
+  const summary = { slot, sent: 0, done: 0, free: 0, 'no-topics': 0, failed: 0 };
   for (const [profileId, devices] of groupByProfile(await listChildDevices(env.DB))) {
     try {
       summary[await remindProfile(env, { slot, today, profileId, devices })] += 1;

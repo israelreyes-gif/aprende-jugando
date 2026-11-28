@@ -23,9 +23,9 @@ function dayOf(iso) {
 }
 
 /** Igual que summarizePoints de la app, pero byDay sale como objeto { 'AAAA-MM-DD': puntos } para poder enviarlo como JSON. */
-export function summarizePointsJson({ sessions, studied, retos = [] }) {
+export function summarizePointsJson({ sessions, studied, retos = [], freeDays = [] }) {
   const byDay = {};
-  const streakAt = streakByDay(retos.map((r) => r.day));
+  const streakAt = streakByDay(retos.map((r) => r.day), freeDays);
   const dayOfReto = new Map(retos.map((r) => [String(r.id), r.day]));
   const add = (iso, n) => {
     const day = dayOf(iso);

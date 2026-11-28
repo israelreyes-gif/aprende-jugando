@@ -30,9 +30,9 @@ function dayOf(iso) {
  * Un reto que acaba en positivo suma además la racha de ese día (streakBonus). retos: [{ id, day }] de los retos terminados.
  * total nunca baja de 0; raw es la suma sin ese límite. byDay: puntos por día (hora de España).
  */
-export function summarizePoints({ sessions, studied, retos = [] }) {
+export function summarizePoints({ sessions, studied, retos = [], freeDays = [] }) {
   const byDay = new Map();
-  const streakAt = streakByDay(retos.map((r) => r.day));
+  const streakAt = streakByDay(retos.map((r) => r.day), freeDays);
   const dayOfReto = new Map(retos.map((r) => [String(r.id), r.day]));
   const add = (iso, n) => {
     const day = dayOf(iso);

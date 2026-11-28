@@ -20,6 +20,16 @@ eq('ayer fallado, hoy pendiente (cortesía) conserva', computeStreak(d(22,23,24)
 eq('dos días fallados, hoy pendiente → 0', computeStreak(d(22,23), T(26)), 0);
 eq('entrada desordenada y duplicada', computeStreak(d(21,19,20,20,19), T(21)), 3);
 eq('tras reiniciar se empieza de nuevo', computeStreak(d(12,13,17,18,19), T(19)), 3);
+const N = (n) => `2026-11-${String(n).padStart(2, '0')}`;
+const nd = (...days) => days.map(N);
+eq('día libre: el caso real (23-25 hechos, jueves libre, viernes fallado, hoy sábado pendiente) conserva 3', computeStreak(nd(23, 24, 25), N(28), nd(26)), 3);
+eq('el mismo caso sin día libre se rompe (dos fallos en la semana)', computeStreak(nd(23, 24, 25), N(28)), 0);
+eq('un día libre no suma a la racha', computeStreak(nd(23, 24), N(26), nd(25)), 2);
+eq('un día libre no gasta la cortesía: libre + un fallo + hoy hecho', computeStreak(nd(23, 24, 27), N(27), nd(25)), 3);
+eq('sin ese día libre, los mismos días reinician', computeStreak(nd(23, 24, 27), N(27)), 1);
+eq('día libre de hoy: la racha se mantiene', computeStreak(nd(24, 25, 26), N(27), nd(27)), 3);
+eq('día libre que se hizo igualmente cuenta como hecho', computeStreak(nd(23, 24, 25), N(25), nd(25)), 3);
+eq('días libres sueltos fuera del rango no molestan', computeStreak(nd(23, 24), N(25), nd(1, 2, 30)), 2);
 eq('mondayOf domingo', mondayOf('2026-10-25'), '2026-10-19');
 eq('mondayOf lunes', mondayOf('2026-10-26'), '2026-10-26');
 eq('mondayOf miércoles', mondayOf('2026-10-21'), '2026-10-19');

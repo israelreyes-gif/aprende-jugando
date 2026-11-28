@@ -6,8 +6,9 @@ import { mondayOf } from './week-start.js';
  * Mismas reglas que computeStreak (día de cortesía por semana, segundo día sin reto la pone a 0),
  * pero de una sola pasada. doneDays: fechas 'AAAA-MM-DD' con el reto terminado.
  */
-export function streakByDay(doneDays) {
+export function streakByDay(doneDays, freeDays = []) {
   const done = new Set(doneDays);
+  const free = new Set(freeDays);
   const result = new Map();
   if (done.size === 0) return result;
 
@@ -18,6 +19,8 @@ export function streakByDay(doneDays) {
     if (done.has(day)) {
       streak += 1;
       result.set(day, streak);
+    } else if (free.has(day)) {
+      // día libre: ni suma ni rompe, y no gasta el día de cortesía
     } else if (graceWeek !== mondayOf(day)) {
       graceWeek = mondayOf(day);
     } else {

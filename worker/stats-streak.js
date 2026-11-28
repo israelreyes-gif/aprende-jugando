@@ -4,8 +4,9 @@ import { addDays, mondayOf } from './reminder-dates.js';
  * Racha que tenía el perfil cada día en que hizo el reto: Map 'AAAA-MM-DD' -> número de racha (con ese día incluido).
  * Copia de js/features/reto/streak/streak-by-day.js (el Worker no puede importar archivos de la app).
  */
-export function streakByDay(doneDays) {
+export function streakByDay(doneDays, freeDays = []) {
   const done = new Set(doneDays);
+  const free = new Set(freeDays);
   const result = new Map();
   if (done.size === 0) return result;
 
@@ -16,6 +17,8 @@ export function streakByDay(doneDays) {
     if (done.has(day)) {
       streak += 1;
       result.set(day, streak);
+    } else if (free.has(day)) {
+      // día libre: ni suma ni rompe, y no gasta el día de cortesía
     } else if (graceWeek !== mondayOf(day)) {
       graceWeek = mondayOf(day);
     } else {

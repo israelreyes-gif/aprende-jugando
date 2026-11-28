@@ -20,6 +20,14 @@ for (let round = 0; round < 60; round++) {
   for (const d of days) assert.equal(mine.get(d), computeStreak(days, d), `${d}`);
   assert.deepEqual([...workerStreakByDay(days)], [...mine]);
 }
+for (let round = 0; round < 60; round++) {
+  const days = []; const free = [];
+  for (let i = 0; i < 90; i++) { const day = addDays('2026-08-30', i); if (rnd() < 0.65) days.push(day); else if (rnd() < 0.4) free.push(day); }
+  const mine = streakByDay(days, free);
+  for (const d of days) assert.equal(mine.get(d), computeStreak(days, d, free), `${d} (con días libres)`);
+  assert.deepEqual([...workerStreakByDay(days, free)], [...mine]);
+}
+ok('con días libres: la racha de cada día coincide con computeStreak y el Worker tiene la misma (60 casos al azar)');
 assert.equal(streakByDay([]).size, 0); ok('la racha de cada día coincide con computeStreak (60 casos al azar) y el Worker tiene la misma');
 
 // 2) Casos de la petición, con 10 preguntas por reto: 6 aciertos = +7 (con su bonus de +5); 3 aciertos = −9

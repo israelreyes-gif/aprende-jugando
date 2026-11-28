@@ -19,10 +19,11 @@ for (const p of ['a', 'b']) {
   sql(`INSERT INTO study_progress (id,profile_id,course_id,subject_id,topic_id,completed_at) VALUES ('sp-${p}','${p}','c','s','t','2026-10-29T10:00:00Z')`);
   sql(`INSERT INTO topic_release (id,profile_id,course_id,subject_id,topic_id) VALUES ('tr-${p}','${p}','c','s','t')`);
   sql(`INSERT INTO reto_diario (id,profile_id,course_id,day,questions) VALUES ('rd-${p}','${p}','c','2026-10-29','[]')`);
+  sql(`INSERT INTO free_days (id,profile_id,day) VALUES ('fd-${p}','${p}','2026-10-29')`);
   sql(`INSERT INTO push_devices (id,kind,profile_id,endpoint,p256dh,auth) VALUES ('pd-${p}','child','${p}','https://push/${p}','k','a')`);
   sql(`INSERT INTO sync_events (id,profile_id,outcome,what) VALUES ('se-${p}','${p}','late','practice_sessions')`);
 }
-const TABLES = ['practice_sessions', 'answers', 'study_progress', 'topic_release', 'reto_diario', 'push_devices', 'sync_events'];
+const TABLES = ['practice_sessions', 'answers', 'study_progress', 'topic_release', 'reto_diario', 'free_days', 'push_devices', 'sync_events'];
 for (const t of TABLES) assert.equal(count(t), 2, t);
 
 sql(`DELETE FROM profiles WHERE id = 'a'`);

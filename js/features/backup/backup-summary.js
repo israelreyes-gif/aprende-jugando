@@ -7,6 +7,7 @@ const LABELS = {
   study_progress: 'Temas estudiados',
   topic_release: 'Temas liberados',
   reto_diario: 'Retos',
+  free_days: 'Días libres',
 };
 
 /** "Perfiles: 2 · Sesiones: 14 · …" para enseñar qué trae la copia antes de importarla. */

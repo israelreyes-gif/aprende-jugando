@@ -178,11 +178,15 @@ Cada versión de la app es un **paquete cerrado**: el service worker la descarga
 | `topic_release` | temas liberados por los padres para cada perfil (sin fila = bloqueado) |
 | `topic_titles` | título de cada tema (`id` = `curso\|asignatura\|tema`). La app y el resumen semanal leen los títulos de aquí; no están en el código |
 | `reto_diario` | el reto de cada perfil y día: preguntas, respuestas y si está terminado |
+| `free_days` | días libres de un perfil (examen, viaje, enfermedad): los pone y quita la zona de padres; el perfil solo los lee |
 | `push_devices` | móviles con avisos activados: una fila por móvil y uso (`child` = recordatorios de un perfil, `parent` = avisos a los padres) |
 | `sync_events` | guardados que no fueron a la primera: `late` (quedó en cola y se guardó después) o `failed` (el servidor lo rechazó y se descartó). Solo lleva qué se guardaba, un motivo corto y el perfil; sale en la zona de padres y en el resumen semanal, y un `failed` avisa a los padres |
 
 Borrar un perfil borra en cascada todo su progreso y sus móviles de avisos. Las estadísticas y el refuerzo se calculan en la app
 (`features/parents/stats.logic.js`): un tema necesita refuerzo según la regla del 75 % (`features/parents/stats/thresholds.js`).
+
+### Días libres (racha)
+En la zona de padres, dentro de las estadísticas de cada perfil, la sección **Días libres** marca días en los que el reto no se exige (de 30 días atrás a 60 por delante). Un día libre **no suma a la racha ni la rompe y no gasta el día de cortesía** de su semana; si ese día se hace el reto, cuenta como cualquier otro. El recordatorio push no se envía en un día libre. No hay límite de días: lo controlan los padres. Las reglas están en `compute-streak.js` y `streak-by-day.js` (app) y en `reminder-streak.js` y `stats-streak.js` (Worker, copias); `tests/test-streak.mjs`, `test-streak-points.mjs` y `test-reminders.mjs` comprueban que dan lo mismo. La tabla se añade a una base ya creada con el `CREATE TABLE IF NOT EXISTS free_days` de `worker/schema.sql`. Va incluida en la copia de seguridad; las copias antiguas sin ella se siguen pudiendo restaurar.
 
 ### Cambiar la base de datos más adelante
 Añade tablas o columnas con SQL en la consola de D1 (`CREATE TABLE`, `ALTER TABLE ... ADD COLUMN`).

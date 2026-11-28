@@ -65,6 +65,16 @@ CREATE TABLE IF NOT EXISTS study_progress (
   UNIQUE (profile_id, course_id, subject_id, topic_id)
 );
 
+-- Días libres: días en los que el reto no se exige (examen, viaje, enfermedad). ------------
+-- No suman a la racha ni la rompen, y no gastan el día de cortesía de la semana. Los pone y quita la zona de padres.
+CREATE TABLE IF NOT EXISTS free_days (
+  id         TEXT PRIMARY KEY,
+  profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  day        TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  UNIQUE (profile_id, day)
+);
+
 -- Temas liberados por los padres para cada perfil ------------
 -- Sin fila = tema bloqueado. Al borrar un perfil se borran sus liberaciones.
 CREATE TABLE IF NOT EXISTS topic_release (

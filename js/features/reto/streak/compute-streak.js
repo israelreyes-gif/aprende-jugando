@@ -6,10 +6,12 @@ import { mondayOf } from './week-start.js';
  * - Cada semana (lunes a domingo) tiene un día de cortesía: ese día sin reto no suma ni rompe la racha.
  * - El segundo día sin reto de la misma semana pone la racha a 0.
  * - Hoy todavía no cuenta como fallo: si aún no lo ha hecho, la racha no se rompe hasta que acabe el día.
+ * - Un día libre (puesto por los padres) ni suma ni rompe la racha, y no gasta el día de cortesía de su semana.
  * doneDays: fechas 'AAAA-MM-DD' con el reto terminado. today: 'AAAA-MM-DD'.
  */
-export function computeStreak(doneDays, today) {
+export function computeStreak(doneDays, today, freeDays = []) {
   const done = new Set(doneDays);
+  const free = new Set(freeDays);
   if (done.size === 0) return 0;
 
   let streak = 0;
@@ -17,6 +19,8 @@ export function computeStreak(doneDays, today) {
   for (let day = [...done].sort()[0]; day < today; day = addDays(day, 1)) {
     if (done.has(day)) {
       streak += 1;
+    } else if (free.has(day)) {
+      // día libre: ni suma ni rompe, y no gasta el día de cortesía
     } else if (graceWeek !== mondayOf(day)) {
       graceWeek = mondayOf(day);
     } else {
