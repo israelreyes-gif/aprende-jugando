@@ -29,6 +29,7 @@ export const es = {
   correct: '¡Muy bien!',
   wrong: 'Casi...',
   answerWas: 'La respuesta correcta es',
+  accentNote: 'Ojo con la tilde, se escribe',
   yourAnswer: 'Escribe tu respuesta',
   question: (i, n) => `Pregunta ${i} de ${n}`,
   resultTitle: (pct) => (pct >= 80 ? '¡Estupendo!' : pct >= 60 ? '¡Buen trabajo!' : 'Sigue practicando'),

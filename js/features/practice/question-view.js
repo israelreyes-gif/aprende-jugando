@@ -38,7 +38,7 @@ export function questionView({ q, index, total, t, onChecked, onContinue }) {
     onChecked({ questionId: q.id, correct: ok, given: type.givenText(q, value), prompt: q.prompt, answerText: type.answerText(q) });
     widget.lock();
     widget.reveal(ok, value);
-    feedback.replaceChildren(feedbackBox(ok, q, type, t));
+    feedback.replaceChildren(feedbackBox(ok, q, type, t, value));
     action.textContent = index + 1 === total ? t.finish : t.next;
     action.focus();
   });

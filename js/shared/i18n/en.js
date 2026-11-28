@@ -29,6 +29,7 @@ export const en = {
   correct: 'Well done!',
   wrong: 'Almost...',
   answerWas: 'The correct answer is',
+  accentNote: 'Mind the accent, it is written',
   yourAnswer: 'Type your answer',
   question: (i, n) => `Question ${i} of ${n}`,
   resultTitle: (pct) => (pct >= 80 ? 'Great job!' : pct >= 60 ? 'Good work!' : 'Keep practising'),
