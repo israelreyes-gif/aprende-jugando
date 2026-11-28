@@ -6,5 +6,5 @@
 .free-days__empty { margin: 0; font-size: 14px; font-weight: 700; opacity: 0.7; }
 /* iPhone: el selector de fecha trae un ancho propio y se salía de la tarjeta */
 .free-days, .free-days__form { min-width: 0; }
-.free-days__form .input { display: block; width: 100%; min-width: 0; max-width: 100%; -webkit-appearance: none; appearance: none; text-align: center; }
-.free-days__form .input::-webkit-date-and-time-value { text-align: center; min-width: 0; margin: 0 auto; }
+.free-days__form .input { display: flex; align-items: center; justify-content: center; width: 100%; height: 52px; min-width: 0; max-width: 100%; padding-top: 0; padding-bottom: 0; line-height: 1.2; -webkit-appearance: none; appearance: none; text-align: center; }
+.free-days__form .input::-webkit-date-and-time-value { text-align: center; min-width: 0; min-height: 1.2em; line-height: 1.2; margin: 0; }
